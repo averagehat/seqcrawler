@@ -29,13 +29,9 @@ public class GFF3Record {
 
 	private Log log = LogFactory.getLog(GFF3Record.class);
 	
-	public enum StrandedFeature {
-		NEGATIVE,POSITIVE,UNKNOWN;
-	};
-	
+	@Field("chr")
 	private String sequenceId;
 	
-
 	@Field("feature")
 	private String type;
 
@@ -48,7 +44,7 @@ public class GFF3Record {
 	private Properties annotations;
 
 	@Field
-	private StrandedFeature strand;
+	private String strand;
 
 	@Field
 	private String attributes;
@@ -57,6 +53,7 @@ public class GFF3Record {
 	private String bank;
 
 
+	@Field
 	public void setBank(String bank) {
 		this.bank = bank;
 	}
@@ -66,21 +63,25 @@ public class GFF3Record {
 		annotations = new Properties();
 	}
 
+	@Field("chr")
 	public void setSequenceID(String group) {
 		sequenceId = group;
 		
 	}
 
+	@Field("feature")
 	public void setType(String group) {
 		type = group;
 		
 	}
 
+	@Field
 	public void setStart(Integer value) {
 		start = value;
 		
 	}
-
+	
+	@Field
 	public void setEnd(Integer value) {
 		end = value;
 		
@@ -90,11 +91,11 @@ public class GFF3Record {
 		return annotations;
 	}
 
-	public void setStrand(StrandedFeature value) {
-		strand = value;
-		
-	}
 	
+	@Field
+	public void setStrand(String value) {
+		strand = value;
+	}
 
 	public String getSequenceId() {
 		return sequenceId;
@@ -112,7 +113,7 @@ public class GFF3Record {
 		return end;
 	}
 
-	public StrandedFeature getStrand() {
+	public String getStrand() {
 		return strand;
 	}
 	
@@ -131,15 +132,8 @@ public class GFF3Record {
 		doc.addField("end", this.getEnd());
 		doc.addField("feature", this.getType());
 		doc.addField("attributes", this.getAttributes());
-		if(this.getStrand().equals(StrandedFeature.POSITIVE)) {
-			doc.addField("strand","+");
-		}
-		else if(this.getStrand().equals(StrandedFeature.NEGATIVE)) {
-			doc.addField("strand","-");
-		}
-		else {
-			doc.addField("strand",".");
-		}
+	    doc.addField("strand",this.getStrand());
+		
 		Enumeration it = annotations.propertyNames();
 		while(it.hasMoreElements()) {
 			String key = (String)it.nextElement();			
@@ -160,11 +154,11 @@ public class GFF3Record {
 	}
 
 
-	private Object getAttributes() {
+	public Object getAttributes() {
 		return attributes;
 	}
 
-
+	@Field
 	public void setAttributes(String value) {
 		this.attributes = value;
 		
