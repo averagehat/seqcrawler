@@ -1,0 +1,5 @@
+Introduction
+
+  CrawlerIndex is in charge of indexing biological data files in a Solr index server.
+  It supports several types of input data (gff, genbank, uniprot ...) and can submit data to the specified server.
+  In current version only GFF type is supported, but very soon other formats will be implemented.

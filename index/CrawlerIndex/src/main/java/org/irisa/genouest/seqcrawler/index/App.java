@@ -38,6 +38,9 @@ public class App
 	
 	static boolean DEBUG=false;
 	
+	static int shardsSize = 10;
+	static boolean useShards = false;
+	
 	static String SOLRHOME = "/opt/solr/apache-solr-1.4.0/seqcrawler/solr";
 	static String SOLRDATA = "/opt/solr/apache-solr-1.4.0/seqcrawler/solr/data/";
 	static String SOLRURL ="http://localhost/solr";
@@ -69,6 +72,7 @@ public class App
         options.addOption("h", false, "show usage");
         options.addOption("v", false, "show version");
         options.addOption("o", false, "Optimize index");
+        options.addOption("shard", true, "For directories, cut index in shards of specified size");
         
         options.addOption("url", true, "url of Solr server");
 
@@ -86,6 +90,11 @@ public class App
         
         if(cmd.hasOption("b")) {
         	bank = cmd.getOptionValue("b");
+        }
+        
+        if(cmd.hasOption("shard")) {        
+        	shardsSize = Integer.valueOf(cmd.getOptionValue("shard"));
+        	useShards = true;
         }
         
         if(cmd.hasOption("debug")) {
@@ -139,8 +148,8 @@ public class App
         	inputFile = cmd.getOptionValue("f");
         }
         else {
-        	application.log.error("Input file command line option is missing (-f) ");
-        	System.exit(1); 	
+        	application.log.error("WARNING: Input file command line option is missing (-f) ");
+        	application.log.error("There is no data to index ");
         }
         if(cmd.hasOption("t")) {
         	String t = cmd.getOptionValue("t");
@@ -156,8 +165,12 @@ public class App
         }
         application.log.info("Input file format is "+format.toString());
         
-        File in = new File(inputFile);
+        File in = null;
         File[] files=null;
+        
+        if(inputFile!=null) {
+        	
+        in = new File(inputFile);        
         // If input is directory parse all files of the directory
         if(in.isDirectory()) {
         	files = in.listFiles();
@@ -169,12 +182,43 @@ public class App
         
         application.log.info("Start indexation - "+new Date());
         
-        for(File file : files) {        
-        SequenceHandler handler = GenericSequenceHandler.getHandler(format,bank);
+        int shardId = 0;
+        boolean newShard=true;
+        int countFile = 1;
+        
+        for(File file : files) {
+        	if(useShards && countFile > shardsSize) {
+        		// If shardsSize is reached, reset counter and start a new shard index
+        		newShard = true;
+        		countFile = 1;
+        	}
+        	if(useShards && newShard) {
+        		// Create a new index for index shard with shard id.
+        		coreContainer.shutdown();
+        		System.setProperty("solr.solr.home", SOLRHOME);
+                System.setProperty("solr.data.dir", SOLRDATA+"/shard"+shardId);
+                application.log.info("Using shard: "+System.getProperty("solr.data.dir"));        
+                coreContainer = initializer.initialize();
+                
+                if(application.useEmbeddedServer) {
+                	 EmbeddedSolrServer server = new EmbeddedSolrServer(coreContainer, "");
+                	 IndexUtils.setServer(server);
+                }
+                else {
+                	SolrServer remoteserver = new CommonsHttpSolrServer( SOLRURL );
+                	IndexUtils.setServer(remoteserver);
+                }        		        		        		
+        		shardId++;        		
+        		newShard = false;
+            }	
+        SequenceHandler handler = GenericSequenceHandler.getHandler(format,bank);        
         handler.parse(file);
+        countFile++;
         }
         
         application.log.info("Indexation over - "+new Date());
+        
+        }
         
         // Optimize the index
         if(cmd.hasOption("o")) {
