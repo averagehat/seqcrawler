@@ -59,6 +59,8 @@ public class GFFHandler implements SequenceHandler {
 	  * @throws IOException
 	  */
     public void parse(BufferedReader bf) throws IOException {
+    	long nbDocs = 0;
+    	
         BufferedReader fr = bf;
         String line = null;
         while ((line = fr.readLine()) != null) {
@@ -73,7 +75,7 @@ public class GFFHandler implements SequenceHandler {
                     rec.setType(gffMatcher.group(3));
                     rec.setStart(Integer.valueOf(gffMatcher.group(4)));
                     rec.setEnd(Integer.valueOf(gffMatcher.group(5)));
-                    rec.setStrand(gffMatcher.group(5));                   
+                    rec.setStrand(gffMatcher.group(6));                   
                     rec.setAttributes(gffMatcher.group(9));
                     String[] attributes = gffMatcher.group(9).split(";");
                     for (int count = 0; count < attributes.length; count++) {
@@ -85,6 +87,7 @@ public class GFFHandler implements SequenceHandler {
                     
                     //records.add(rec);
                     rec.index();
+                    nbDocs++;
 
                 }
 
@@ -95,6 +98,7 @@ public class GFFHandler implements SequenceHandler {
 		} catch (SolrServerException e) {
 			log.error(e.getMessage());
 		}
+		log.info("Number of documents indexed: "+nbDocs);
     }
 }
 
