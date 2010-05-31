@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.irisa.genouest.seqcrawler.index.App;
 import org.xml.sax.SAXException;
@@ -19,6 +21,9 @@ import junit.framework.TestSuite;
 public class AppTest 
     extends TestCase
 {
+	
+	private Log log = LogFactory.getLog(AppTest.class);
+	
     /**
      * Create the test case
      *
@@ -43,16 +48,21 @@ public class AppTest
     public void testApp()
     {
     	try {
-			App.main(new String[] {"-f","C:/NOSAVE/test.gff","-b","GenBank","-C","-sh","c:/NOSAVE/apache-solr-1.4.0/example/solr/","-sd","c:/NOSAVE/apache-solr-1.4.0/example/solr/data/"});
+			App.main(new String[] {"-f","./solr/test.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/"});
 		} catch (IOException e) {
+			log.error(e.getMessage());
 			fail();
 		} catch (ParserConfigurationException e) {
+			log.error(e.getMessage());
 			fail();
 		} catch (SAXException e) {
+			log.error(e.getMessage());
 			fail();
 		} catch (SolrServerException e) {
+			log.error(e.getMessage());
 			fail();
 		} catch (ParseException e) {
+			log.error(e.getMessage());
 			fail();
 		}
         assertTrue( true );
