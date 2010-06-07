@@ -1,0 +1,7 @@
+##gff-version 3
+# sequence-region NC_002745 1 2814816
+# Sample data set.
+NC_002745	GenBank	region	1	2814816	.	+	.	ID=NC_002745;Dbxref=taxon:158879;Note=Staphylococcus aureus subsp. aureus N315%2C complete genome.;comment1=PROVISIONAL REFSEQ: This record has not yet been subject to final NCBI review. The reference sequence was derived from BA000018. On Mar 24%2C 2003 this sequence version replaced gi:15925705. COMPLETENESS: full length. ;date=30-MAR-2010;mol_type=genomic DNA;organism=Staphylococcus aureus subsp. aureus N315;strain=N315
+NC_002745	GenBank	gene	517	1878	.	+	.	ID=dnaA;Dbxref=GeneID:1122772;gene=dnaA;locus_tag=SA0001
+NC_002745	GenBank	mRNA	517	1878	.	+	.	ID=dnaA.t01;Parent=dnaA
+NC_002745	GenBank	CDS	517	1878	.	+	.	ID=dnaA.p01;Parent=dnaA.t01;Dbxref=GI:15925706,GeneID:1122772;Note=binds to the dnaA-box as an ATP-bound complex at the origin of replication during the initiation of chromosomal replication%3B can also affect transcription of multiple genes including itself.;codon_start=1;gene=dnaA;locus_tag=SA0001;product=chromosomal replication initiation protein;protein_id=NP_373239.1;transl_table=11;translation=length.453

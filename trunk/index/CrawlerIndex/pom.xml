@@ -14,6 +14,31 @@
   	<system>hudson</system>
   	<url>http://test.genouest.org:8080/hudson/</url>
   </ciManagement>
+  	<licenses>
+  <license>
+    <name>Cecill-C</name>
+    <url>http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html</url>
+    <distribution>repo</distribution>
+    <comments>Cecill-C license (http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html)
+ which is an equivalent of LGPL license in France.</comments>
+  </license>
+  </licenses>
+    <developers>
+    <developer>
+      <id>osallou</id>
+      <name>Olivier Sallou</name>
+      <email>olivier.sallou@irisa.fr</email>
+      <url>http://labs.genouest.org</url>
+      <organization>GenOuest</organization>
+      <organizationUrl>http://www.genouest.org</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+  	</developers>
+ 
   <scm>
   	<connection>scm:svn:https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/trunk/index</connection>
   	<developerConnection>scm:svn:https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/trunk/index</developerConnection>
@@ -142,6 +167,6 @@
           </plugins>
   </build>
   <properties>
-  	<maven.jar.mainclass>org.irisa.genouest.seqcrawler.CrawIndex.App</maven.jar.mainclass>
+  	<maven.jar.mainclass>org.irisa.genouest.seqcrawler.index.Index</maven.jar.mainclass>
   </properties>
 </project>
