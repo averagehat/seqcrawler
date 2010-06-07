@@ -17,8 +17,8 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.beans.Field;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
-import org.irisa.genouest.seqcrawler.index.App;
-import org.irisa.genouest.seqcrawler.index.IndexUtils;
+import org.irisa.genouest.seqcrawler.index.Index;
+import org.irisa.genouest.seqcrawler.index.IndexManager;
 
 /**
  * Class representing a GFF v3 record
@@ -123,8 +123,9 @@ public class GFF3Record {
 
 	/**
 	 * Index current GFF record in index server if not in debug mode
+	 * @return Document to index
 	 */
-	public void index() {
+	public SolrInputDocument getDocument() {
 		SolrInputDocument doc = new SolrInputDocument();
 		doc.addField("bank", this.getBank());
 		doc.addField("chr", this.getSequenceId());
@@ -140,21 +141,17 @@ public class GFF3Record {
 			doc.addField(key.toLowerCase(), annotations.get(key));
 			
 		}
-
-		try {
-			this.log.debug("Index new GFF record "+doc.toString());
-			if(App.debug()==false) IndexUtils.getServer().add(doc);			
-		} catch (SolrServerException e) {
-			this.log.error(e.getMessage());
-		} catch (IOException e) {
-			this.log.error(e.getMessage());
-		}
-
 		
+		return doc;
 	}
 
+	@Override
+	public String toString() {
+		return this.getSequenceId()+"\t"+this.getBank()+"\t"+this.getType()+"\t"+this.getStart()+"\t"+this.getEnd()+"\t.\t"+this.getStrand()+"\t.\t"+this.getAttributes();
+	}
+	
 
-	public Object getAttributes() {
+	public String getAttributes() {
 		return attributes;
 	}
 
