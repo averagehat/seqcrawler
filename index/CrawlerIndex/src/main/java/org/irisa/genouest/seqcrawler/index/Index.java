@@ -19,6 +19,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.core.CoreContainer;
+import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
 import org.xml.sax.SAXException;
 
 
@@ -27,9 +28,9 @@ import org.xml.sax.SAXException;
  * @author osallou
  *
  */
-public class App 
+public class Index 
 {
-	private Log log = LogFactory.getLog(App.class);
+	private Log log = LogFactory.getLog(Index.class);
 	
 	static String bank=Constants.BANK_DEFAULT;
 	static String inputFile=null;
@@ -41,9 +42,9 @@ public class App
 	static int shardsSize = 10;
 	static boolean useShards = false;
 	
-	static String SOLRHOME = "/opt/solr/apache-solr-1.4.0/seqcrawler/solr";
-	static String SOLRDATA = "/opt/solr/apache-solr-1.4.0/seqcrawler/solr/data/";
-	static String SOLRURL ="http://localhost/solr";
+	static String solrHome = "/opt/solr/apache-solr-1.4.0/seqcrawler/solr";
+	static String solrData = "/opt/solr/apache-solr-1.4.0/seqcrawler/solr/data/";
+	static String solrUrl ="http://localhost/solr";
 	boolean useEmbeddedServer = true;
 	
 	static final String VERSION = "1.0";
@@ -56,10 +57,11 @@ public class App
 	 * @throws SAXException
 	 * @throws SolrServerException
 	 * @throws ParseException
+	 * @throws IndexException 
 	 */
-    public static void main( String[] args ) throws IOException, ParserConfigurationException, SAXException, SolrServerException, ParseException
+    public static void main( String[] args ) throws IOException, ParserConfigurationException, SAXException, SolrServerException, ParseException, IndexException
     {
-        App application = new App();
+        Index application = new Index();
         Options options = new Options();
         options.addOption("c", false, "Clean index before with bank name");
         options.addOption("C", false, "Clean all index");
@@ -79,13 +81,16 @@ public class App
         CommandLineParser parser = new PosixParser();
         CommandLine cmd = parser.parse( options, args);
         
+        IndexManager indexMngr = null;
         
         if(cmd.hasOption("v")) {
         	application.log.info("Current version is: "+VERSION);
+        	System.exit(0);
         }
         
         if(cmd.hasOption("h")) {
         	showUsage(options);
+        	System.exit(0);
         }
         
         if(cmd.hasOption("b")) {
@@ -102,46 +107,41 @@ public class App
         }
         
         if(cmd.hasOption("sh")) {
-        	SOLRHOME = cmd.getOptionValue("sh");
+        	solrHome = cmd.getOptionValue("sh");
         }
         
         if(cmd.hasOption("url")) {
-        	SOLRURL = cmd.getOptionValue("url");
+        	solrUrl = cmd.getOptionValue("url");
         	application.useEmbeddedServer = false;
         }
         
         if(cmd.hasOption("sd")) {
-        	SOLRDATA = cmd.getOptionValue("sd");
+        	solrData = cmd.getOptionValue("sd");
         }              
         	
        
         application.log.info("Starting application");
         // Note that the following property could be set through JVM level arguments too
         
-        System.setProperty("solr.solr.home", SOLRHOME);
-        System.setProperty("solr.data.dir", SOLRDATA);
-        application.log.info("Using solr home: "+System.getProperty("solr.solr.home"));        
-        CoreContainer.Initializer initializer = new CoreContainer.Initializer();
-        CoreContainer coreContainer = initializer.initialize();
+        System.setProperty("solr.solr.home", solrHome);
+        System.setProperty("solr.data.dir", solrData);        
+        
+        indexMngr = new IndexManager();
         
         if(application.useEmbeddedServer) {
-        	 application.log.info("Using embedded server");
-        	 EmbeddedSolrServer server = new EmbeddedSolrServer(coreContainer, "");
-        	 IndexUtils.setServer(server);
+        	indexMngr.initServer(null);
         }
         else {
-        	application.log.info("Using remote server "+SOLRURL);
-        	SolrServer remoteserver = new CommonsHttpSolrServer( SOLRURL );
-        	IndexUtils.setServer(remoteserver);
+        	indexMngr.initServer(solrUrl);
         }
         
         
         if(cmd.hasOption("c")) {
-        	IndexUtils.getInstance().cleanIndexByBank(bank);
+        	indexMngr.cleanIndexByBank(bank);
         }
         
         if(cmd.hasOption("C")) {
-        	IndexUtils.getInstance().cleanIndex();
+        	indexMngr.cleanIndex();
         }
         
         if(cmd.hasOption("f")) {
@@ -194,24 +194,23 @@ public class App
         	}
         	if(useShards && newShard) {
         		// Create a new index for index shard with shard id.
-        		coreContainer.shutdown();
-        		System.setProperty("solr.solr.home", SOLRHOME);
-                System.setProperty("solr.data.dir", SOLRDATA+"/shard"+shardId);
-                application.log.info("Using shard: "+System.getProperty("solr.data.dir"));        
-                coreContainer = initializer.initialize();
+        		//coreContainer.shutdown();
+        		indexMngr.shutdownServer();
+        		System.setProperty("solr.solr.home", solrHome);
+                System.setProperty("solr.data.dir", solrData+"/shard"+shardId);
+                application.log.info("Using shard: "+System.getProperty("solr.data.dir"));                        
                 
                 if(application.useEmbeddedServer) {
-                	 EmbeddedSolrServer server = new EmbeddedSolrServer(coreContainer, "");
-                	 IndexUtils.setServer(server);
+                	indexMngr.initServer(null);
                 }
                 else {
-                	SolrServer remoteserver = new CommonsHttpSolrServer( SOLRURL );
-                	IndexUtils.setServer(remoteserver);
+                	indexMngr.initServer(solrUrl);
                 }        		        		        		
         		shardId++;        		
         		newShard = false;
             }	
-        SequenceHandler handler = GenericSequenceHandler.getHandler(format,bank);        
+        SequenceHandler handler = GenericSequenceHandler.getHandler(format,bank);
+        handler.setIndexManager(indexMngr);
         handler.parse(file);
         countFile++;
         }
@@ -223,12 +222,10 @@ public class App
         // Optimize the index
         if(cmd.hasOption("o")) {
         application.log.info("Optimizing index now...");
-        IndexUtils.getServer().optimize();
+        indexMngr.getServer().optimize();
         }
-        application.log.info("Index is ready - "+new Date());
-        
-        coreContainer.shutdown();
-        
+        application.log.info("Index is ready - "+new Date());        
+        indexMngr.shutdownServer();
     }
 
     /**

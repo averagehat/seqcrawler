@@ -10,10 +10,14 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.common.SolrInputDocument;
 import org.irisa.genouest.seqcrawler.index.Constants;
-import org.irisa.genouest.seqcrawler.index.IndexUtils;
+import org.irisa.genouest.seqcrawler.index.Index;
+import org.irisa.genouest.seqcrawler.index.IndexManager;
 import org.irisa.genouest.seqcrawler.index.SequenceHandler;
+import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
 import org.irisa.genouest.seqcrawler.index.handlers.gff.GFF3Record;
 
 
@@ -22,6 +26,8 @@ import org.irisa.genouest.seqcrawler.index.handlers.gff.GFF3Record;
  * @author osallou
  */
 public class GFFHandler implements SequenceHandler {
+	
+	private IndexManager indexManager = null;
 
 	private Log log = LogFactory.getLog(GFFHandler.class);
 	
@@ -47,8 +53,9 @@ public class GFFHandler implements SequenceHandler {
 	 * Parse an input file
 	 * @param f path to input file
 	 * @throws IOException
+     * @throws IndexException 
 	 */
-    public void parse(File f) throws IOException {
+    public void parse(File f) throws IOException, IndexException {
     	BufferedReader bf = new BufferedReader(new FileReader(f));
     	this.parse(bf);
     }
@@ -57,10 +64,11 @@ public class GFFHandler implements SequenceHandler {
 	  * Parse an input stream
 	  * @param bf stream to analyse
 	  * @throws IOException
+     * @throws IndexException 
 	  */
-    public void parse(BufferedReader bf) throws IOException {
+    public void parse(BufferedReader bf) throws IOException, IndexException {
     	long nbDocs = 0;
-    	
+    	if(indexManager==null) throw new IndexException("IndexManager is not set");
         BufferedReader fr = bf;
         String line = null;
         while ((line = fr.readLine()) != null) {
@@ -84,9 +92,17 @@ public class GFFHandler implements SequenceHandler {
                             rec.getAnnotations().setProperty(attribute[0], attribute[1]);
                         }
                     }
+                 
+                    SolrInputDocument doc = rec.getDocument();                    
+                    try {
+            			this.log.debug("Index new GFF record "+doc.toString());
+            			indexManager.getServer().add(doc);			
+            		} catch (SolrServerException e) {
+            			this.log.error(e.getMessage());
+            		} catch (IOException e) {
+            			this.log.error(e.getMessage());
+            		}
                     
-                    //records.add(rec);
-                    rec.index();
                     nbDocs++;
 
                 }
@@ -94,11 +110,17 @@ public class GFFHandler implements SequenceHandler {
             }
         }
         try {
-			IndexUtils.getServer().commit();
+			indexManager.getServer().commit();
 		} catch (SolrServerException e) {
 			log.error(e.getMessage());
 		}
 		log.info("Number of documents indexed: "+nbDocs);
     }
+
+	@Override
+	public void setIndexManager(IndexManager manager) {
+		this.indexManager = manager;
+		
+	}
 }
 
