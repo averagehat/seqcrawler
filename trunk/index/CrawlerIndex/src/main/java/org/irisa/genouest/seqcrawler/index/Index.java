@@ -1,8 +1,11 @@
 package org.irisa.genouest.seqcrawler.index;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -14,11 +17,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
-import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
-import org.apache.solr.core.CoreContainer;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
 import org.xml.sax.SAXException;
 
@@ -47,7 +46,15 @@ public class Index
 	static String solrUrl ="http://localhost/solr";
 	boolean useEmbeddedServer = true;
 	
-	static final String VERSION = "1.0";
+	static long nbErrors=0;
+	
+	public static long getNbErrors() {
+		return nbErrors;
+	}
+
+	static final String VERSION = "0.1";
+	
+	
 	
 	/**
 	 * Application entry point. Index one or more document in a Solr server. Index can be done with an embedded server for local writing.
@@ -59,8 +66,9 @@ public class Index
 	 * @throws ParseException
 	 * @throws IndexException 
 	 */
-    public static void main( String[] args ) throws IOException, ParserConfigurationException, SAXException, SolrServerException, ParseException, IndexException
+    public static void main( String[] args ) throws IOException, ParserConfigurationException, SAXException, SolrServerException, ParseException
     {
+    	
         Index application = new Index();
         Options options = new Options();
         options.addOption("c", false, "Clean index before with bank name");
@@ -85,6 +93,15 @@ public class Index
         
         if(cmd.hasOption("v")) {
         	application.log.info("Current version is: "+VERSION);
+        	// @TODO Get version from manifest
+        	/*
+        	File manifestFile = new File("META-INF/MANIFEST.MF");	 
+        	Manifest mf = new Manifest();
+        	mf.read(new FileInputStream(manifestFile));
+        	Attributes atts = mf.getMainAttributes();
+        	application.log.info("Version: " + atts.getValue("Implementation-Version"));
+        	application.log.info("Build: " + atts.getValue("Implementation-Build"));
+        	*/
         	System.exit(0);
         }
         
@@ -187,6 +204,8 @@ public class Index
         int countFile = 1;
         
         for(File file : files) {
+        	// Do not go through sub directories or manage hidden files such as svn files
+        	if(file.isDirectory() || file.isHidden()) continue;
         	if(useShards && countFile > shardsSize) {
         		// If shardsSize is reached, reset counter and start a new shard index
         		newShard = true;
@@ -211,11 +230,17 @@ public class Index
             }	
         SequenceHandler handler = GenericSequenceHandler.getHandler(format,bank);
         handler.setIndexManager(indexMngr);
-        handler.parse(file);
+        try {
+			handler.parse(file);
+			nbErrors+=handler.getNbParsingErrors();
+		} catch (IndexException e) {
+			application.log.error(e.getMessage());
+		}
         countFile++;
         }
         
         application.log.info("Indexation over - "+new Date());
+        application.log.info("Number of errors during indexation: "+nbErrors);
         
         }
         
