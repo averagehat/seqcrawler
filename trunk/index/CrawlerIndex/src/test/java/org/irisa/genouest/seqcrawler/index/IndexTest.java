@@ -66,9 +66,6 @@ public class IndexTest
 		} catch (ParseException e) {
 			log.error(e.getMessage());
 			fail();
-		} catch (IndexException e) {
-			log.error(e.getMessage());
-			fail();
 		}
         assertTrue( true );
     }
@@ -92,10 +89,7 @@ public class IndexTest
 		} catch (ParseException e) {
 			log.error(e.getMessage());
 			fail();
-		} catch (IndexException e) {
-			log.error(e.getMessage());
-			fail();
-		}
+		} 
 		// 6 input files, shard size = 2, we should have 3 shard indexes
 		File f1 = new File("./solr/dataset/index/shard0/index");
         assertTrue( f1.exists() );
@@ -103,5 +97,28 @@ public class IndexTest
         assertTrue( f2.exists() );
 		File f3 = new File("./solr/dataset/index/shard2/index");
         assertTrue( f3.exists() );
+    }
+    
+    public void testIndexError()
+    {
+    	try {
+			Index.main(new String[] {"-f","./solr/testError.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/"});
+		} catch (IOException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParserConfigurationException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SAXException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SolrServerException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParseException e) {
+			log.error(e.getMessage());
+			fail();
+		}
+        assertTrue( Index.getNbErrors() == 1 );
     }
 }
