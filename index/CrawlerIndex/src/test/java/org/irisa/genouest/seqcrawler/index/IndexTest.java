@@ -68,7 +68,10 @@ public class IndexTest
 			fail();
 		}
         assertTrue( true );
+
     }
+    
+
     
     public void testShardIndex()
     {

@@ -3,6 +3,7 @@ package org.irisa.genouest.seqcrawler.index;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Date;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
@@ -52,7 +53,6 @@ public class Index
 		return nbErrors;
 	}
 
-	static final String VERSION = "0.1";
 	
 	
 	
@@ -92,16 +92,16 @@ public class Index
         IndexManager indexMngr = null;
         
         if(cmd.hasOption("v")) {
-        	application.log.info("Current version is: "+VERSION);
-        	// @TODO Get version from manifest
-        	/*
-        	File manifestFile = new File("META-INF/MANIFEST.MF");	 
-        	Manifest mf = new Manifest();
-        	mf.read(new FileInputStream(manifestFile));
+        	Class clazz = Index.class; 
+        	String classContainer = clazz.getProtectionDomain().getCodeSource().getLocation().toString();
+        	URL manifestUrl = new URL("jar:" + classContainer + "!/META-INF/MANIFEST.MF");
+        	Manifest mf = new Manifest(manifestUrl.openStream());
         	Attributes atts = mf.getMainAttributes();
+        	
+        	System.out.println("SeqCrawler indexer version: "+atts.getValue("Implementation-Version")+"-"+atts.getValue("Implementation-Build"));        	
         	application.log.info("Version: " + atts.getValue("Implementation-Version"));
         	application.log.info("Build: " + atts.getValue("Implementation-Build"));
-        	*/
+        	
         	System.exit(0);
         }
         
