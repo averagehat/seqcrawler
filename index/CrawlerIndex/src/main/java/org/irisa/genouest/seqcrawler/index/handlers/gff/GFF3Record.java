@@ -3,22 +3,15 @@
  */
 package org.irisa.genouest.seqcrawler.index.handlers.gff;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.beans.Field;
-import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
-import org.irisa.genouest.seqcrawler.index.Index;
-import org.irisa.genouest.seqcrawler.index.IndexManager;
+
 
 /**
  * Class representing a GFF v3 record
@@ -135,7 +128,7 @@ public class GFF3Record {
 		doc.addField("attributes", this.getAttributes());
 	    doc.addField("strand",this.getStrand());
 		
-		Enumeration it = annotations.propertyNames();
+		Enumeration<?> it = annotations.propertyNames();
 		while(it.hasMoreElements()) {
 			String key = (String)it.nextElement();			
 			doc.addField(key.toLowerCase(), annotations.get(key));

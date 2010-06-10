@@ -10,11 +10,9 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
 import org.irisa.genouest.seqcrawler.index.Constants;
-import org.irisa.genouest.seqcrawler.index.Index;
 import org.irisa.genouest.seqcrawler.index.IndexManager;
 import org.irisa.genouest.seqcrawler.index.SequenceHandler;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
@@ -28,6 +26,8 @@ import org.irisa.genouest.seqcrawler.index.handlers.gff.GFF3Record;
 public class GFFHandler implements SequenceHandler {
 	
 	private IndexManager indexManager = null;
+	
+	private long nbParsingErrors = 0;
 
 	private Log log = LogFactory.getLog(GFFHandler.class);
 	
@@ -56,6 +56,7 @@ public class GFFHandler implements SequenceHandler {
      * @throws IndexException 
 	 */
     public void parse(File f) throws IOException, IndexException {
+    	log.debug("Parse new file: "+ f.getAbsolutePath());
     	BufferedReader bf = new BufferedReader(new FileReader(f));
     	this.parse(bf);
     }
@@ -77,7 +78,9 @@ public class GFFHandler implements SequenceHandler {
                 Pattern gffPattern = Pattern.compile("(.*)\\t(.*)\\t(.*)\\t(.*)\\t(.*)\\t(.*)\\t(.*)\\t(.*)\\t(.*)");
                 Matcher gffMatcher = gffPattern.matcher(line);
                 if (gffMatcher.find()) {
+                	boolean inError = false;
                 	log.debug("new GFF line");
+                	try {
                 	rec.setBank(bank);
                     rec.setSequenceID(gffMatcher.group(1));
                     rec.setType(gffMatcher.group(3));
@@ -92,7 +95,14 @@ public class GFFHandler implements SequenceHandler {
                             rec.getAnnotations().setProperty(attribute[0], attribute[1]);
                         }
                     }
-                 
+                    
+                	}
+                	catch (NumberFormatException indexReadError) {
+                		log.error("#LINEINDEXERROR: "+line);
+                		nbParsingErrors++;
+                		inError = true;
+                	}
+                	if(!inError) {
                     SolrInputDocument doc = rec.getDocument();                    
                     try {
             			this.log.debug("Index new GFF record "+doc.toString());
@@ -104,6 +114,9 @@ public class GFFHandler implements SequenceHandler {
             		}
                     
                     nbDocs++;
+                    
+                	}
+                	
 
                 }
 
@@ -117,10 +130,14 @@ public class GFFHandler implements SequenceHandler {
 		log.info("Number of documents indexed: "+nbDocs);
     }
 
-	@Override
+
 	public void setIndexManager(IndexManager manager) {
 		this.indexManager = manager;
 		
+	}
+
+	public long getNbParsingErrors() {
+		return nbParsingErrors;
 	}
 }
 

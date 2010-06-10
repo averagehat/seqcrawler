@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.solr.client.solrj.SolrServer;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
 
 /**
@@ -35,4 +34,11 @@ public interface SequenceHandler {
 	 * @throws IndexException 
 	  */
 	 public void parse(BufferedReader bf) throws IOException, IndexException;
+	 
+	 /**
+	  * Returns the number of errors found during parsing of the file
+	  * @return Number of errors
+	  */
+	 public long getNbParsingErrors();
+	 
 }

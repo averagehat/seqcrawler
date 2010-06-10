@@ -32,7 +32,7 @@ public class IndexManager {
 	/**
 	 * Initiate index server manager and starts an embedded server if url is null instead of connecting to a remote URL.
 	 * In case of embedded server, a shutdown operation is required at the end of the operations.
-	 * @param url: URL to the server, null if embedded server
+	 * @param url URL to the server, null if embedded server
 	 * @return The instance of the server manager
 	 * @throws IOException
 	 * @throws ParserConfigurationException
