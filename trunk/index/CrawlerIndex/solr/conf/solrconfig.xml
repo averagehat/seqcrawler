@@ -498,6 +498,36 @@
         -->
      </lst>
   </requestHandler>
+  
+  
+  <!-- Solritas implementation, requires solritas lib in tomcat deployment -->
+    <requestHandler name="/itas" class="solr.SearchHandler">
+     <lst name="defaults">
+       <str name="v.template">browse</str>
+       <str name="v.properties">velocity.properties</str>
+       <str name="v.contentType">text/html;charset=UTF-8</str>
+       <str name="title">Solritas</str>
+       <str name="defType">lucene</str>
+       <str name="wt">velocity</str>
+       <str name="rows">10</str>
+       <str name="fl">*,score</str>
+       <str name="q.alt">*:*</str>
+       <str name="facet">on</str>
+       <str name="facet.field">organism</str>
+       <str name="facet.mincount">1</str>
+       <str name="facet.limit">10</str>
+       <str name="facet.field">bank</str>
+       <str name="qf">
+          text^0.5 id^1.5
+       </str>
+       <!-- For shards support
+       <str name="shards">shardserver1/solr/,shardserver2/solr/,...</str>
+       -->
+     </lst>
+     </requestHandler>
+     <queryResponseWriter name="velocity" class="org.apache.solr.request.VelocityResponseWriter"/>
+
+
 
 <!-- Please refer to http://wiki.apache.org/solr/SolrReplication for details on configuring replication -->
 <!-- remove the <lst name="master"> section if this is just a slave -->
