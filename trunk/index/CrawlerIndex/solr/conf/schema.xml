@@ -436,8 +436,10 @@
    <field name="start" type="int" indexed="true" stored="true"/>
    <field name="end" type="int" indexed="true" stored="true"/>
    <field name="strand" type="lowercase" indexed="true" stored="true"/>
+   
    <!--  Store attributes but do not index it, just index sub params of attributes , those sub attrs are indexed but not stored. -->
    <field name="attributes" type="text" indexed="false" stored="true"/>
+   <field name="ID" type="lowercase" indexed="true" stored="false"/>
    <field name="file" type="lowercase" indexed="false" stored="true"/>
    
    <!-- attributes field , not to be stored -->

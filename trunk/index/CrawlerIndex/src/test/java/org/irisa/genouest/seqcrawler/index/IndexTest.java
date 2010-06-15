@@ -52,7 +52,7 @@ public class IndexTest
     /**
      * Main app testing
      */
-    /*
+    
     public void testIndex()
     {
     	try {
@@ -132,7 +132,7 @@ public class IndexTest
     }
     
    
-    */
+    
     public void testIndexReadSeq()
     {
     	try {
