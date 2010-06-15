@@ -1,0 +1,505 @@
+<HTML><TITLE>Readseq: EmblSeqFormat</TITLE><BODY><PRE>
+
+------ EMBL File Format  -----------
+-- summary of main format items 
+
+ID   XLRHODOP   standard; RNA; VRT; 1684 BP.
+^^^^^^^^^^^^^ start of record, record id and summary data
+AC   L07770;
+DE   Xenopus laevis rhodopsin mRNA, complete cds.
+FH   Key             Location/Qualifiers
+FT   source          1..1684
+123456789012345678901234567890
+     ^ feature key   ^ feature values
+FT                   /db_xref="taxon:8355"
+FT                   /organism="Xenopus laevis"
+FT   CDS             110..1174
+FT                   /codon_start=1
+FT                   /db_xref="SWISS-PROT:P29403"
+FT   misc_feature    189..1684
+SQ   Sequence 1684 BP; 426 A; 431 C; 339 G; 488 T; 0 other;
+     ggtagaacag cttcagttgg gatcacaggc ttctagggat cctttgggca aaaaagaaac        60
+     acagaaggca ttctttctat acaagaaagg actttataga gctgctacca tgaacggaac       120
+     agaaggtcca aatttttatg tccccatgtc caacaaaact ggggtggtac gaagcccatt       180
+...
+//    -- end of record
+ID   XL23808    standard; DNA; VRT; 4734 BP.
+AC   U23808;
+DE   Xenopus laevis rhodopsin gene, complete cds.
+SQ   Sequence 4734 BP; 1315 A; 1046 C; 985 G; 1388 T; 0 other;
+     cgtaactagg accccaggtc gacacgacac cttccctttc ccagttattt cccctgtaga        60
+     cgttagaagg ggaaggggtg tacttatgtc acgacgaact acgtccttga ctacttaggg       120
+...
+//    -- end of record
+
+---------------------------------------------------
+
+------ Extracts from
+
+            EMBL Outstation - The European Bioinformatics Institute
+
+
+                       EMBL Nucleotide Sequence Database
+
+
+                                  User Manual
+
+
+
+
+                             Release 59, June 1999
+
+////
+
+ 3.3  Structure of an Entry
+
+The entries in the database are structured so as to be usable by  human  readers
+as   well   as   by   computer   programs.    The   explanations,  descriptions,
+classifications and other comments are in ordinary English, and the symbols  and
+formatting  employed  for  the  base  sequences  themselves have been chosen for
+readability.  Wherever possible, symbols familiar to molecular  biologists  have
+been  used.   At  the  same  time,  the  structure is systematic enough to allow
+computer programs to easily read, identify, and manipulate the various types  of
+data included.
+
+Each entry in the database is composed of lines.  Different types of lines, each
+with  its own format, are used to record the various types of data which make up
+the entry.  In general, fixed format items have been kept to a  minimum,  and  a
+more  syntax-oriented  structure  adopted  for the lines.  The two exceptions to
+this are the sequence data lines and the feature table lines, for which a  fixed
+format  was  felt  to offer significant advantages to the user.  Users who write
+programs to process the database should not assume  anything  about  the  column
+placement  of  items  on  lines  other than these two:  all other line types are
+free-format.  A sample entry is shown in Figure 1 overleaf.
+
+Note that each line begins with a two-character line code, which  indicates  the
+type of information contained in the line.  The currently used line types, along
+with their respective line codes, are listed below:
+
+     ID - identification             (begins each entry; 1 per entry)
+     AC - accession number           (>=1 per entry)
+     SV - sequence version           (1 per entry)
+     NI - nucleotide identifier      (1 per entry)
+     DT - date                       (2 per entry)
+     DE - description                (>=1 per entry)
+     KW - keyword                    (>=1 per entry)
+     OS - organism species           (>=1 per entry)
+     OC - organism classification    (>=1 per entry)
+     OG - organelle                  (0 or 1 per entry)
+     RN - reference number           (>=1 per entry)
+     RC - reference comment          (>=0 per entry)
+     RP - reference positions        (>=1 per entry)
+     RX - reference cross-reference  (>=0 per entry)
+     RA - reference author(s)        (>=1 per entry)
+     RT - reference title            (>=1 per entry)
+     RL - reference location         (>=1 per entry)
+     DR - database cross-reference   (>=0 per entry)
+     FH - feature table header       (0 or 2 per entry)
+     FT - feature table data         (>=0 per entry)
+     CC - comments or notes          (>=0 per entry)
+     XX - spacer line                (many per entry)
+     SQ - sequence header            (1 per entry)
+     bb - (blanks) sequence data     (>=1 per entry)
+     // - termination line           (ends each entry; 1 per entry)
+
+Some entries will not contain all of the line types, and some line  types  occur
+many   times   in  a  single  entry.   As  noted,  each  entry  begins  with  an
+identification line (ID) and ends with a terminator line (//).  The various line
+types  appear in entries in the order in which they are listed above (except for
+CC and XX lines which may appear anywhere between  the  ID  and  SQ  lines).   A
+detailed description of each line type is given in the following sections.
+
+
+ID   TRBG361    standard; RNA; PLN; 1859 BP.
+XX
+AC   X56734; S46826;
+XX
+SV   X56734.1
+XX
+NI   g21954
+XX
+DT   12-SEP-1991 (Rel. 29, Created)
+DT   13-SEP-1993 (Rel. 37, Last updated, Version 8)
+XX
+DE   Trifolium repens mRNA for non-cyanogenic beta-glucosidase
+XX
+KW   beta-glucosidase.
+XX
+OS   Trifolium repens (white clover)
+OC   Eukaryota; Viridiplantae; Streptophyta; Embryophyta; Tracheophyta;
+OC   euphyllophytes; Spermatophyta; Magnoliophyta; eudicotyledons; Rosidae;
+OC   Fabales; Fabaceae; Papilionoideae; Trifolium.
+XX
+RN   [5]
+RP   1-1859
+RA   Oxtoby E., Dunn M.A., Pancoro A., Hughes M.A.;
+RT   "Nucleotide and derived amino acid sequence of the cyanogenic
+RT   beta-glucosidase (linamarase) from white clover (Trifolium repens L.).";
+RL   Plant Mol. Biol. 17:209-219(1991).
+XX
+RN   [6]
+RP   1-1859
+RA   Hughes M.A.;
+RT   ;
+RL   Submitted (19-NOV-1990) to the EMBL/GenBank/DDBJ databases.
+RL   M.A. Hughes, UNIVERSITY OF NEWCASTLE UPON TYNE, MEDICAL SCHOOL, NEW
+RL   CASTLE UPON TYNE, NE2  4HH, UK
+XX
+DR   MENDEL; 11000; TRIrp;1162;1.
+DR   SWISS-PROT; P26204; BGLS_TRIRP.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..1859
+FT                   /organism="Trifolium repens"
+FT                   /db_xref="taxon:3899"
+FT                   /tissue_type="leaves"
+FT                   /clone_lib="lambda gt10"
+FT                   /clone="TRE361"
+FT   CDS             14..1495
+FT                   /db_xref="PID:g21955"
+FT                   /db_xref="MENDEL:11000"
+FT                   /db_xref="SWISS-PROT:P26204"
+FT                   /note="non-cyanogenic"
+FT                   /EC_number="3.2.1.21"
+FT                   /product="beta-glucosidase"
+FT                   /protein_id="CAA40058.1"
+FT                   /translation="MDFIVAIFALFVISSFTITSTNAVEASTLLDIGNLSRSSFPRGFI
+FT                   FGAGSSAYQFEGAVNEGGRGPSIWDTFTHKYPEKIRDGSNADITVDQYHRYKEDVGIMK
+FT                   DQNMDSYRFSISWPRILPKGKLSGGINHEGIKYYNNLINELLANGIQPFVTLFHWDLPQ
+FT                   VLEDEYGGFLNSGVINDFRDYTDLCFKEFGDRVRYWSTLNEPWVFSNSGYALGTNAPGR
+FT                   CSASNVAKPGDSGTGPYIVTHNQILAHAEAVHVYKTKYQAYQKGKIGITLVSNWLMPLD
+FT                   DNSIPDIKAAERSLDFQFGLFMEQLTTGDYSKSMRRIVKNRLPKFSKFESSLVNGSFDF
+FT                   IGINYYSSSYISNAPSHGNAKPSYSTNPMTNISFEKHGIPLGPRAASIWIYVYPYMFIQ
+FT                   EDFEIFCYILKINITILQFSITENGMNEFNDATLPVEEALLNTYRIDYYYRHLYYIRSA
+FT                   IRAGSNVKGFYAWSFLDCNEWFAGFTVRFGLNFVD"
+FT   mRNA            1..1859
+FT                   /evidence=EXPERIMENTAL
+XX
+SQ   Sequence 1859 BP; 609 A; 314 C; 355 G; 581 T; 0 other;
+     aaacaaacca aatatggatt ttattgtagc catatttgct ctgtttgtta ttagctcatt        60
+     cacaattact tccacaaatg cagttgaagc ttctactctt cttgacatag gtaacctgag       120
+     tcggagcagt tttcctcgtg gcttcatctt tggtgctgga tcttcagcat accaatttga       180
+     aggtgcagta aacgaaggcg gtagaggacc aagtatttgg gataccttca cccataaata       240
+     tccagaaaaa ataagggatg gaagcaatgc agacatcacg gttgaccaat atcaccgcta       300
+     caaggaagat gttgggatta tgaaggatca aaatatggat tcgtatagat tctcaatctc       360
+     ttggccaaga atactcccaa agggaaagtt gagcggaggc ataaatcacg aaggaatcaa       420
+     atattacaac aaccttatca acgaactatt ggctaacggt atacaaccat ttgtaactct       480
+     ttttcattgg gatcttcccc aagtcttaga agatgagtat ggtggtttct taaactccgg       540
+     tgtaataaat gattttcgag actatacgga tctttgcttc aaggaatttg gagatagagt       600
+     gaggtattgg agtactctaa atgagccatg ggtgtttagc aattctggat atgcactagg       660
+     aacaaatgca ccaggtcgat gttcggcctc caacgtggcc aagcctggtg attctggaac       720
+     aggaccttat atagttacac acaatcaaat tcttgctcat gcagaagctg tacatgtgta       780
+     taagactaaa taccaggcat atcaaaaggg aaagataggc ataacgttgg tatctaactg       840
+     gttaatgcca cttgatgata atagcatacc agatataaag gctgccgaga gatcacttga       900
+     cttccaattt ggattgttta tggaacaatt aacaacagga gattattcta agagcatgcg       960
+     gcgtatagtt aaaaaccgat tacctaagtt ctcaaaattc gaatcaagcc tagtgaatgg      1020
+     ttcatttgat tttattggta taaactatta ctcttctagt tatattagca atgccccttc      1080
+     acatggcaat gccaaaccca gttactcaac aaatcctatg accaatattt catttgaaaa      1140
+     acatgggata cccttaggtc caagggctgc ttcaatttgg atatatgttt atccatatat      1200
+     gtttatccaa gaggacttcg agatcttttg ttacatatta aaaataaata taacaatcct      1260
+     gcaattttca atcactgaaa atggtatgaa tgaattcaac gatgcaacac ttccagtaga      1320
+     agaagctctt ttgaatactt acagaattga ttactattac cgtcacttat actacattcg      1380
+     ttctgcaatc agggctggct caaatgtgaa gggtttttac gcatggtcat ttttggactg      1440
+     taatgaatgg tttgcaggct ttactgttcg ttttggatta aactttgtag attagaaaga      1500
+     tggattaaaa aggtacccta agctttctgc ccaatggtac aagaactttc tcaaaagaaa      1560
+     ctagctagta ttattaaaag aactttgtag tagattacag tacatcgttt gaagttgagt      1620
+     tggtgcacct aattaaataa aagaggttac tcttaacata tttttaggcc attcgttgtg      1680
+     aagttgttag gctgttattt ctattatact atgttgtagt aataagtgca ttgttgtacc      1740
+     agaagctatg atcataacta taggttgatc cttcatgtat cagtttgatg ttgagaatac      1800
+     tttgaattaa aagtcttttt ttattttttt aaaaaaaaaa aaaaaaaaaa aaaaaaaaa       1859
+//
+
+                  Figure 1 - A sample entry from the database
+
+
+3.4  Line Structure
+
+This section describes in detail the format of each type of  line  used  in  the
+database.   Each  line begins with a two-character line type code.  This code is
+always followed by three blanks, so that the actual  information  in  each  line
+begins in character position 6.
+
+
+
+3.4.1  The ID Line
+
+The ID (IDentification) line is always the first line of an entry.  The  general
+form of the ID line is:
+
+     ID   entryname  dataclass; molecule; division; sequencelength BP.
+
+The first item on the ID line is the name of the database entry  containing  the
+sequence.   This  name is the primary means of identifying the sequence within a
+given release, and is used in indexes built from the database.  The  entry  name
+consists of up to nine uppercase alphanumeric characters, and always begins with
+a letter.  An attempt has been made to make these identifiers  meaningful  where
+possible,  but  this  is  not considered a binding rule.  Generally, the first 2
+characters are the initial letters of  the  genus  and  species  of  the  source
+organism,   and   subsequent  characters  are  derived  descriptively.   Similar
+sequences are given  similar  codes  with  consecutive  numbers  (e.g.   MMIG01,
+MMIG02, MMIG03, etc.  for Mus musculus immunoglobulin genes).
+
+The second item on the ID line indicates the data class of the entry.  See above
+for a description of the data classes.
+
+The third item on the line is the type of molecule as stored, which  at  present
+can be either DNA or RNA (see the comment in Section 2.1 about cDNA).  This item
+may be "xxx" for unannotated entries.  If the molecule is known to  be  circular
+this  will  be  indicated  by  prefixing  the  molecule  type  with  the keyword
+"circular", for example "circular DNA".  Please note that  the  absence  of  the
+keyword  "circular"  should  *not*  be  taken  to  indicate that the molecule is
+definitely known not to be circular.
+
+The fourth item on the ID line is the  database  division  to  which  the  entry
+belongs.  See above for a description of database divisions.
+
+The last item on the ID line is the length of the  sequence  (simply  the  total
+number  of bases in the sequence).  This number includes base positions reported
+as present but undetermined (coded as "N").
+
+An example of a complete identification line is shown below:
+
+     ID   HS7SLP    standard; RNA; HUM; 377 BP.
+
+
+
+
+3.4.2  The AC Line
+
+The AC (ACcession number) line lists the accession numbers associated with  this
+entry.
+
+An example of an accession number line is shown below:
+
+     AC   Y00321; J05348;
+
+Each accession number is terminated by a semicolon.  Where necessary, additional
+AC lines are used.
+
+The purpose of accession numbers is to  provide  a  stable  way  of  identifying
+entries  from  release  to  release.   It  is sometimes necessary for reasons of
+consistency to change the names of the entries between releases (e.g.  to ensure
+that  related entries have similar names).  An accession number, however, always
+remains in the accession number list of the latest version of the entry in which
+it  first  appeared.   Accession  numbers allow unambiguous citation of database
+entries.  Researchers who wish to cite  entries  in  their  publications  should
+always  cite  the  first  accession  number in the list (the "primary" accession
+number) to ensure that readers can  find  the  relevant  data  in  a  subsequent
+release.   Readers  wishing  to  find the data thus cited must look at *all* the
+accession numbers in each entry's list.
+
+One reason for allowing the existence of several accession numbers is  to  allow
+tracking  of  data  when  entries  are  merged  or split.  For example, when two
+entries are merged into one a new "primary" accession number goes at  the  start
+of  the  list,  and  those  from  the merged entries are added after this one as
+"secondary" numbers.  Similarly, if an existing entry is split into two or  more
+entries  (a  rare occurrence), the original accession number list is retained in
+all the derived entries.
+
+An accession number is dropped from the database only when the data to which  it
+was assigned have been completely removed from the database.
+
+
+
+3.4.3  The SV Line
+
+The SV (Sequence Version)  line  contains  the  new  format  of  the  nucleotide
+sequence identifier.
+
+An example of a Sequence Version line is shown below:
+     SV   AJ000012.1
+
+The new nucleotide sequence identifier is of  the  form  of  'Accession.Version'
+(eg,  AJ000012.1),  where  the  accession  number  part  will be stable, but the
+version part will be incremented when the sequence changes.
+
+For further information on this please see Release Notes (EMBL Release 58)
+
+
+
+3.4.4  The NI Line
+
+The NI (Nucleotide  Identifier)  line  contains  a  unique  identifier  for  the
+nucleotide  sequence.  While the sequence remains the same, so will the value of
+this identifier.  When a sequence change occurs, however minor, a new  NI  value
+will  be  assigned  whilst  the  accession  number  on  the  AC  line may remain
+unchanged.
+
+
+An example of an Nucleotide Identifier line is shown below:
+
+     NI   g21954
+
+
+The purpose of accession numbers is to  provide  a  stable  way  of  referencing
+sequences over time.
+
+
+
+3.4.5  The DT Line
+
+The DT (DaTe) line shows when an entry first appeared in the  the  database  and
+when  it  was  last  updated.   Each  entry  contains two DT lines, formatted as
+follows:
+
+     DT   DD-MON-YYYY (Rel. #, Created)
+     DT   DD-MON-YYYY (Rel. #, Last updated, Version #)
+
+The DT lines from the above example are:
+
+     DT   07-NOV-1985 (Rel. 07, Created)
+     DT   20-FEB-1990 (Rel. 23, Last updated, Version 1)
+
+The date supplied on each DT line indicates when the entry was created  or  last
+updated;  that  will  usually  also  be  the date when the new or modified entry
+became publicly visible via our file server.  The release number  indicates  the
+first quarterly release made *after* the entry was created or last updated.  The
+version number appears only on the "Last updated" DT line.
+
+The absolute value of the version number is of no particular  significance;  its
+purpose  is  to allow users to easily determine if the version of an entry which
+they already have is still the most up to date  version.   Version  numbers  are
+incremented by one every time an entry is updated; since an entry may be updated
+several times before its first appearance in a quarterly  release,  the  version
+number  at  the time of its first appearance may be greater than one.  Note that
+because an entry may  also  be  updated  several  times  between  two  quarterly
+releases,  there  may be gaps in the sequence of version numbers which appear in
+those releases.
+
+If an entry has not been updated since it was created, it will still have two DT
+lines  and  the "Last updated" line will have the same date (and release number)
+as the "Created" line.
+
+
+
+3.4.6  The DE Line
+
+The DE (DEscription) lines contain general  descriptive  information  about  the
+sequence  stored.   This  may  include  the  designations of genes for which the
+sequence codes, the region of the genome from which  it  is  derived,  or  other
+information which helps to identify the sequence.  The format of a DE line is:
+
+     DE   description
+
+The description is given in  ordinary  English  sentences  and  is  free-format.
+Often,  more  than  one  DE line is required; when this is the case, the text is
+divided only between words.  The description line from the example above is
+
+     DE   Homo sapiens mRNA for 7SL RNA pseudogene
+
+The first DE line generally contains a brief description which can  stand  alone
+for cataloguing purposes.
+
+
+
+3.4.7  The KW Line
+
+The KW (KeyWord) lines  provide  information  which  can  be  used  to  generate
+cross-reference indexes of the sequence entries based on functional, structural,
+or other categories deemed important.  The keywords chosen for each entry  serve
+as  a  subject reference for the sequence, and will be expanded as work with the
+database continues.  Often several KW lines are necessary for  a  single  entry.
+The format for a KW line is:
+
+     KW   keyword[; keyword ...].
+
+     KW   small nuclear RNA; pseudogene.
+
+     KW   .
+
+
+
+
+
+
+3.4.13  The FH Line
+
+The FH (Feature Header) lines are present only  to  improve  readability  of  an
+entry  when  it is printed or displayed on a terminal screen.  The lines contain
+no data and may be ignored by computer programs.  The format of these  lines  is
+always the same:
+
+     FH   Key             Location/Qualifiers
+     FH
+
+The first line provides column headings for the feature table,  and  the  second
+line  serves  as  a  spacer.  If an entry contains no feature table (i.e.  no FT
+lines - see below), the FH lines will not appear.
+
+
+
+3.4.14  The FT Line
+
+The FT (Feature Table) lines provide a  mechanism  for  the  annotation  of  the
+sequence  data.   Regions  or  sites  in  the sequence which are of interest are
+listed in the table.  In general, the features in the  feature  table  represent
+signals  or  other  characteristics  reported  in the cited references.  In some
+cases, ambiguities or features noted in the course of data preparation have been
+included.   The  feature table is subject to expansion or change as more becomes
+known about a given sequence.
+
+A complete and definitive description of the  feature  table  is  given  in  the
+document  "The DDBJ/EMBL/GenBank Feature Table:  Definition".  If you would like
+a copy please contact the EBI at the address given on the  cover  page  of  this
+User Manual.
+
+Much effort was expended in the design of the feature table  to  try  to  ensure
+that  it  will  be self-explanatory to the human reader, and we thus expect that
+the official  definition  document  will  be  of  interest  mainly  to  software
+developers rather than to end-users of the database.
+
+
+
+3.4.15  The SQ Line
+
+The SQ (SeQuence header) line marks the beginning of the sequence data and gives
+a summary of its content.  An example is:
+
+     SQ   Sequence  462 BP;  110 A;  147 C;  135 G;  0 T;  70 other;
+
+As shown, the line contains the length of the sequence in base pairs followed by
+its  base  composition.   Bases other than A, C, G and T are grouped together as
+"other".  (Note that "BP" is also used for RNA sequences, which is not  strictly
+accurate,  but has been used for consistency of format.) This information can be
+used as a check on accuracy or for statistical purposes.  The word "Sequence" is
+present solely as a marker for readability.
+
+
+
+3.4.16  The Sequence Data Line
+
+The sequence data line has a line code consisting of two blanks.   The  sequence
+is  written  60  bases  per  line,  in  groups  of 10 bases separated by a blank
+character, beginning in position 6 of the line.  The direction listed is  always
+5'  to  3',  and  wherever  possible  the  non-coding  strand (homologous to the
+message) has been stored.  Columns 73-80 of  each  sequence  line  contain  base
+numbers  for  easier  reading  and  quick  location of regions of interest.  The
+numbers are right justified and indicate the number of the  last  base  on  each
+line.
+
+An example of a data line is:
+
+     cgtgaccaat cctaactgct tcttaataat ttgcataccc tcactgcatc gccttgggga      3060
+
+The characters used  for  the  bases  correspond  to  the  IUPAC-IUB  Commission
+recommendations (see appendices).
+
+
+
+3.4.17  The CC Line
+
+CC lines are free text comments about the entry, and may be used to  convey  any
+sort of information thought to be useful.
+
+
+3.4.19  The // Line
+
+The // (terminator) line also contains no data or comments.  It  designates  the
+end of an entry.
+
+
+
+
+---------------------------------------------------
+</PRE></BODY></HTML>
