@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
+import org.apache.solr.client.solrj.request.AbstractUpdateRequest.ACTION;
 import org.apache.solr.handler.extraction.ExtractingParams;
 import org.apache.solr.util.NamedList;
 import org.irisa.genouest.seqcrawler.index.Constants;
@@ -54,7 +55,8 @@ private IndexManager indexManager = null;
     	
     	ContentStreamUpdateRequest req = new ContentStreamUpdateRequest("/update/extract");
         req.addFile(f);
-        req.setParam(ExtractingParams.EXTRACT_ONLY, "true");
+        req.setAction(ACTION.COMMIT, false, false);
+        
         org.apache.solr.common.util.NamedList<Object> result=null;
 		try {
 			result = server.request(req);
