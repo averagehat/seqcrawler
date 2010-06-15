@@ -33,7 +33,7 @@ See L<Bio::DB::GFF> for other methods.
 This adaptor implements a solr indexed version of Bio::DB::GFF.  
 It inherits from Bio::DB::GFF. Code has been mainly copied and adapted. As such , some functions
 may not work "alone", and usage is only guaranted within a GBrowse2 usage for the moment
-
+Lots of code cleaning still need to be done
 
 =head1 METHODS
 
@@ -50,7 +50,7 @@ L<Bio::DB::GFF>, L<bioperl>
 =head1 AUTHOR
 
 Olivier Sallou<lt>olivier.sallou@irisa.fr<gt>.
-as modified from Bio::DB::GFF::Adaptor::lucegene
+as modified from Bio::DB::GFF::Adaptor::lucegene.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
@@ -78,6 +78,7 @@ use constant MAX_SEGMENT => 100_000_000;  # the largest a segment can get
 use vars qw(@ISA $debug);
 @ISA =  qw(Bio::DB::GFF);
 
+$VERSION = '0.01';
 
 sub patch_GFF_Feature {
   local $^W = 0;
