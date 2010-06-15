@@ -6,6 +6,8 @@ public class Constants {
 	public static enum FORMATS {
 		GFF,
 		FASTA,
-		GENBANK
+		GENBANK,
+		RAW,
+		READSEQ
 	}
 }

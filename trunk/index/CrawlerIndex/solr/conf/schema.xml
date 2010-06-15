@@ -445,12 +445,21 @@
    <field name="note" type="text" indexed="true" stored="false"/>
    <field name="date" type="text" indexed="true" stored="false"/>
 	<!-- End of GFF fields -->
-   
+	
+	<!-- ReadSeq specific fields -->
+	<field name="name" type="lowercase" indexed="true" stored="true"/>
+    <field name="accession" type="lowercase" indexed="true" stored="true"/>
+    <field name="stream_name" type="lowercase" indexed="false" stored="true"/>
+    <field name="stream_source_info" type="lowercase" indexed="false" stored="true"/>
+    <field name="stream_size" type="lowercase" indexed="false" stored="true"/>
+    <field name="stream_content_type" type="lowercase" indexed="false" stored="true"/>
+    <!-- End of readseq fields -->
 
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
    <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
 
+   <field name="trash" type="ignored"/>
    
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
@@ -463,9 +472,8 @@
  
    
    <!-- by default, take all GFF attributes as single elements not to tokenize -->
+  
    <dynamicField name="*" type="lowercase"    indexed="true"  stored="false"/>
-   
-   
    
  </fields>
 
