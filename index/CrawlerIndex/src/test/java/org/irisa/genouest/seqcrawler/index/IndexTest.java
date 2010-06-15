@@ -2,6 +2,7 @@ package org.irisa.genouest.seqcrawler.index;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -9,6 +10,10 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.tika.config.TikaConfig;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.mime.MediaType;
+import org.apache.tika.parser.Parser;
 import org.irisa.genouest.seqcrawler.index.Index;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
 import org.xml.sax.SAXException;
@@ -47,6 +52,7 @@ public class IndexTest
     /**
      * Main app testing
      */
+    /*
     public void testIndex()
     {
     	try {
@@ -124,4 +130,31 @@ public class IndexTest
 		}
         assertTrue( Index.getNbErrors() == 1 );
     }
+    
+   
+    */
+    public void testIndexReadSeq()
+    {
+    	try {
+			Index.main(new String[] {"-f","./solr/uniprot.dat","-b","UniProt","-C","-sh","./solr/","-sd","./solr/data/","-t","readseq"});
+		} catch (IOException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParserConfigurationException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SAXException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SolrServerException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParseException e) {
+			log.error(e.getMessage());
+			fail();
+		}
+		
+        assertTrue( true );
+    }
+    
 }

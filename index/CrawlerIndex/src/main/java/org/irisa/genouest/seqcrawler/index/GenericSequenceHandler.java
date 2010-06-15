@@ -1,6 +1,8 @@
 package org.irisa.genouest.seqcrawler.index;
 
 import org.irisa.genouest.seqcrawler.index.handlers.GFFHandler;
+import org.irisa.genouest.seqcrawler.index.handlers.RawFileHandler;
+import org.irisa.genouest.seqcrawler.index.handlers.ReadSeqFileHandler;
 
 /**
  * Generic Handler class. Returns a sequence handler according to the input format.
@@ -22,6 +24,16 @@ public class GenericSequenceHandler {
 		case GFF: 
 		{
 			handler = new GFFHandler(bank);
+			break;
+		}
+		case RAW:
+		{
+			handler = new RawFileHandler(bank);
+			break;
+		}
+		case READSEQ:
+		{
+			handler = new ReadSeqFileHandler(bank);
 			break;
 		}
 		default:

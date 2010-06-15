@@ -92,7 +92,7 @@ public class Index
         IndexManager indexMngr = null;
         
         if(cmd.hasOption("v")) {
-        	Class clazz = Index.class; 
+        	Class<Index> clazz = Index.class; 
         	String classContainer = clazz.getProtectionDomain().getCodeSource().getLocation().toString();
         	URL manifestUrl = new URL("jar:" + classContainer + "!/META-INF/MANIFEST.MF");
         	Manifest mf = new Manifest(manifestUrl.openStream());
@@ -178,6 +178,12 @@ public class Index
         	}
         	else if(t.equalsIgnoreCase("fasta")) {
         		format = Constants.FORMATS.FASTA;
+        	}
+        	else if(t.equalsIgnoreCase("raw")) {
+        		format = Constants.FORMATS.RAW;
+        	}
+        	else if(t.equalsIgnoreCase("readseq")) {
+        		format = Constants.FORMATS.READSEQ;
         	}
         }
         application.log.info("Input file format is "+format.toString());

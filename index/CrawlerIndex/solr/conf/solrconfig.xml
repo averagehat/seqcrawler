@@ -527,6 +527,8 @@
      </requestHandler>
      <queryResponseWriter name="velocity" class="org.apache.solr.request.VelocityResponseWriter"/>
 
+ <!-- An path to dir containing velicity libs may be needed  -->
+ <!-- <lib dir="/opt/solr/apache-solr-1.4.0/seqcrawler/solr/lib" regexp="*.jar" />  -->
 
 
 <!-- Please refer to http://wiki.apache.org/solr/SolrReplication for details on configuring replication -->
@@ -807,17 +809,16 @@
   
   <!-- Solr Cell: http://wiki.apache.org/solr/ExtractingRequestHandler -->
   <requestHandler name="/update/extract" class="org.apache.solr.handler.extraction.ExtractingRequestHandler" startup="lazy">
+    <str name="tika.config">tika-config.xml</str>
     <lst name="defaults">
-      <!-- All the main content goes into "text"... if you need to return
-           the extracted text or do highlighting, use a stored field. -->
-      <str name="fmap.content">text</str>
-      <str name="lowernames">true</str>
-      <str name="uprefix">ignored_</str>
-
+      <!-- Optional path to Tika config for customization -->
       <!-- capture link hrefs but ignore div attributes -->
       <str name="captureAttr">true</str>
-      <str name="fmap.a">links</str>
-      <str name="fmap.div">ignored_</str>
+      <str name="capture">name</str>
+      <str name="capture">accession</str>
+      <str name="capture">source</str>
+      <str name="capture">pubxref</str>
+      <str name="capture">dbxref</str>
     </lst>
   </requestHandler>
 
