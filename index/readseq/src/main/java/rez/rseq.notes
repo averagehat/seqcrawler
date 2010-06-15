@@ -1,0 +1,533 @@
+
+
+Version 2.1.0 (25 May 2001) updates: 
+  Added -reverse option for reverse-complement of sequence
+  Feature extraction of complement() locations now does reverse-complement
+  Added feature subrange extraction
+  Added ClustalW alignment, AceDB, ? SwissProt sequence formats
+  Added GFF/General-Feature-Format input/output   
+  Added FFF/Flat-Feature-Format input/output (one-line DDBJ/EMBL/GenBank Feature Table)
+  Various bug fixes; Java 1.2/3 compatibility
+
+
+    -subrange=-1000..10   extract subrange of sequence for feature locations
+    -subrange=1..end      e.g., 1..end is full feature range,
+    -subrange=end-10..99  -1000...10 is 1000 bases upstream/before to 10 in feature,
+    									 	  end-10..99 is 10 before end to 99 after end of feature
+                          only valid with -feat/-nofeat
+  
+Need to handle dna files in +300 MB range for genomes -- use something like FileBioseq()
+class which spools seq to/from disk. ? Ditto for genome feature tables - something
+like gnomap index feaures.tsv (have 150,000 features,  280 MB dna in man-chr1 as of may01)
+
+* to make 'very raw' output format, one line of sequence per sequence record,
+use  format=raw  width=-1 (or width=1999999999)
+
+? add HTML output (feature hyperlinks? colorized feat in seq)
+
+!! test paired seq ( .fff + .seq, .gff + .seq) merge option:
+		else if ( key.equals("pair-feature-seq") ) doPairedDocNSeq= boolval;  
+		else if ( key.startsWith("pair") ) doPairedDocNSeq= boolval;  //?
+
+x modify Reader before writeSeqRecord calls to create new output seqRecord for each
+  seqdoc feature indicated as separare record (e.g. source, gene, ...)
+
+!? add in missing formats handled by others - emboss at least
+  x * ClustalW - Clustal ALN format seqReadClustal
+	x * ACEDB format
+	* Fasta variants - NCBI w/ id acc and description
+	x * Does SWISSPROT differ from EMBL -- YES diff feat tab, other docs need subclass of EmblDoc, format handler
+	*? Fix also for GenBank-> amino GenPept, RefProt
+  ? Staden experiment file format  -- current one is EMBL variant (old one is IG-like)
+  ? ASN.1 fix
+  ? PAUP fix
+  is PIR == NBRF or CODATA (emboss does both/ european PIR == NBRF
+	? seqReadHennig86
+	
+===============
+
+
+From frist@cc.UManitoba.CA  Sat May 27 11:42:36 2000
+Date: Sat, 27 May 2000 11:42:35 -0500 (CDT)
+From: frist <frist@cc.UManitoba.CA>
+Subject: readseq 2.0.8
+To: gilbertd@bio.indiana.edu
+MIME-Version: 1.0
+Content-MD5: TVztJn3WgTK1YI0yNskonw==
+
+Don,
+
+I've been trying readseq 2.0.8, and I have some problems
+to report. For your reference, I am using the jre from
+jdk1.2.2 on a Sun Solaris 2.6 system.
+
+>From my point of view, the biggest show stopper is the
+-item switch, which doesn't work at all.
+
+{goad:/home/plants/frist/testreadseq}readseqj -i1 -o junk CHS.gen
+Readseq version 2.0.8 (18 Jan 2000)
+java.lang.NullPointerException
+        at iubio.readseq.BioseqWriter.setSeq(Compiled Code)
+        at iubio.readseq.run.run(Compiled Code)
+        at iubio.readseq.run.<init>(Compiled Code)
+        at run.main(Compiled Code)
+ 
+^^^ fixed 
+
+
+
+Further testing seems to show that -i crashes the program
+no matter how many sequences are in the input. I have
+tried -i reading several file formats (fasta, pir, GenBank),
+and several -i values. It crashes whenever used.
+
+Since I use -i for extracting individual sequences
+from temproary files using GDE, this will prevent
+upgrading to use the new readseq.
+
+Other notes:
+
+Phylip - With GenBank entries of variable length, output
+to Phylip interleaved format (phylip) results in infinite
+loop. Although it's not legitimate to try to write
+in interleaved format when sequences are not all the
+same length, perhaps readseq should give some sort of
+warning.
+
+^^^?? doesn't hang for me -- need example data
+
+Phylip2 - header line lists number of sequences and length as
+both being 0. If output format is phylip2, it would be
+necessary to make two passes through the data, one
+to determine numbers of sequences and lengths, and the other
+to generate the output.
+
+^^^ fixed  
+
+msf - goes into infinite loop for input GenBank and output msf
+
+^^^?? doesn't hang for me -- need example data
+
+blast - with either Pearson or GenBank input, output to
+blast format crashes readseq. Same results with -fblast or -f19
+
+^^^ an input only format 
+^^^ 'jre -cp readseq.jar help' will list all formats, read/write ability
+
+
+
+{goad:/home/plants/frist/testreadseq}readseqj aligned.pearson -fblast  -o
+test.blast
+Readseq version 2.0.8 (18 Jan 2000)
+java.io.IOException: Null BioseqWriter
+        at java.lang.Throwable.<init>(Compiled Code)
+        at java.lang.Exception.<init>(Compiled Code)
+        at java.io.IOException.<init>(Compiled Code)
+        at iubio.readseq.run.run(Compiled Code)
+        at iubio.readseq.run.<init>(Compiled Code)
+        at run.main(Compiled Code)
+^^^ not a crash, the program is saying it doesn't have a Writer for that
+format -- made error report clearer
+
+
+scf - crashes with scf. I have no idea what this format is,
+so I can't really evaluate this option.
+^^^ an input only format - Standard Chromatagram Format (which includes sequence data)
+
+Readseq version 2.0.8 (18 Jan 2000)
+java.io.IOException: Null BioseqWriter
+        at java.lang.Throwable.<init>(Compiled Code)
+        at java.lang.Exception.<init>(Compiled Code)
+        at java.io.IOException.<init>(Compiled Code)
+        at iubio.readseq.run.run(Compiled Code)
+        at iubio.readseq.run.<init>(Compiled Code)
+        at run.main(Compiled Code)
+
+Let me know if you need further information.
+
+
+===============================================================================
+Brian Fristensky                |
+Department of Plant Science     |  Sun Microsystems CEO Scott McNealy,
+University of Manitoba          |  when asked recently about Microsoft,
+Winnipeg, MB R3T 2N2  CANADA    |  replied "Which one?"
+frist@cc.umanitoba.ca           |
+Office phone:   204-474-6085    |  source: ZDNet News
+FAX:            204-474-7528    |
+http://home.cc.umanitoba.ca/~frist/
+===============================================================================
+
+////
+18 Jan 2000 - fixed subtle GCG-msdos bug (eof triggered exception on double newline)
+
+
+11 Dec 99 - added document field extraction/removal, as per feature ex/rm
+(needs testing)
+
+From rls@ebi.ac.uk  Thu Oct 28 07:50:55 1999
+Date: Thu, 28 Oct 1999 13:53:06 +0100
+From: Rodrigo Lopez <rls@ebi.ac.uk>
+
+convert "genpept" sequences to embl properly...
+when using peptide sequences it does not write a SQ line. 
+
+Also, it would be very usefull if command-line switches could be
+added to skip certain records from an entry (i.e. the COMMENT lines -
+CC).
+
+
+
+////////
+
+From small@versailles.inra.fr  Wed Sep  1 07:51:43 1999
+Date: Wed, 1 Sep 1999 14:52:45 +0200 (MET DST)
+Mime-Version: 1.0
+To: gilbertd@bio.indiana.edu
+From: Ian Small <small@versailles.inra.fr>
+Subject: readseq
+
+        I've just started using your Java version of the readseq package to
+provide an easy way to read in multiple formats into my program. Basically,
+I just unjarred readseq.jar and included all the packages in my jar file.
+Everything works fine on my Mac (MRJ 2.14 i.e. c. JDK 1.1.7ish) and I'm
+very happy with the result (thanks for all the hard work !). However, under
+Linux (JDK 1.2) or Windows95 (JDK1.3b), I get the following error message:
+
+Exception in thread "main" java.lang.VerifyError: (class:
+iubio/readseq/MsfSeqFormat, method: formatTestLine signature:
+(Lflybase/OpenString;II)Z) Incompatible argument to function
+        at java.lang.Class.forName0(Native Method)
+        at java.lang.Class.forName(Class.java:124)
+        at iubio.readseq.BioseqFormats.loadClasses(BioseqFormat.java)
+        at iubio.readseq.BioseqFormats.<clinit>(BioseqFormat.java)
+        at iubio.readseq.Readseq.<init>(readseq.java)
+        at Predotar.handleOpenFile(Predotar.java)
+        at Predotar.main(Predotar.java)
+
+Readseq version 2.0.5 (25 August 1999)
+Argument: 'data/5srna.msf', key: data/5srna.msf = null
+Free/total memory at start:	570136/867984: use 297848 bytes
+iubio.readseq.run -- starting 
+Writing to data/5srna.msf.fasta
+checkInString  'data/5srna.msf' is file.
+Reading from data/5srna.msf
+_exceptionOccurred: java.lang.NullPointerException ()
+java.lang.NullPointerException
+	at flybase.OpenString.indexOf(Compiled Code)
+	at iubio.readseq.Asn1SeqFormat.formatTestLine(seqread1f.java)
+	at iubio.readseq.Testseq.testFormat(Compiled Code)
+	at iubio.readseq.Readseq.isKnownFormat(readseq.java)
+	at iubio.readseq.run.run(Compiled Code)
+	at iubio.readseq.run.<init>(readseqrun.java)
+	at run.main(readseqmain.java)
+	at com.apple.mrj.JManager.JMStaticMethodDispatcher.run(JMAWTContextImpl.java)
+	at java.lang.Thread.run(Thread.java)
+
+///
+
+
+app() -- swing
+	http://java.sun.com/products/jfc/download.html, good for java v 1.1.6 (?) +
+	if swingall.jar not available - trap exception and message
+
+
+//!! test interleave i/o
+
+/// Ã add classic readseq command-line processing
+/// Ã add window/gui/swing readseq
+
+/// Ã add BLAST output parsing (non-pairwise versions...)
+/// fix, test NEXUS/ PAUP reader
+/// XML Ã parser & Ã output?  
+
+///? GCG seq formats update??
+///? GDE format ?
+///? abi trace files, scf files ? staden format (?) and scf
+///? other new, popular seq formats? -? Sequencher, DNAstar, ???
+
+///? see NCBI toolkit parser program for some format info
+
+/// Genbank <-> EMBL doc :
+	need to fiddle with field values to get correct match
+  embl uses ';' a lot as line ends - drop for gb, add from gb
+  Ref start:  em: RN   [3]   gb: REFERENCE   3  (bases 1 to 1566)
+  Source/Organism lines differ: gb: Source=common name Organism=spp name /n taxa
+  		em: OS= spp name (common name) OC=taxa
+  Locus line: need parsing of parts
+  Base count line: needs proper base counts, or parsing of items
+		gb: BASE COUNT      276 a    246 c    295 g    262 t
+		em: SQ   Sequence 977 BP; 316 A; 188 C; 175 G; 298 T; 0 other;
+  
+  		
+  ?? do I want to fix up current BioseqDoc to those details, or rewrite structure
+  (as per DOM?) before that?
+  
+  
+
+
+/// GCG seq formats update
+>> parse comments like -- at least skip lines starting with !!
+!!NA_MULTIPLE_ALIGNMENT 1.0
+!!AA_MULTIPLE_ALIGNMENT 1.0   
+!!SEQUENCE_LIST 1.0
+!!RICH_SEQUENCE 1.0
+Multiple Sequence Format (MSF) and Rich Sequence Format (RSF)
+Files
+
+Reformat can be used to convert between MSF, RSF, single
+sequence format and list files. When single sequence
+files are specified using a list file, any sequence
+attributes specified in the list file (e.g. begin and end
+ranges) are ignored during the conversion to the new file
+type. When converting from an RSF file any sequence
+features are lost. Access to sequence features is
+currently available only from within SeqLab. (Refer to
+Chapter 2 of the Users' Guide, Using Sequence Files and
+Databases, for details. See "Using Multiple Sequence
+Format (MSF) Files", "Using Rich Sequence Format (RSF)
+Files", and "Using List Files" for information about list
+files.)
+
+
+/// fix, test NEXUS, PAUP reader
+
+
+/// other new, popular seq formats? -? Sequencher DNAstar ???
+
+
+/// abi trace files, scf files ?
+/// staden format (?) and scf
+
+/// GDE format ?
+
+
+/// ? XML parser  ? HMTL parser/de-frasser
+
+
+
+/// BLAST output parsing....
+qblast The request ID is : 933566842-17349-12684
+
+From sauder@glinka.fccc.edu  Wed Jun 23 16:56:08 1999
+Date: Wed, 23 Jun 1999 17:58:03 -0400 (EDT)
+From: sauder@glinka.fccc.edu (J. Michael Sauder)
+To: Don Gilbert <gilbertd@bio.indiana.edu>
+Subject: Re: SeqPup and Blast
+
+> I'll add your request for blast import; I can't promise
+
+        I already have Perl code that converts Blast to PIR format.
+Would this be helpful?
+
+-- Mike S. (m_sauder@fccc.edu) http://www.fccc.edu/research/labs/dunbrack
+           phone: 215.728.5661  FAX: 215.728.3574 or 2412
+
+{Mail}&
+Message 218:
+From sauder@glinka.fccc.edu  Fri Jun 25 14:18:54 1999
+Date: Fri, 25 Jun 1999 15:20:48 -0400 (EDT)
+From: sauder@glinka.fccc.edu (J. Michael Sauder)
+To: Don Gilbert <gilbertd@bio.indiana.edu>
+Subject: Re: SeqPup and Blast
+X-Status: $$$$
+X-UID:
+
+> Sure -- send on your code, it may make it easier for me to add blast
+> format.
+
+        Here's the code.
+It assumes that Blast was performed with the -m 4 or -m 6 option, which
+is NOT the default.  I'm going to start working on a version that will
+translate the default (-m 0) output.  This version can handle PSI-Blast
+output, and only keeps the sequences from the last iteration.
+
+----------------------------------------------------------------------------
+#!/usr/bin/perl
+
+# BLASTm4FASTA.perl
+
+# Usage: blastm4fasta.perl file.blast > file.fasta
+
+# Written by J. Michael Sauder  m_sauder@fccc.edu
+# Fox Chase Cancer Center       6-24-99
+
+# Convert blast -m 4 or 6 output to FASTA format (or clustalw PIR format)
+#   (blastpgp -m 1, 2, 3, or 5  may produce spurious output)
+# Output format defined by $format (FASTA or PIR).
+# All sequences will be the same length, padded with either X's or
+#  dashes, depending on the output format (FASTA or PIR).
+# Keeps only the last iteration in PSI-Blast output.
+# The "Query= " line must exist, as well as "  Database:" at the end.
+
+
+$format = "fasta";   # output format
+# $format = "pir";
+$m = 4;    # default blast -m alignment view output option
+           # only -m 4 or 6 should be used with this program.
+           # This doesn't need to be modified.  The program will
+           # identify whether -m 4 or -m 6 was used.
+$width = 70;  # width of output sequence
+
+$qseq = ""; %qseqs=();
+%hseq = (); %count = ();
+$hitnum=0; $found=0; $npad=0; $hlen=0;
+
+# Subroutine to print sequences $width characters wide
+sub printseq {
+    $seq = $_[0];
+    $length=length($seq);
+    $ncol=int($length/$width);
+    for ($i=0; $i<=$ncol; $i++) {
+        print substr($seq,$i*$width,$width),"\n";
+    }
+}
+
+# $file = $ARGV[0];
+
+while(<>) {
+    chop;
+    if (/^Query= /) {      # Get query name
+        @line = split;
+        $query = $line[1];
+        next;
+    }
+    if (/^Searching/) {       # handle multiple PSI-Blast iterations
+        %hseq=();             # keep only last iteration
+        $qseq=""; %qseqs=();  # by clearing everything
+        %count=();
+        $hitnum=0; $found=0; $npad=0; $hlen=0;
+    }
+    if (/^QUERY/) {        # Query sequence
+        @line = split;
+        $name = $line[0];
+        $qstart = $line[1];
+        if ($qseq eq "") {
+            $qfirst = $qstart;   # $qfirst is probably 1
+        }
+#        $qend = $line[3];
+        $qlen = length($line[2]);
+        $qseq .= $line[2];       # append query sequence
+        $qseqs{$name} .= $line[2];  # also store in %qseqs
+        $found=1;     # flag to identify sequence region of blast output
+        next;
+    }
+
+    # Stop trying to read sequences once this line is found
+    # at the end of the blast output
+    if (/^  Database: /) { $found = 0; next }
+
+    if ($found==1) {
+        if ($_ eq "") { next }
+        @line = split;
+        $name = $line[0];
+#        $hstart = $line[1];
+        $hlen = length($line[2]);
+        if ($hlen==0) {          # created with blast -m 6
+            $m=6;
+            $hlen = length($line[1]);
+        }
+        else { $m=4 }
+
+        # Add N-padding X's or dashes to match query sequence length
+        if (!$hseq{$name}) {
+            $npad = ($qlen - $hlen) + ($qstart - $qfirst);  # -1 ?
+            if ($format eq "fasta") { $pad = 'X' x $npad }
+            elsif ($format eq "pir") { $pad = '-' x $npad }
+            if ($m==6) { $npad=0; $pad="" }   # -m 6 is already padded
+            if ($npad>0) { $hseq{$name} = $pad }
+            $count{$hitnum} = $name;
+            $hitnum++;   # Increment counter for next new sequence
+        }
+        if ($m==4) { $hseq{$name} .= $line[2] }
+        if ($m==6) { $hseq{$name} .= $line[1] }
+    }
+}
+
+$querylen = length($qseqs{QUERY});
+
+if ($format eq "pir") {  print ">$query\n\n" }
+if ($format eq "fasta") { print "\>$query $querylen\n" }
+if ($format eq "fasta") { $qseqs{QUERY} =~ s/\-/X/g }
+printseq($qseqs{QUERY});   # format and print sequence
+if ($format eq "pir") { print "\*\n" }
+
+
+# Preserve original alignment order by using %count instead of %hseq
+
+foreach $hitnum (sort keys %count) {
+    $name = $count{$hitnum};
+
+    # Add trailing X's or dashes if necessary
+    $hlen = length($hseq{$name});
+    $npad = $querylen-$hlen;
+    if ($format eq "fasta") { $pad = 'X' x $npad}
+    elsif ($format eq "pir") { $pad = '-' x $npad}
+    if ($npad>0) { $hseq{$name} .= $pad }
+
+    $hitlen = length($hseq{$name});
+
+    if ($format eq "pir") { print ">$name\n\n" }
+    if ($format eq "fasta") { print "\>$name $hitlen\n" }
+    if ($format eq "fasta") { $hseq{$name} =~ s/\-/X/g }
+    printseq($hseq{$name});
+    if ($format eq "pir") { print "\*\n" }
+}
+
+# Sample input from blastpgp -m 4
+#
+# Query= protein1
+# Database: nr
+#
+# Searching..................................................done
+# Results from round 1
+# ... [cut]
+#
+# Searching..................................................done
+# Results from round 2
+#
+# QUERY      1   MVTENPQRLTVLRLATNKGPLAQIWLASNMSN-IPRGSVIQTHIAESAKEIAKASGCDDE 59
+# S50979     1   MVTENPQRLTVLRLATNKGPLAQIWLASNMSN-IPRGSVIQTHIAESAKEIAKASGCDDE 59
+# CAA88356   1   MVTENPQRLTVLRLATNKGPLAQIWLASNMSN-IPRGSVIQTHIAESAKEIAKASGCDDE 59
+# P30776     7                ILSKKGPLAKVWLAAHWEKKLSKVQTLHTSIEQSVHAIV-------- 45
+# 4140710    7                ILAKKGPLARIWLAAHWDKKITKAHVFETNIEKSVEGILQPK----- 48
+# AAD33593.1 7                ILAKKGPLARIWLAAHWDKKITKAHVFETNIEKSVEGILQPK----- 48
+# 1022971    64                 SKKGPLSKVWLAAHWEKKLSKAQIFETDVDEAVNEIMQPS----- 10
+# CAA66939   9                  SKRGPLAKIWLAAHWDK-----KLTKAHVFECNLE----SSVESI 44
+#
+# ... [cut]
+#
+# QUERY      523 EASRGFFDILSLATEGCIGLSQTEAFGNIKIDAKPALFERFINA 566
+# S50979     523 EASRGFFDILSLATEGCIGLSQTEAFGNIKIDAKPALFERFINA 566
+# P40457     407 ERTKSLEHELKRSTE                              421
+# BAA18707   139 STN                                          141
+#   Database: nr
+
+
+# Sample input from blastpgp - m 6
+#
+# QUERY      1   MVTENPQRLTVLRLATNKGPLAQIWLASNMSN-IPRGSVIQTHIAESAKEIAKASGCDDE 59
+# S50979     1   MVTENPQRLTVLRLATNKGPLAQIWLASNMSN-IPRGSVIQTHIAESAKEIAKASGCDDE 59
+# CAA88356   1   MVTENPQRLTVLRLATNKGPLAQIWLASNMSN-IPRGSVIQTHIAESAKEIAKASGCDDE 59
+# P30776     7   -------------ILSKKGPLAKVWLAAHWEKKLSKVQTLHTSIEQSVHAIV-------- 45
+# 4140710    7   -------------ILAKKGPLARIWLAAHWDKKITKAHVFETNIEKSVEGILQPK----- 48
+# AAD33593.1 7   -------------ILAKKGPLARIWLAAHWDKKITKAHVFETNIEKSVEGILQPK----- 48
+# 1022971    64  ---------------SKKGPLSKVWLAAHWEKKLSKAQIFETDVDEAVNEIMQPS----- 10
+# CAA66939   9   ---------------SKRGPLAKIWLAAHWDK-----KLTKAHVFECNLE----SSVESI 44
+# Q46089         ------------------------------------------------------------
+#
+# ... [cut]
+#
+# QUERY      523 EASRGFFDILSLATEGCIGLSQTEAFGNIKIDAKPALFERFINA 566
+# S50979     523 EASRGFFDILSLATEGCIGLSQTEAFGNIKIDAKPALFERFINA 566
+# CAA88356   284 -------------------------------------------- 285
+# P30776     121 -------------------------------------------- 122
+# 4140710    89  -------------------------------------------- 90
+# AAD33593.1 89  -------------------------------------------- 90
+# 1022971    145 -------------------------------------------- 146
+# CAA66939   89  -------------------------------------------- 90
+# Q46089     458 -------------------------------------------- 459
+----------------------------------------------------------------------------
+
+
+-- Mike S. (m_sauder@fccc.edu) http://www.fccc.edu/research/labs/dunbrack
+           phone: 215.728.5661  FAX: 215.728.3574 or 2412

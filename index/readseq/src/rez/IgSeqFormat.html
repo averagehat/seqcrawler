@@ -1,0 +1,47 @@
+<HTML><TITLE>Readseq: IgSeqFormat</TITLE><BODY><PRE>
+
+------ stanford/IG format -----------
+;comments
+;...
+seq1 info
+abcd...
+efgh1 (or 2 = terminator)
+;another seq
+;....
+seq2 info
+abcd...1
+--- for e.g. ----
+;     Dro5s-T.Seq  Length: 120  April 6, 1989  21:22  Check: 9487  ..
+dro5stseq
+GCCAACGACCAUACCACGCUGAAUACAUCGGUUCUCGUCCGAUCACCGAAAUUAAGCAGCGUCGCGGGCG
+GUUAGUACUUAGAUGGGGGACCGCUUGGGAACACCGCGUGUUGUUGGCCU1
+---------------------------------------------------
+
+-- From Pittsburg Supercomputing Center docs on sequence formats (~ 1992)
+
+                MolGen/Stanford File Format
+
+1.  The first line in a sequence file is a comment line.  This line
+  begins with a semi-colon in the first space.  This line need
+  not be present.  If it is present it holds descriptive text.
+  There may be as many comment lines as desired at the first of
+  sequence file.  (See LINE  1).
+
+2.  The second line must be present and contains an identifier or
+  name for the sequence in the first ten spaces.  (See LINE  2).
+
+3.  The sequence begins on the third line and occupies up to eighty
+  spaces.  Spaces may be included in the sequence for ease of
+  reading.  The sequence continues for as many line as needed
+  and is terminated with a 1 or 2.  1 indicates a linear sequence
+  while 2 marks a circular sequence.  (See LINE  3 and LINE  4).
+
+                          Example MolGen/Stanford file
+
+LINE  1  :;  Describe the sequence any way you want
+LINE  2  :ECTRNAGLY2
+LINE  3  :ACGCACGTAC ACGTACGTAC   A C G T C C G T ACG TAC GTA CGT
+LINE  4  :  GCTTA   GG G C T A1
+
+
+</PRE></BODY></HTML>

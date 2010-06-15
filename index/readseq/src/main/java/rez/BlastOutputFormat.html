@@ -1,0 +1,44 @@
+<HTML><TITLE>BLAST Output Format</TITLE><BODY><PRE>
+
+ Read aligned sequences from output of BLAST.
+ August 1999
+
+ In particular, read the multiple alignments, rather than pairwise alignments.
+ At NCBI's BLAST service now these are called
+		master-slave with identities
+		master-slave without identities
+		flat master-slave with identities     -- best to parse
+		flat master-slave without identities	-- best to parse
+ 
+ Various blast programs have different headers, but Query= and Database: seem constant
+ 
+BLASTN 2.0.9 [May-07-1999]
+^^^^^ key string
+
+Query= djs74_1180.s1 CHROMAT_FILE: djs74_1180.s1 PHD_FILE:
+^^^^^^ key string
+
+Database: Non-redundant GenBank+EMBL+DDBJ+PDB sequences
+^^^^^^^^^ key string
+
+may or may not have Scores before alignments
+                                                                   Score     E
+Sequences producing significant alignments:                        (bits)  Value
+
+gb|AF124730|AF124730  Homo sapiens PAC clone N2184 chromosom...   123  7e-26
+emb|AL030999.2|HS593F22  Human DNA sequence from clone 593F2...   111  3e-22
+...
+
+align formats vary some - look for line >= 40 chars of bases, no spaces 
+
+
+tmpseq_1 37     tcggcttttcctgaattccaaaagggaagagggtata--atgagggatg-tcccaccctc 93
+AF124730 59465    ..............................a....ta......c.ct-..tg...... 59521
+AL030999 31934      .......................g.....c...--......c...-...a...... 31986
+...
+
+QUERY      1   MVTENPQRLTVLRLATNKGPLAQIWLASNMSN-IPRGSVIQTHIAESAKEIAKASGCDDE 59
+S50979     1   MVTENPQRLTVLRLATNKGPLAQIWLASNMSN-IPRGSVIQTHIAESAKEIAKASGCDDE 59
+CAA88356   1   MVTENPQRLTVLRLATNKGPLAQIWLASNMSN-IPRGSVIQTHIAESAKEIAKASGCDDE 59
+
+</PRE></BODY></HTML>
