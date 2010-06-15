@@ -20,6 +20,20 @@ This module requires these other modules and libraries:
   JSON
   URI:Escape
   LWP:Simple
+  
+USAGE
+
+  For Gbrowse.conf/genbank.conf, add these:
+     db_adaptor    = Bio::DB::GFF
+     db_args       = 
+        -adaptor solr
+        # optional, define bank for search, if not set search though all banks
+        -BANK     GenBank
+        # optional, solr index server to query, default to locahost
+        -server_host localhost
+        # optional, solr index server port to query, default to 8080
+        -server_port 8080
+        
 
 COPYRIGHT AND LICENCE
 
