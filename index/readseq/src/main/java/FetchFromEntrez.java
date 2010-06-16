@@ -1,3 +1,6 @@
+//FetchFromEntrez.java
+//split4javac// FetchFromEntrez.java date=18-Mar-1998
+
 // FetchFromEntrez.java
 // a simple example of a biocomputing network tool written in java
 // d.gilbert, mar'98
@@ -11,6 +14,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+//split4javac// FetchFromEntrez.java line=14
 public class FetchFromEntrez
 {
   static boolean useStdout= false,
@@ -73,29 +77,28 @@ public class FetchFromEntrez
 	static void singleEntrez(String[] args, String outname, boolean html, String db, String form)
 	{
    	String url= entrezUrl + (html ? "" : "&html=no") + "&db=" + db + "&Dopt=" + form + "&uid=";
- 		String startkey= null;
- 		if (!html) { startkey= (form.equals("f") ? ">" : "LOCUS"); }
+ 		String startKey= null;
+ 		if (!html) { startKey= (form.equals("f") ? ">" : "LOCUS"); }
    	if (useSingleBatch) {
 			String gids= "";
 			for (int i=0 ; i<args.length; i++) {
 	      if (args[i]==null) continue;
 	      gids += args[i].replace('_','|') + ",";
 	      }
-	    callEntrez( url, gids, openout(outname), startkey);    
+	    callEntrez( url, gids, openout(outname), startKey);    
    		}
    	else for (int i=0 ; i<args.length; i++) {
       if (args[i]==null) continue;
       String gid= args[i];
       gid= gid.replace('_','|');    
     	outname= args[i].toLowerCase();
-	    callEntrez( url, gid, openout(outname), startkey);    
+	    callEntrez( url, gid, openout(outname), startKey);    
 			}
 	}
 		
 	static void callEntrez(String url, String gid, PrintStream pr, String startKey)
 	{
     boolean haveStart= (startKey == null);
-    boolean haveGt = false;
     try {
       DataInputStream din= new DataInputStream(new URL(url + gid).openStream());
       while (true) { 
@@ -105,8 +108,8 @@ public class FetchFromEntrez
           System.err.println("ERROR - "+gid+" not found: " + s); 
           break; 
           }
-        else if (startKey!=null && s.startsWith(startKey)) haveGt= true;
-        if (haveGt) pr.println(s);
+        else if (startKey!=null && s.startsWith(startKey)) haveStart= true;
+        if (haveStart) pr.println(s);
         } 
       pr.close();
       }
@@ -187,5 +190,6 @@ public class FetchFromEntrez
 		}					
 
 }
+
 
 
