@@ -496,6 +496,7 @@
        <str name="fl">*</str>
        <str name="version">2.1</str>
         -->
+      <!--  <str name="shards">shardserver1/solr/,shardserver2/solr/,...</str> -->
      </lst>
   </requestHandler>
   
