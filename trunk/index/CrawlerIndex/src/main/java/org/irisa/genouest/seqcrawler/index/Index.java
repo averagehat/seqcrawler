@@ -20,6 +20,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 
@@ -30,26 +32,27 @@ import org.xml.sax.SAXException;
  */
 public class Index 
 {
-	private Log log = LogFactory.getLog(Index.class);
+	private Logger log = LoggerFactory.getLogger(Index.class);
 	
-	static String bank=Constants.BANK_DEFAULT;
-	static String inputFile=null;
+	String bank=Constants.BANK_DEFAULT;
+	String inputFile=null;
 	
-	static Constants.FORMATS format = Constants.FORMATS.GFF;
+	Constants.FORMATS format = Constants.FORMATS.GFF;
 	
 	static boolean DEBUG=false;
 	
-	static int shardsSize = 10;
-	static boolean useShards = false;
+	int shardsSize = 10;
+	boolean useShards = false;
 	
-	static String solrHome = "/opt/solr/apache-solr-1.4.0/seqcrawler/solr";
-	static String solrData = "/opt/solr/apache-solr-1.4.0/seqcrawler/solr/data/";
-	static String solrUrl ="http://localhost/solr";
+	String solrHome = "/opt/solr/apache-solr-1.4.0/seqcrawler/solr";
+	String solrData = "/opt/solr/apache-solr-1.4.0/seqcrawler/solr/data/";
+	
+	String solrUrl ="http://localhost/solr";
 	boolean useEmbeddedServer = true;
 	
-	static long nbErrors=0;
+    long nbErrors=0;
 	
-	public static long getNbErrors() {
+	public long getNbErrors() {
 		return nbErrors;
 	}
 
@@ -68,8 +71,23 @@ public class Index
 	 */
     public static void main( String[] args ) throws IOException, ParserConfigurationException, SAXException, SolrServerException, ParseException
     {
-    	
-        Index application = new Index();
+    	Index application = new Index();	
+    	application.index(args);
+    }
+    
+    /**
+	 * Index entry point. Index one or more document in a Solr server. Index can be done with an embedded server for local writing.
+	 * Should not be called in within different threads for a single index server.
+	 * @param args See usage (-h)
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws SolrServerException
+	 * @throws ParseException
+	 * @throws IndexException 
+	 */
+    public void index(String[] args) throws SolrServerException, IOException, ParseException, ParserConfigurationException, SAXException {
+    	    
         Options options = new Options();
         options.addOption("c", false, "Clean index before with bank name");
         options.addOption("C", false, "Clean all index");
@@ -99,8 +117,8 @@ public class Index
         	Attributes atts = mf.getMainAttributes();
         	
         	System.out.println("SeqCrawler indexer version: "+atts.getValue("Implementation-Version")+"-"+atts.getValue("Implementation-Build"));        	
-        	application.log.info("Version: " + atts.getValue("Implementation-Version"));
-        	application.log.info("Build: " + atts.getValue("Implementation-Build"));
+        	log.info("Version: " + atts.getValue("Implementation-Version"));
+        	log.info("Build: " + atts.getValue("Implementation-Build"));
         	
         	System.exit(0);
         }
@@ -129,7 +147,7 @@ public class Index
         
         if(cmd.hasOption("url")) {
         	solrUrl = cmd.getOptionValue("url");
-        	application.useEmbeddedServer = false;
+        	useEmbeddedServer = false;
         }
         
         if(cmd.hasOption("sd")) {
@@ -137,7 +155,7 @@ public class Index
         }              
         	
        
-        application.log.info("Starting application");
+        log.info("Starting application");
         // Note that the following property could be set through JVM level arguments too
         
         System.setProperty("solr.solr.home", solrHome);
@@ -145,7 +163,7 @@ public class Index
         
         indexMngr = new IndexManager();
         
-        if(application.useEmbeddedServer) {
+        if(useEmbeddedServer) {
         	indexMngr.initServer(null);
         }
         else {
@@ -165,8 +183,8 @@ public class Index
         	inputFile = cmd.getOptionValue("f");
         }
         else {
-        	application.log.error("WARNING: Input file command line option is missing (-f) ");
-        	application.log.error("There is no data to index ");
+        	log.error("WARNING: Input file command line option is missing (-f) ");
+        	log.error("There is no data to index ");
         }
         if(cmd.hasOption("t")) {
         	String t = cmd.getOptionValue("t");
@@ -186,7 +204,7 @@ public class Index
         		format = Constants.FORMATS.READSEQ;
         	}
         }
-        application.log.info("Input file format is "+format.toString());
+        log.info("Input file format is "+format.toString());
         
         File in = null;
         File[] files=null;
@@ -203,7 +221,7 @@ public class Index
         files = new File[] { new File(inputFile)};
         }
         
-        application.log.info("Start indexation - "+new Date());
+        log.info("Start indexation - "+new Date());
         
         int shardId = 0;
         boolean newShard=true;
@@ -223,9 +241,9 @@ public class Index
         		indexMngr.shutdownServer();
         		System.setProperty("solr.solr.home", solrHome);
                 System.setProperty("solr.data.dir", solrData+"/shard"+shardId);
-                application.log.info("Using shard: "+System.getProperty("solr.data.dir"));                        
+                log.info("Using shard: "+System.getProperty("solr.data.dir"));                        
                 
-                if(application.useEmbeddedServer) {
+                if(useEmbeddedServer) {
                 	indexMngr.initServer(null);
                 }
                 else {
@@ -240,22 +258,22 @@ public class Index
 			handler.parse(file);
 			nbErrors+=handler.getNbParsingErrors();
 		} catch (IndexException e) {
-			application.log.error(e.getMessage());
+			log.error(e.getMessage());
 		}
         countFile++;
         }
         
-        application.log.info("Indexation over - "+new Date());
-        application.log.info("Number of errors during indexation: "+nbErrors);
+        log.info("Indexation over - "+new Date());
+        log.info("Number of errors during indexation: "+nbErrors);
         
         }
         
         // Optimize the index
         if(cmd.hasOption("o")) {
-        application.log.info("Optimizing index now...");
+        log.info("Optimizing index now...");
         indexMngr.getServer().optimize();
         }
-        application.log.info("Index is ready - "+new Date());        
+        log.info("Index is ready - "+new Date());        
         indexMngr.shutdownServer();
     }
 

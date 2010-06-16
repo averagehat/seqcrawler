@@ -17,6 +17,8 @@ import org.irisa.genouest.seqcrawler.index.IndexManager;
 import org.irisa.genouest.seqcrawler.index.SequenceHandler;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
 import org.irisa.genouest.seqcrawler.index.handlers.gff.GFF3Record;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -29,11 +31,13 @@ public class GFFHandler implements SequenceHandler {
 	
 	private long nbParsingErrors = 0;
 
-	private Log log = LogFactory.getLog(GFFHandler.class);
+	private Logger log = LoggerFactory.getLogger(GFFHandler.class);
 	
     private Vector<GFF3Record> records = new Vector<GFF3Record>();
 
     private String bank=Constants.BANK_DEFAULT;
+    
+    private String sourceFile = null;
     
     public Vector<GFF3Record> getRecords() {
         return records;
@@ -57,6 +61,7 @@ public class GFFHandler implements SequenceHandler {
 	 */
     public void parse(File f) throws IOException, IndexException {
     	log.debug("Parse new file: "+ f.getAbsolutePath());
+    	sourceFile = f.getAbsolutePath();
     	BufferedReader bf = new BufferedReader(new FileReader(f));
     	this.parse(bf);
     }
@@ -103,7 +108,11 @@ public class GFFHandler implements SequenceHandler {
                 		inError = true;
                 	}
                 	if(!inError) {
-                    SolrInputDocument doc = rec.getDocument();                    
+                    SolrInputDocument doc = rec.getDocument();  
+                    doc.addField("stream_content_type", "biosequence/gff");
+    			    if(sourceFile!=null) {
+    			    	doc.addField("stream_name", sourceFile);
+    			    }
                     try {
             			this.log.debug("Index new GFF record "+doc.toString());
             			indexManager.getServer().add(doc);			

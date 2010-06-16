@@ -11,6 +11,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.beans.Field;
 import org.apache.solr.common.SolrInputDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -20,7 +22,7 @@ import org.apache.solr.common.SolrInputDocument;
  */
 public class GFF3Record {
 
-	private Log log = LogFactory.getLog(GFF3Record.class);
+	private Logger log = LoggerFactory.getLogger(GFF3Record.class);
 	
 	@Field("chr")
 	private String sequenceId;

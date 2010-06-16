@@ -1,6 +1,7 @@
 package org.irisa.genouest.seqcrawler.index.handlers;
 
 import iubio.readseq.BioseqDoc;
+import iubio.readseq.BioseqReader;
 import iubio.readseq.Readseq;
 import iubio.readseq.SeqFileInfo;
 
@@ -67,14 +68,18 @@ private IndexManager indexManager = null;
 	 */
 	public void parse(File f) {
 		long nbDocs = 0;
+		long startPos = 0;
+		
 		Readseq rd= new Readseq();
 		ArrayList<String[]> keyValues =  new ArrayList<String[]>();
 	    try {
 			rd.setInputObject( new FileInputStream(f) );
 		} catch (FileNotFoundException e) {
 			log.error(e.getMessage());
+			nbParsingErrors++;
 		} catch (IOException e) {
 			log.error(e.getMessage());
+			nbParsingErrors++;
 		}
 	    
     	BioseqParser parser =new BioseqParser();
@@ -98,6 +103,14 @@ private IndexManager indexManager = null;
 			    outwr.reset();
 			    SolrInputDocument doc = new SolrInputDocument();
 			    doc.addField("stream_content_type", rd.getBioseqFormat().contentType());
+			    doc.addField("stream_name", f.getAbsoluteFile());
+			    doc.addField("file", startPos+"-"+rd.getInsReadlen());
+			    doc.addField("bank", bank);
+			    if(rd instanceof Readseq) {
+			    
+			    }
+			    log.debug("Document position: "+startPos+"-"+rd.getInsReadlen());
+			    
 			    for(String[] keyval : keyValues) {
 			    	String value = keyval[1];
 			    	if(doc.containsKey(keyval[0])) {
@@ -108,22 +121,26 @@ private IndexManager indexManager = null;
 			    }
 			    indexManager.getServer().add(doc);
 			    nbDocs++;
-			    // add field id parser.finishMainRecord(sdt.getID());
-			    // submit storeDoc.endDocument();
-			    // set stream_content_type with rd.getBioseqFormat().contentType()
+			    startPos += rd.getInsReadlen();
+			    
 			    keyValues.clear();
 			    }
 		} catch (IOException e) {
 			log.error(e.getMessage());
+			nbParsingErrors++;
 		} catch (SolrServerException e) {
 			log.error(e.getMessage());
+			nbParsingErrors++;
 		}
 		try {
 			indexManager.getServer().commit();
+			//indexManager.getServer().commit(false, false);
 		} catch (SolrServerException e) {
 			log.error(e.getMessage());
+			nbParsingErrors++;
 		} catch (IOException e) {
 			log.error(e.getMessage());
+			nbParsingErrors++;
 		}
 		log.info("Number of documents indexed: "+nbDocs);
 	    

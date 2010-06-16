@@ -1,21 +1,18 @@
 package org.irisa.genouest.seqcrawler.index;
 
 import java.io.File;
+
 import java.io.IOException;
-import java.util.Locale;
 
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.tika.config.TikaConfig;
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.mime.MediaType;
-import org.apache.tika.parser.Parser;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocumentList;
 import org.irisa.genouest.seqcrawler.index.Index;
-import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import junit.framework.Test;
@@ -29,7 +26,31 @@ public class IndexTest
     extends TestCase
 {
 	
-	private Log log = LogFactory.getLog(IndexTest.class);
+	private Logger log = LoggerFactory.getLogger(IndexTest.class);
+	
+	private SolrDocumentList execQuery(String query) {
+		IndexManager indexMngr = new IndexManager();
+		SolrDocumentList docs=null;
+		try {
+			indexMngr.initServer(null);
+	        docs = indexMngr.queryServer(query);	        
+		} catch (IOException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParserConfigurationException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SAXException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SolrServerException e) {
+			log.error(e.getMessage());
+			fail();
+		} finally {
+			indexMngr.shutdownServer();
+		}
+		return docs;
+	}
 	
     /**
      * Create the test case
@@ -52,11 +73,14 @@ public class IndexTest
     /**
      * Main app testing
      */
+   
     
+     
     public void testIndex()
     {
     	try {
-			Index.main(new String[] {"-f","./solr/test.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/"});
+    	    Index index = new Index();
+			index.index(new String[] {"-f","./solr/test.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/"});
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			fail();
@@ -73,16 +97,19 @@ public class IndexTest
 			log.error(e.getMessage());
 			fail();
 		}
-        assertTrue( true );
+		// Look for chr NC_002745
+		SolrDocumentList docs = execQuery("chr:NC_002745");
+        assertTrue( docs.size()>0 );
+        assertEquals(docs.get(0).getFieldValue("chr"),"NC_002745");
 
     }
     
-
     
     public void testShardIndex()
     {
     	try {
-			Index.main(new String[] {"-f","./solr/dataset/data","-b","GenBank","-C","-sh","./solr/","-sd","./solr/dataset/index","-shard","2"});
+			Index index = new Index();
+			index.index(new String[] {"-f","./solr/dataset/data","-b","GenBank","-C","-sh","./solr/","-sd","./solr/dataset/index","-shard","2"});
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			fail();
@@ -107,11 +134,15 @@ public class IndexTest
 		File f3 = new File("./solr/dataset/index/shard2/index");
         assertTrue( f3.exists() );
     }
+   
+    
     
     public void testIndexError()
     {
+    	Index index =null;
     	try {
-			Index.main(new String[] {"-f","./solr/testError.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/"});
+			index = new Index();
+			index.index(new String[] {"-f","./solr/testError.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/"});
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			fail();
@@ -128,7 +159,7 @@ public class IndexTest
 			log.error(e.getMessage());
 			fail();
 		}
-        assertTrue( Index.getNbErrors() == 1 );
+        assertTrue( index.getNbErrors() == 1 );
     }
     
    
@@ -136,7 +167,8 @@ public class IndexTest
     public void testIndexReadSeq()
     {
     	try {
-			Index.main(new String[] {"-f","./solr/uniprot.dat","-b","UniProt","-C","-sh","./solr/","-sd","./solr/data/","-t","readseq"});
+    		Index index = new Index();
+			index.index(new String[] {"-f","./solr/uniprot.dat","-b","UniProt","-C","-sh","./solr/","-sd","./solr/data/","-t","readseq"});
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			fail();
@@ -154,7 +186,15 @@ public class IndexTest
 			fail();
 		}
 		
-        assertTrue( true );
+			SolrDocumentList docs  = execQuery("bank:UniProt");
+	        assertTrue(docs.size()>=2);
+	        log.info("Original content 1 : "+docs.get(0).getFieldValue("stream_content_type")+","+docs.get(0).getFieldValue("stream_name")+","+docs.get(0).getFieldValue("file"));
+	        log.info("Original content 2 : "+docs.get(1).getFieldValue("stream_content_type")+","+docs.get(1).getFieldValue("stream_name")+","+docs.get(1).getFieldValue("file"));
+	        assertEquals(docs.get(0).getFieldValue("file"),"0-2368");
+	        assertEquals(docs.get(1).getFieldValue("file"),"2368-4735");
+				
     }
+
+
     
 }
