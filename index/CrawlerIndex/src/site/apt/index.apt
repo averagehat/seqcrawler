@@ -3,3 +3,12 @@ Introduction
   CrawlerIndex is in charge of indexing biological data files in a Solr index server.
   It supports several types of input data (gff, genbank, uniprot ...) and can submit data to the specified server.
   In current version only GFF type is supported, but very soon other formats will be implemented.
+  
+Usage
+
+  Install CrawlerIndex jar in solr directory (example: /opt/solr/apache-solr-1.4.0/seqcrawler/indexer)
+  Copy the library in the WEB-INF/lib directory of the solr web instance for Solr Cell usage (manage mime types biosequence/document).
+  Update path to index directory in bin*.sh files
+  Call merge.sh to index some files in index (-h option for usage)
+  
+  Use schema.xml and solrconfig.xml for your solr instance (schema specifies gff specific fields etc...)

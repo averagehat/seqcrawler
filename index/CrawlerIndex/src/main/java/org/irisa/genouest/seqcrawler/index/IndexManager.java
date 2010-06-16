@@ -6,11 +6,16 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.core.CoreContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 /**
@@ -21,7 +26,7 @@ import org.xml.sax.SAXException;
  */
 public class IndexManager {
 	
-	private Log log = LogFactory.getLog(IndexManager.class);
+	private Logger log = LoggerFactory.getLogger(IndexManager.class);
 
 	
 	//private static SolrServer server = null;
@@ -109,5 +114,13 @@ public class IndexManager {
 		log.warn("Deleting from index bank: "+bank);
 	    server.deleteByQuery( "bank:"+bank );// delete everything!
 	    server.commit();
+	}
+	
+	public SolrDocumentList queryServer(String query) throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+        solrQuery.setQuery(query);
+        QueryResponse rsp = server.query(solrQuery);
+        SolrDocumentList docs = rsp.getResults();
+        return docs;
 	}
 }

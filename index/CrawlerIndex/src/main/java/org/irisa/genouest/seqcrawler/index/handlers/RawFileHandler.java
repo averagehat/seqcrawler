@@ -19,6 +19,8 @@ import org.irisa.genouest.seqcrawler.index.IndexManager;
 import org.irisa.genouest.seqcrawler.index.SequenceHandler;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
 import org.irisa.genouest.seqcrawler.index.handlers.gff.GFF3Record;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RawFileHandler implements SequenceHandler {
 	
@@ -26,7 +28,7 @@ private IndexManager indexManager = null;
 	
 	private long nbParsingErrors = 0;
 
-	private Log log = LogFactory.getLog(RawFileHandler.class);
+	private Logger log = LoggerFactory.getLogger(RawFileHandler.class);
 	
     private String bank=Constants.BANK_DEFAULT;
 
