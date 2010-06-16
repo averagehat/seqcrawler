@@ -1,3 +1,6 @@
+//features.java
+//split4javac// features.java date=25-Aug-1999
+
 // features.java
 // example biosequence features extraction with iubio.readseq package
 // compile as: javac -classpath readseq.jar:$CLASSPATH  features.java
@@ -10,6 +13,7 @@ import iubio.bioseq.*;
 import iubio.readseq.*;
 import flybase.Utils;
 
+//split4javac// features.java line=13
 public class features {
   public static void main( String[] args) 
   {

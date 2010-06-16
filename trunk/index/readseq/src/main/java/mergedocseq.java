@@ -1,3 +1,6 @@
+//mergedocseq.java
+//split4javac// mergedocseq.java date=25-Mar-2000
+
 // mergedocseq.java
 // example biosequence program to merge documentation with sequence files (e.g., gcg format)
 // compile as: javac -classpath readseq.jar:$CLASSPATH  mergedocseq.java
@@ -11,6 +14,7 @@ import iubio.bioseq.*;
 import iubio.readseq.*;
 import flybase.Utils;
 
+//split4javac// mergedocseq.java line=14
 public class mergedocseq {
 	static String outformat= "embl";
 	

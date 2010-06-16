@@ -1,3 +1,6 @@
+//seqrangemath.java
+//split4javac// seqrangemath.java date=27-May-2001
+
 import java.io.*;
 import iubio.bioseq.*;
 import iubio.readseq.*;
@@ -45,4 +48,5 @@ class seqrangemath {
 			System.out.println();
 			} catch (Exception e) { e.printStackTrace(); }
 		}        
-}  
+}  //split4javac// seqrangemath.java line=48
+

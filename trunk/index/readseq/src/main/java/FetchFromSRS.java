@@ -1,3 +1,6 @@
+//FetchFromSRS.java
+//split4javac// FetchFromSRS.java date=24-Jun-1998
+
 // FetchFromSRS.java
 // d.gilbert, jun'98 - example java command-line app to fetch data from an srs server
 //
@@ -12,6 +15,7 @@ import java.net.*;
 
 class UsageException extends Exception {}
 
+//split4javac// FetchFromSRS.java line=15
 public class FetchFromSRS
 {
   public final static int v5= 0, v4 = 1;
