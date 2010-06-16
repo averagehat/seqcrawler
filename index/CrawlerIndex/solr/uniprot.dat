@@ -73,8 +73,8 @@ CC   -----------------------------------------------------------------------
 CC   Copyrighted by the UniProt Consortium, see http://www.uniprot.org/terms
 CC   Distributed under the Creative Commons Attribution-NoDerivs License
 CC   -----------------------------------------------------------------------
-DR   EMBL; DQ643392; ABF82032.1; -; Genomic_DNA.
-DR   RefSeq; YP_654574.1; -.
+DR   EMBL; DQ643393; ABF82032.1; -; Genomic_DNA.
+DR   RefSeq; YP_654574.2; -.
 DR   GeneID; 4156251; -.
 PE   4: Predicted;
 KW   Complete proteome; Virus reference strain.

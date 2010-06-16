@@ -192,7 +192,6 @@ public class IndexTest
 	        log.info("Original content 2 : "+docs.get(1).getFieldValue("stream_content_type")+","+docs.get(1).getFieldValue("stream_name")+","+docs.get(1).getFieldValue("file"));
 	        assertEquals(docs.get(0).getFieldValue("file"),"0-2368");
 	        assertEquals(docs.get(1).getFieldValue("file"),"2368-4735");
-				
     }
 
 

@@ -398,6 +398,17 @@
 	
 	
 	<fieldType name="uuid" class="solr.UUIDField" indexed="true" />
+	
+	
+	<!-- A text field that split according to a list of delimiters, useful for dbxref -->
+	<!-- EXPERIMENTAL, DO NOT USE -->
+    <fieldType name="separator" class="solr.TextField">
+      <analyzer>
+        <tokenizer class="org.irisa.genouest.seqcrawler.index.tokenizer.DelimiterTokenizerFactory" delimiters=",:; "/>
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+	
 
  </types>
 
@@ -443,7 +454,8 @@
    <field name="file" type="lowercase" indexed="false" stored="true"/>
    
    <!-- attributes field , not to be stored -->
-   <field name="dbxref" type="text" indexed="true" stored="false"/>
+   <field name="dbxref" type="text" indexed="true" stored="false"/> 
+   <!-- <field name="dbxref" type="separator" indexed="true" stored="false"/> -->
    <field name="note" type="text" indexed="true" stored="false"/>
    <field name="date" type="text" indexed="true" stored="false"/>
 	<!-- End of GFF fields -->
