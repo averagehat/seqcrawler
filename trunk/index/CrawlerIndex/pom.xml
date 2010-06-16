@@ -9,6 +9,8 @@
 	<description>seqCrawler indexer for BioInformatics data</description>
 	<url>http://maven.apache.org</url>
 	<issueManagement>
+		<system>Sourceforge tracker</system>
+		<url>http://sourceforge.net/tracker/?group_id=325470</url>
 	</issueManagement>
 	<ciManagement>
 		<system>hudson</system>
@@ -114,6 +116,11 @@
 	</dependencies>
 	<reporting>
 		<plugins>
+		    <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-project-info-reports-plugin</artifactId>
+		        <version>2.1.1</version>		        
+		    </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -124,12 +131,17 @@
 				<artifactId>maven-surefire-report-plugin</artifactId>
 				<version>2.5</version>
 			</plugin>
+			<plugin>
+		    		<groupId>org.apache.maven.plugins</groupId>
+		    		<artifactId>maven-checkstyle-plugin</artifactId>
+		    		<version>2.5</version>
+		    </plugin>
 		</plugins>
 	</reporting>
 	<distributionManagement>
 		<site>
-			<id>CrawlerIndex</id>
-			<url>file:///Users/osallou/Sites/CRAWINDEX/</url>
+			<id>seqcrawler.sf.net</id>
+			<url>scp://shell.sourceforge.net/home/groups/s/se/seqcrawler/htdocs</url>
 		</site>
 	</distributionManagement>
 	<build>
