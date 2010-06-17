@@ -12,16 +12,16 @@
     <links>
       <item name="GenOUEST" href="http://www.genouest.org/" />
       <item name="Solr" href="http://lucene.apache.org/solr/"/>
-      <item name="Lucegene" href="http://gmod.org/"/>
-       <item name="SeqCrawler" href="http://seqcrawler.sourceforge.net//"/>
+      <item name="GBrowse" href="http://gmod.org/"/>
+      <item name="Riak" href="https://wiki.basho.com/display/RIAK/Riak/"/>
+      <item name="SeqCrawler" href="http://seqcrawler.sourceforge.net//"/>
     </links>
 
     <menu name="CrawIndex">
       <item name="Introduction" href="index.html"/>
-      <item name="Download" href="download.html"/>
+      <item name="Download" href="https://sourceforge.net/projects/seqcrawler/files/"/>
       <item name="Release Notes" href="release-notes.html" />
       <item name="General Information" href="about.html"/>
-      <item name="License" href="license.txt" />
     </menu>
 
     <menu ref="reports"/>
