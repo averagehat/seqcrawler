@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.basho.riak.client.RiakObject;
+
 public class StorageObject {
 	
 	private Logger log = LoggerFactory.getLogger(StorageObject.class);
@@ -77,5 +79,42 @@ public class StorageObject {
 	public String toString() {
 		JSONObject json = new JSONObject(this);
 		return json.toString();
+	}
+
+	public StorageObject[] split(long max) {
+		int length = this.content.length();
+		if(this.content.length()<max) return new StorageObject[] { this };
+		// If size > max, split current
+		
+		int nbshards = (int) Math.ceil(length / max) ;
+		StorageObject[] list = new StorageObject[nbshards];
+		int start = 0;
+		int size = (int) (length/nbshards);
+		log.info("Split in "+nbshards+" of size "+size);
+		for(int i=0;i<nbshards;i++) {
+			int end = start+size;
+			if(end>length) end=length-1;
+			String shardContent = content.substring(start, end);
+			log.info("CONTENT: "+shardContent);
+			StorageObject object = new StorageObject();
+			if(i==0) {
+				// For first shard, keep original name
+				object.setId(id);
+				object.setMetadata(metadata);
+				// Set all shards
+				for(int s=1;s<nbshards;s++) {
+					this.shards.add(id+".shard"+s);
+				}
+				object.setShards(shards);
+			}
+			else {
+				object.setId(id+".shard"+i);
+			}
+			object.setContent(shardContent);
+			list[i] = object;
+			start+= size;		
+		}
+		
+		return list;
 	}
 }

@@ -60,7 +60,7 @@ public class RiakManager implements StorageManagerInterface{
 
 	private Logger log = LoggerFactory.getLogger(RiakManager.class);
 	
-	private static final String BUCKET = "seqcrawler";
+	private static final String BUCKET = "bank";
 	
 	
 	private String host = "localhost";
@@ -100,15 +100,18 @@ public class RiakManager implements StorageManagerInterface{
 		log.debug("New connection: "+riak.getConfig().getUrl());
 	}
 
+	
+		
 	/**
-	 * Fetch an object from remote storage
+	 * Fetch an object from remote storage. Object may contain shards, it does not retreive
+	 * the whole object content with its shards but only referenced key.
 	 * @param key id of the object to retreive
 	 * @return StorageObject with object data and metadata
 	 */
 
 	public StorageObject get(String key) throws StorageException {
 		
-		log.info("fetch object "+key);
+		log.debug("fetch object "+key);
 		StorageObject object = new StorageObject();
 		FetchResponse response = riak.fetch(BUCKET, key);
 		log.info(response.getBody());
@@ -118,7 +121,6 @@ public class RiakManager implements StorageManagerInterface{
 		  String id = ro.getKey();
 		  object.setId(id);
 		  String value = ro.getValue();
-		  log.error("map2json "+value);
 		  try {
 			JSONObject json = new JSONObject(value);
 			JSONObject metadataJson = json.getJSONObject("metadata");
@@ -132,7 +134,6 @@ public class RiakManager implements StorageManagerInterface{
 			log.error("Could not map json "+value);
 			throw new StorageException(e.getMessage());
 		}
-		log.info("object content: "+object.getContent());
 		
 		}
 		return object;
@@ -168,16 +169,38 @@ public class RiakManager implements StorageManagerInterface{
 	 * @throws StorageException 
 	 */
 	public void store(StorageObject object) throws StorageException {
-		 RiakObject ro = new RiakObject(BUCKET, object.id(), object.toString());
+		StorageObject[] sobjects = object.split(max);
+		 for(StorageObject sobject : sobjects) {
+		 log.debug("Add "+sobject.id()+" , "+sobject.toString());
+	     RiakObject ro = new RiakObject(BUCKET, sobject.id(), sobject.toString());
 		 ro.setContentType("application/json");
 		 StoreResponse response = riak.store(ro);
 		 if(response.isError()) {
 			 throw new StorageException("Error when sending data "+response.getBody());
 		 }
+		 }
 	}
 
 	/**
-	 * Deletes an object from backend
+	 * Deletes an object from backend ith its shards
+	 */
+	public void deleteAll(String key) throws StorageException {
+		StorageObject object = get(key);
+		delete(key);	
+		log.debug("shards? "+object.getShards());
+		if(object.getShards()!=null && object.getShards().size()>0) {
+			for(String shardKey : object.getShards()) {
+				log.debug("deleting shard "+shardKey);
+				delete(shardKey);
+			}
+		}
+		
+	}
+	
+	/**
+	 * Deletes a single object from backend
+	 * @param key
+	 * @throws StorageException
 	 */
 	public void delete(String key) throws StorageException {
 		riak.delete(BUCKET, key);
