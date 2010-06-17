@@ -10,4 +10,8 @@ public class Constants {
 		RAW,
 		READSEQ
 	}
+	
+	public static enum STORAGEIMPL {
+		RIAK
+	}
 }

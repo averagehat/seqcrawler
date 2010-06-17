@@ -74,7 +74,6 @@ public class IndexTest
      * Main app testing
      */
    
-    
      
     public void testIndex()
     {
