@@ -60,6 +60,7 @@ public class StorageTest extends TestCase {
 		 if(host!=null) {
 			 HashMap<String,String> map = new HashMap<String,String>();
 			 map.put("host", host);
+			 map.put("max", "10");
 			 storageMngr.setArgs(map);
 			 log.info("Using host "+host);
 		 }
@@ -71,21 +72,19 @@ public class StorageTest extends TestCase {
 		  list.put("meta1", "value1");
 		  list.put("meta2", "value2");  
 		  stObj.setMetadata(list);
-		  String content = "abcde";
+		  String content = "abcdeaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabba";
 		  stObj.setContent(content);
 		  try {
 			storage.store(stObj);
-			log.info("object stored");
 			StorageObject storedObject = storage.get(stObj.id());
-			log.info("got object back");
-			assertEquals(storedObject.getContent(),stObj.getContent());
+			assertTrue(stObj.getContent().startsWith(storedObject.getContent()));
 		  } catch (StorageException e) {
 			  log.error("Storage error: "+e.getMessage());
 			fail(e.getMessage());
 		  }
 		  finally {
 			  log.info("delete object");
-			  storage.delete(stObj.id());
+			  storage.deleteAll(stObj.id());
 		  }
 	 }
 
