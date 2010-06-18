@@ -462,7 +462,7 @@
 	
 	<!-- ReadSeq specific fields -->
 	<field name="name" type="lowercase" indexed="true" stored="true"/>
-    <field name="accession" type="lowercase" indexed="true" stored="true"/>
+    <field name="accession" type="lowercase" indexed="true" stored="true" multiValued="true"/>
     <field name="stream_name" type="lowercase" indexed="false" stored="true"/>
     <field name="stream_source_info" type="lowercase" indexed="false" stored="true"/>
     <field name="stream_size" type="lowercase" indexed="false" stored="true"/>

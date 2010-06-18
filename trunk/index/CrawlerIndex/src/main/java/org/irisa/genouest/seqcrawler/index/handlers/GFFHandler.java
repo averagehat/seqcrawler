@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,8 +16,13 @@ import org.apache.solr.common.SolrInputDocument;
 import org.irisa.genouest.seqcrawler.index.Constants;
 import org.irisa.genouest.seqcrawler.index.IndexManager;
 import org.irisa.genouest.seqcrawler.index.SequenceHandler;
+import org.irisa.genouest.seqcrawler.index.Constants.STORAGEIMPL;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
+import org.irisa.genouest.seqcrawler.index.exceptions.StorageException;
 import org.irisa.genouest.seqcrawler.index.handlers.gff.GFF3Record;
+import org.irisa.genouest.seqcrawler.index.storage.StorageManager;
+import org.irisa.genouest.seqcrawler.index.storage.StorageManagerInterface;
+import org.irisa.genouest.seqcrawler.index.storage.StorageObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,6 +70,7 @@ public class GFFHandler implements SequenceHandler {
     	sourceFile = f.getAbsolutePath();
     	BufferedReader bf = new BufferedReader(new FileReader(f));
     	this.parse(bf);
+    	bf.close();
     }
     
     /**
@@ -74,6 +81,7 @@ public class GFFHandler implements SequenceHandler {
 	  */
     public void parse(BufferedReader bf) throws IOException, IndexException {
     	long nbDocs = 0;
+    	boolean goFasta = false;
     	if(indexManager==null) throw new IndexException("IndexManager is not set");
         BufferedReader fr = bf;
         String line = null;
@@ -130,12 +138,28 @@ public class GFFHandler implements SequenceHandler {
                 }
 
             }
+            else {
+            	if(line.startsWith("##FASTA")) {
+            		log.debug("GFF definitions are over, now parsing fasta content");
+            		goFasta = true;
+            		break;
+            	}
+            }
         }
+        
         try {
 			indexManager.getServer().commit();
 		} catch (SolrServerException e) {
 			log.error(e.getMessage());
 		}
+		
+		if(goFasta && indexManager.getArgs().containsKey(Constants.STORE)) {
+			log.error("Parse Fasta of GFF file");
+			FastaHandler fastaHandler = new FastaHandler(this.bank);
+			fastaHandler.setIndexManager(indexManager);
+			fastaHandler.parseFasta(fr);
+		}
+		
 		log.info("Number of documents indexed: "+nbDocs);
     }
 
@@ -147,6 +171,47 @@ public class GFFHandler implements SequenceHandler {
 
 	public long getNbParsingErrors() {
 		return nbParsingErrors;
+	}
+	
+	/**
+	 * Send FASTA raw data in GFF file to a remote backend
+	 */
+	private void storeFasta() {
+		//TODO
+		 StorageManager storageMngr = new StorageManager();
+		 String host = indexManager.getArgs().get("stHost");
+		 String port = indexManager.getArgs().get("stPort");
+		 HashMap<String,String> map = new HashMap<String,String>();
+		 if(host!=null) {
+			 map.put("host", host);
+			 log.debug("Using host "+host);
+		 }
+		 if(port!=null) {
+			 map.put("port", host);
+			 log.debug("Using port "+host);
+		 }
+		 if(map.size()>0) {
+		 storageMngr.setArgs(map);
+		 }
+		 StorageManagerInterface storage = storageMngr.get(STORAGEIMPL.RIAK);
+
+		 StorageObject stObj = new StorageObject();
+		  stObj.setId("sampleid");
+		  HashMap<String,String> list = new HashMap<String,String>();
+		  list.put("meta1", "value1");
+		  list.put("meta2", "value2");  
+		  stObj.setMetadata(list);
+		  String content = "abcdeaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabba";
+		  stObj.setContent(content);
+		  
+			try {
+				storage.store(stObj);
+			} catch (StorageException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  
+		  
 	}
 }
 

@@ -1,5 +1,6 @@
 package org.irisa.genouest.seqcrawler.index;
 
+import org.irisa.genouest.seqcrawler.index.handlers.FastaHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.GFFHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.RawFileHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.ReadSeqFileHandler;
@@ -34,6 +35,11 @@ public class GenericSequenceHandler {
 		case READSEQ:
 		{
 			handler = new ReadSeqFileHandler(bank);
+			break;
+		}
+		case FASTA:
+		{
+			handler = new FastaHandler(bank);
 			break;
 		}
 		default:

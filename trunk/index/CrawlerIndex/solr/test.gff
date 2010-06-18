@@ -10599,3 +10599,7 @@ NC_002745	GenOuest	regRNA	2008571	2009086	.	+	.	ID=sprE;Name=sprE;Note=Pathogeni
 NC_002745	GenOuest	regRNA	2010789	2011001	.	+	.	ID=sprF;Name=sprF;Note=Pathogenicity islands N315 island
 NC_002745	GenOuest	regRNA	2010789	2011001	.	-	.	ID=sprG;Name=sprG;Note=Pathogenicity islands N315 island
 NC_002745	GenOuest	regRNA	843706	844543	.	+	.	ID=tmRNA;Name=tmRNA;Note=Core genome
+##FASTA
+>NC_002745
+aaaaaaaaagggggggggggggggcccccccccccccc
+aaaaaaaaaacccccccccccccctttttttttttttt

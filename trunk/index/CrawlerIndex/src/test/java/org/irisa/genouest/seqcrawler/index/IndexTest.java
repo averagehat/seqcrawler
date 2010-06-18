@@ -3,6 +3,7 @@ package org.irisa.genouest.seqcrawler.index;
 import java.io.File;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.cli.ParseException;
@@ -11,6 +12,11 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.irisa.genouest.seqcrawler.index.Index;
+import org.irisa.genouest.seqcrawler.index.Constants.STORAGEIMPL;
+import org.irisa.genouest.seqcrawler.index.exceptions.StorageException;
+import org.irisa.genouest.seqcrawler.index.storage.StorageManager;
+import org.irisa.genouest.seqcrawler.index.storage.StorageManagerInterface;
+import org.irisa.genouest.seqcrawler.index.storage.StorageObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -73,7 +79,7 @@ public class IndexTest
     /**
      * Main app testing
      */
-   
+ 
      
     public void testIndex()
     {
@@ -193,6 +199,140 @@ public class IndexTest
 	        assertEquals(docs.get(1).getFieldValue("file"),"2368-4735");
     }
 
+    
+    public void testIndexFasta()
+    {
+    	try {
+    	    Index index = new Index();
+			index.index(new String[] {"-f","./solr/test.fasta","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/","-t","fasta"});
+		} catch (IOException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParserConfigurationException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SAXException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SolrServerException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParseException e) {
+			log.error(e.getMessage());
+			fail();
+		}
+		// Look for id AF064181
+		SolrDocumentList docs = execQuery("id:AF064181");
+		assertTrue(docs.size()==1);
+		log.debug(docs.get(0).toString());
+		assertEquals(docs.get(0).getFieldValue("stream_content_type"),"biosequence/fasta");
+    }
 
+    public void testIndexFastaWithStorage() throws StorageException
+    {
+    	String host = System.getProperty("storageHost");
+    	 
+    	try {
+    	    Index index = new Index();
+    	   
+    	    // If not set, do not run the test
+    	    if(host==null) return;
+    	    log.error("Using host: "+host);
+			index.index(new String[] {"-f","./solr/test.fasta","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/","-t","fasta","-store","-stHost",host});
+		} catch (IOException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParserConfigurationException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SAXException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SolrServerException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParseException e) {
+			log.error(e.getMessage());
+			fail();
+		}
+
+		StorageManager storageMngr = new StorageManager();
+
+			 HashMap<String,String> map = new HashMap<String,String>();
+			 map.put("host", host);
+			 map.put("max", "10");
+			 storageMngr.setArgs(map);
+			 log.info("Using host "+host);
+		 
+		StorageManagerInterface storage = storageMngr.get(STORAGEIMPL.RIAK);
+
+		
+		try {
+			StorageObject storedObject = storage.get("AF064181");
+			log.debug(storedObject.getContent());
+			assertTrue(storedObject.getContent().startsWith("acgcgggggggggggggg"));
+		} catch (StorageException e) {
+			log.error(e.getMessage());
+			fail();
+		}
+		finally {
+			storage.deleteAll("AF064181");
+			storage.deleteAll("AF064185");
+		}
+		
+    }
+   
+    
+    public void testIndexGFFFastaWithStorage() throws StorageException
+    {
+    	String host = System.getProperty("storageHost");
+    	 
+    	try {
+    	    Index index = new Index();
+    	   
+    	    // If not set, do not run the test
+    	    if(host==null) return;
+    	    log.error("Using host: "+host);
+			index.index(new String[] {"-f","./solr/test.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/","-t","gff","-store","-stHost",host});
+		} catch (IOException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParserConfigurationException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SAXException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SolrServerException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParseException e) {
+			log.error(e.getMessage());
+			fail();
+		}
+
+		StorageManager storageMngr = new StorageManager();
+
+			 HashMap<String,String> map = new HashMap<String,String>();
+			 map.put("host", host);
+			 storageMngr.setArgs(map);
+			 log.info("Using host "+host);
+		 
+		StorageManagerInterface storage = storageMngr.get(STORAGEIMPL.RIAK);
+
+		
+		try {
+			StorageObject storedObject = storage.get("NC_002745");
+			log.debug(storedObject.getContent());
+			assertTrue(storedObject.getContent().startsWith("aaaaaaaaagggggggggggggggcccccc"));
+		} catch (StorageException e) {
+			log.error(e.getMessage());
+			fail();
+		}
+		finally {
+			storage.deleteAll("NC_002745");
+		}
+		
+    }
     
 }

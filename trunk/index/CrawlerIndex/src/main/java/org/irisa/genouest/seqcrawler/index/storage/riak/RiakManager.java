@@ -114,7 +114,7 @@ public class RiakManager implements StorageManagerInterface{
 		log.debug("fetch object "+key);
 		StorageObject object = new StorageObject();
 		FetchResponse response = riak.fetch(BUCKET, key);
-		log.info(response.getBody());
+		log.debug(response.getBody());
 		RiakObject ro =null;
 		if (response.hasObject()) {
 		  ro = response.getObject();
