@@ -1,6 +1,8 @@
 package org.irisa.genouest.seqcrawler.index;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -14,6 +16,7 @@ import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.core.CoreContainer;
+import org.irisa.genouest.seqcrawler.index.Constants.STORAGEIMPL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -34,6 +37,22 @@ public class IndexManager {
 	// For embedded server only
 	private CoreContainer coreContainer = null;
 	
+	Map<String,String> args = new HashMap<String,String>();
+	
+	private Constants.STORAGEIMPL storageImpl = STORAGEIMPL.RIAK;
+	
+	public Constants.STORAGEIMPL getStorageImpl() {
+		return storageImpl;
+	}
+
+	public void setStorageImpl(Constants.STORAGEIMPL storageImpl) {
+		this.storageImpl = storageImpl;
+	}
+
+	public Map<String, String> getArgs() {
+		return args;
+	}
+
 	/**
 	 * Initiate index server manager and starts an embedded server if url is null instead of connecting to a remote URL.
 	 * In case of embedded server, a shutdown operation is required at the end of the operations.

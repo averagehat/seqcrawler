@@ -22,6 +22,14 @@ public class StorageManager {
 	public static void main(String[] args) {
 
 	}
+	public StorageManager() {
+		
+	}
+	
+	public StorageManager(Map<String,String> args) {
+		this.args = args;
+	}
+	
 
 	Map<String,String> args = new HashMap<String,String>();
 	

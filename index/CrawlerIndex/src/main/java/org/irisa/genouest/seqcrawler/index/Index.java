@@ -56,7 +56,9 @@ public class Index
 		return nbErrors;
 	}
 
-	
+	boolean doStore = false;
+	String stHost=null;
+	String stPort=null;
 	
 	
 	/**
@@ -104,6 +106,10 @@ public class Index
         
         options.addOption("url", true, "url of Solr server");
 
+        options.addOption("store", false, "Use database storage for raw data (Fasta in GFF file for example)");
+        options.addOption("stHost", true, "If store,Host for storage backend, default is localhost");
+        options.addOption("stPort", true, "If store,Port for storage backend, default is 8098");
+        
         CommandLineParser parser = new PosixParser();
         CommandLine cmd = parser.parse( options, args);
         
@@ -137,6 +143,7 @@ public class Index
         	useShards = true;
         }
         
+        
         if(cmd.hasOption("debug")) {
         	DEBUG=true;
         }
@@ -162,6 +169,18 @@ public class Index
         System.setProperty("solr.data.dir", solrData);        
         
         indexMngr = new IndexManager();
+        
+        if(cmd.hasOption("store")) {
+        	indexMngr.getArgs().put("store", "true");
+        	if(cmd.hasOption("stHost")) {
+        		stHost = cmd.getOptionValue("stHost");
+        		indexMngr.getArgs().put("host", stHost);
+        	}
+        	if(cmd.hasOption("stPort")) {
+        		stPort = cmd.getOptionValue("stPort");
+        		indexMngr.getArgs().put("port", stPort);
+        	}
+        }
         
         if(useEmbeddedServer) {
         	indexMngr.initServer(null);

@@ -38,13 +38,15 @@ import org.slf4j.LoggerFactory;
 
 public class ReadSeqFileHandler implements SequenceHandler {
 	
-private IndexManager indexManager = null;
+    private IndexManager indexManager = null;
 	
 	private long nbParsingErrors = 0;
 
 	private Logger log = LoggerFactory.getLogger(ReadSeqFileHandler.class);
 	
     private String bank=Constants.BANK_DEFAULT;
+    
+    private String streamName = null;
 
     public ReadSeqFileHandler() {
     	
@@ -69,6 +71,8 @@ private IndexManager indexManager = null;
 	public void parse(File f) {
 		long nbDocs = 0;
 		long startPos = 0;
+		
+		streamName = f.getAbsoluteFile().toString();
 		
 		Readseq rd= new Readseq();
 		ArrayList<String[]> keyValues =  new ArrayList<String[]>();
