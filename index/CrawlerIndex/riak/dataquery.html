@@ -1,0 +1,139 @@
+ <html>                                                                  
+ <head>                                                                  
+ <script type="text/javascript" src="jquery-1.4.2.min.js"></script>   
+  <script type="text/javascript" src="jquery.url.packed.js"></script>       
+ <script type="text/javascript">                                         
+   // we will add our javascript code here
+   $(document).ready(function() {
+   // generate markup
+   $source = jQuery.url.param("source")
+   $id = jQuery.url.param("id")
+   $start = parseInt(jQuery.url.param("start"));
+   $stop = parseInt(jQuery.url.param("stop"));
+   $("#query").append("source = "+$source+", id = "+$id+", start = "+$start+", stop = "+$stop); 
+   $("#transcriptsource").append($id);
+   $("#source").append($source+","+$start+"-"+$stop);
+   $progressSource=0;
+   $progressTranscript=0;
+   $nbSourceShard=1;
+   $nbTranscriptShard=1;
+   $("#progress_source").append("Progress source: "+$progressSource+"%");
+   $("#progress_transcript").append("Progress transcript: "+$progressTranscript+"%");
+   loadSource($source);  
+   if($id!=$source) {
+	   loadData($id);
+   }
+   });
+   
+   function loadData(id) {
+		$.get("/riak/bank/"+id,
+				   function(data){
+			          //$("#transcriptContent").append(data.content);
+			          
+			          //var obj = jQuery.parseJSON(data);
+			          var obj = eval('(' + data + ')');
+			          		          
+			          $("#transcriptContent").append(obj.content);
+			          		          
+			          // Has shards?
+			          shards = data.shards;
+				      if(data.shards && shards!="") {				    
+	
+				         size = shards.length;
+				         
+				         $nbTranscriptShard = size +1;
+				         $progressTranscript++; 
+				         $("#progress_transcript").replaceWith("Progress transcript: "+($progressTranscript/$nbTranscriptShard)*100+"%");
+				         
+				          for(s=0;s<size;s++) {
+					          //load shard
+							 shard =shards.shift();
+							 loadData(shard);
+				          }			          
+			          }
+				      else {
+					         $progressTranscript++; 
+					         $("#progress_transcript").replaceWith("Progress transcript: "+($progressTranscript/$nbTranscriptShard)*100+"%");
+
+				      }
+				   },"application/json"
+				 );
+		 }
+
+function loadSource(source) {
+			$.get("/riak/bank/"+source,
+				function(data){
+		          var obj = eval('(' + data + ')');
+		          insert=0;
+                  objStart = parseInt(obj.metadata.start);
+                  objStop = parseInt(obj.metadata.stop);
+                  
+		          if($start && $stop) {
+                  		         
+		          if($start<=objStop && $start >= objStart) {	         
+		          insert=1;
+		          }
+		          // Case stop is between start and stop of shard
+		          if($stop<=objStop && $stop >= objStart) {
+		          insert=1;
+		          }
+		          // Casewhere it overlaps the shard
+		          if($stop>=objStop && $start <= objStart) {
+		              insert=1;
+		          }
+		          }
+		          else {
+			          insert = 1;
+		          }
+		          if(insert==1) {
+			          cutLeft = 0;
+			          cutRight=0;
+			          if($start>objStart) {
+                          cutLeft = $start - objStart;
+			          }
+			          if($stop<objStop) {
+                          cutRight = objStop - $stop;
+			          }
+		        	  $("#sourceContent").append(obj.content.substring(cutLeft, obj.content.length - cutRight));
+		          }
+		          
+		          $("#metadata").append(obj.metadata);
+		          // Has shards?
+			          shards = data.shards;
+				      if(data.shards && shards!="") {
+	
+				         size = shards.length;
+				         $nbSourceShard = size +1;
+				         $progressSource++; 
+				         $("#progress_source").replaceWith("Progress source: "+($progressSource/$nbSourceShard)*100+"%");
+
+				         
+				          for(s=0;s<size;s++) {
+					          //load shard
+							 shard =shards.shift();
+							 loadData(shard);
+				          }			          
+			          }
+				      else {
+					         $progressSource++; 
+					         $("#progress_source").replaceWith("Progress source: "+($progressSource/$nbSourceShard)*100+"%");
+
+				      }
+				} ,"application/json" 
+					 );
+		
+	}
+                                        
+ </script>
+ <title>SeqCrawler data query page</title>                                                               
+ </head>                                                                 
+ <body>
+   <div id="header">Result data for query: <div id="query"></div></div>                                                                  
+   <div id="metadata"></div>
+   <div id="progress_transcript"></div>
+   <div id="progress_source"></div>
+   <div id="transcript"><p>Transcript:</p><div id="transcriptsource" style="background-color: lavender"></div><div id="transcriptContent"></div></div>
+   <div id="data"><p>Source:</p><div id="source" style="background-color: lavender"></div><div id="sourceContent"></div></div>
+   <div id="footer">Powered by GenOuest (http://www.genouest.org)</div>                                        
+ </body>                                                                 
+ </html>

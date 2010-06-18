@@ -83,20 +83,26 @@ public class StorageObject {
 
 	public StorageObject[] split(long max) {
 		int length = this.content.length();
-		if(this.content.length()<max) return new StorageObject[] { this };
+		if(this.content.length()<max) { 
+			metadata.put("start", "0");
+			metadata.put("stop",String.valueOf(length));
+			return new StorageObject[] { this };
+		}
 		// If size > max, split current
 		
 		int nbshards = (int) Math.ceil(length / max) ;
 		StorageObject[] list = new StorageObject[nbshards];
 		int start = 0;
 		int size = (int) (length/nbshards);
-		log.info("Split in "+nbshards+" of size "+size);
+		log.debug("Split in "+nbshards+" of size "+size);
 		for(int i=0;i<nbshards;i++) {
 			int end = start+size;
 			if(end>length) end=length-1;
 			String shardContent = content.substring(start, end);
-			log.info("CONTENT: "+shardContent);
+			log.debug("CONTENT: "+shardContent);
 			StorageObject object = new StorageObject();
+			metadata.put("start", String.valueOf(start));
+			metadata.put("stop",String.valueOf(end));
 			if(i==0) {
 				// For first shard, keep original name
 				object.setId(id);
@@ -108,6 +114,7 @@ public class StorageObject {
 				object.setShards(shards);
 			}
 			else {
+				object.setMetadata(metadata);
 				object.setId(id+".shard"+i);
 			}
 			object.setContent(shardContent);
