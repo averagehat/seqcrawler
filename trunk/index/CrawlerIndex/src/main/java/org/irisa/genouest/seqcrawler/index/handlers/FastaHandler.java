@@ -164,6 +164,7 @@ public class FastaHandler implements SequenceHandler {
 						int nm = ma.groupCount();
 						id = ma.group(nm-1); // ? best is last ?
 						doc.addField("accession", id);
+						log.info("New fasta doc: "+id);
 						// addIndexField("name",id); //? or is it ma.group(0) -
 						// all of x|y|z ?
 						for (int i = nm - 2; i > 1; i--) {

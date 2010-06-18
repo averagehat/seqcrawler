@@ -11,6 +11,12 @@
      </p>
      #end
   #end
+  #if($doc.getFieldValues("stream_content_type").get(0)=="biosequence/gff")
+   <p>
+      <!-- HOST defined in solrConfig-->
+      <a href="http://#param('stHost'):8098/riak/web/dataquery.html?id=$doc.getFieldValues('id').get(0)&source=$doc.getFieldValues('chr').get(0)&start=$doc.getFieldValues('start').get(0)&stop=$doc.getFieldValues('end').get(0)" target="_blank">Get raw data</a>
+   </p>
+  #end
   #if($params.getBool("debugQuery",false))
     <a href="#" onclick='jQuery(this).siblings("pre").toggle(); return false;'>toggle explain</a>
     <pre style="display:none">$response.getExplainMap().get($doc.getFirstValue('id'))</pre>

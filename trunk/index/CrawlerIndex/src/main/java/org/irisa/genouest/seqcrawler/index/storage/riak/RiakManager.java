@@ -27,7 +27,7 @@ import com.basho.riak.client.response.FetchResponse;
 import com.basho.riak.client.response.StoreResponse;
 
 /**
- * Storage implementaztion on a RIAK backend
+ * Storage implementation on a RIAK backend
  * <br/>Riak Quick start<br/>
  *
  * <p>Connect to Riak:</p>
@@ -63,6 +63,10 @@ public class RiakManager implements StorageManagerInterface{
 	private static final String BUCKET = "bank";
 	
 	
+	public static String getBucket() {
+		return BUCKET;
+	}
+
 	private String host = "localhost";
 	private String port = "8098";
 	
@@ -177,6 +181,9 @@ public class RiakManager implements StorageManagerInterface{
 		 StoreResponse response = riak.store(ro);
 		 if(response.isError()) {
 			 throw new StorageException("Error when sending data "+response.getBody());
+		 }
+		 else {
+			 log.info("New object "+sobject.id()+" in Storage OK");
 		 }
 		 }
 	}

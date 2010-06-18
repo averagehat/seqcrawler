@@ -154,7 +154,7 @@ public class GFFHandler implements SequenceHandler {
 		}
 		
 		if(goFasta && indexManager.getArgs().containsKey(Constants.STORE)) {
-			log.error("Parse Fasta of GFF file");
+			log.info("Parse Fasta of GFF file");
 			FastaHandler fastaHandler = new FastaHandler(this.bank);
 			fastaHandler.setIndexManager(indexManager);
 			fastaHandler.parseFasta(fr);

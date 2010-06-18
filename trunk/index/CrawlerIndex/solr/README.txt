@@ -12,6 +12,9 @@ Must be updated to index data location. data dir must contain index and spellche
 <dataDir>${solr.data.dir:./solr/data}</dataDir>
 
 
+Update host to Riak server (stHost) in itas request handler
+
+
 ************************************
 Files installation
 
