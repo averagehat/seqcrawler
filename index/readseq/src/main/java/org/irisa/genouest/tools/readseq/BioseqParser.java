@@ -47,7 +47,6 @@ public class BioseqParser {
 	boolean ended = false;
 
 	protected void finishMainRecord(String curID) {
-		// TODO add url when reading size and position is fixed
 		try {
 			if (curID != null) {
 				log.debug("# Add id: " + curID);
