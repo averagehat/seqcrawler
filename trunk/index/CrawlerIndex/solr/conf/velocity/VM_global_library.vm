@@ -36,6 +36,21 @@
   #end
 #end
 
+#macro(link_to_mobile_previous_page $text)
+  #if($page.current_page_number > 1)
+    #set($prev_start = $page.start - $page.results_per_page)
+    <a class="prev-page" href="#url_for_mobile_start($prev_start)">$text</a>
+  #end
+#end
+
+#macro(link_to_mobile_next_page $text)
+  #if($page.current_page_number < $page.page_count)
+    #set($next_start = $page.start + $page.results_per_page)
+    <a class="next-page" href="#url_for_mobile_start($next_start)">$text</a>
+  #end
+#end
+
+
 #macro(link_to_page $page_number $text)
   #if($page_number == $page.current_page_number)
     $text

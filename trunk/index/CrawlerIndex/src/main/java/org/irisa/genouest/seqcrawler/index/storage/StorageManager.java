@@ -60,6 +60,11 @@ public class StorageManager {
 			System.exit(0);
 			break;
 		}
+		case MONGODB: {
+			//TODO add mongodb implementation
+			log.error("Mongodb implementation is not yet available!");
+			System.exit(0);
+		}	
 		default: {
 			manager = new RiakManager(args);
 			break;

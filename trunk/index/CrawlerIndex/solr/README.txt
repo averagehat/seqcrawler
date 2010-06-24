@@ -11,8 +11,9 @@ If index shards is supported, the following lines must be uncommented and update
 Must be updated to index data location. data dir must contain index and spellchecker subdirectories.
 <dataDir>${solr.data.dir:./solr/data}</dataDir>
 
+Solritas config: (request handlers /itas /mobile /mobiledetails)
+update storageHost,gbHost hosts and ports where Gbrowse and Storage backend are installed
 
-Update host to Riak server (stHost) in itas request handler
 
 Apache configuration to restrict write operations from behind network for storage host/virtual host
 <LIMIT PUT DELETE>
