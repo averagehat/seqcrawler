@@ -80,6 +80,8 @@ sub solrInit {
   $self->{maxresult}    = $self->solrConfig( [qw(maxresult)], 99999999);
   $self->{FORMAT}       = "gff";
   $self->{BANK}         = $self->solrConfig( [qw(BANK bank)], "all") unless($self->{BANK});
+  $self->{STORAGEURL}   = $self->solrConfig( [qw(STORAGEURL storageurl)], "undefined") unless($self->{STORAGEURL});
+
 
   if ($self->{FORMAT} eq 'gff') {
     $self->{is_gff}= 1; 
@@ -253,6 +255,9 @@ sub _json2feature {
        } # format:Target=name+tstar+tstop
     elsif (!$name && $tag =~ /^Alias$/i) { $name= $values[0]; }
     }
+    
+  push @attributes,['raw data' => '<a href="'.$self->{STORAGEURL}.'?id='.$id.'&source='.$chr.'&start='.$start.'&stop='.$stop.'"> See raw sequence and transcript</a>'] if($self->{STORAGEURL} ne "undefined");;
+    
 
   my $gclass= $feattype;  ## what is gclass - group class - need parent class if parent !
   if (@parents) {
