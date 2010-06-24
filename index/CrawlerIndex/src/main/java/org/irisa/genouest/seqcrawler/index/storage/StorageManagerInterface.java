@@ -11,4 +11,5 @@ public interface StorageManagerInterface {
 	public void delete(String key) throws StorageException;
 	public void deleteAll(String key) throws StorageException;
 	public List<String> getKeys() throws StorageException ;
+	public void setBucket(String bucket);
 }

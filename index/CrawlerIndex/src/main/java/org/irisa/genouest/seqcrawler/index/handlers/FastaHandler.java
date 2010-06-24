@@ -41,6 +41,10 @@ public class FastaHandler implements SequenceHandler {
 	
 	private StorageManagerInterface storageInterface = null;
 	
+	public StorageManagerInterface getStorageInterface() {
+		return storageInterface;
+	}
+
 	private long nbParsingErrors = 0;
 
 	private Logger log = LoggerFactory.getLogger(FastaHandler.class);
@@ -89,6 +93,12 @@ public class FastaHandler implements SequenceHandler {
 
 	public void setIndexManager(IndexManager manager) {
 		 indexManager = manager;
+		 String doStore = indexManager.getArgs().get(Constants.STORE);
+		 if(doStore!=null && !doStore.equalsIgnoreCase("false") && storageInterface == null) {
+				StorageManager storageManager = new StorageManager();
+				storageManager.setArgs(indexManager.getArgs());
+			    storageInterface = storageManager.get(indexManager.getStorageImpl());
+		 }
 	}
 	
 	
@@ -257,11 +267,7 @@ public class FastaHandler implements SequenceHandler {
 		indexManager.getServer().add(doc);
 		
 		if(doStore!=null && doStore.equals("true") && curID!=null) {
-			if(storageInterface == null) {
-				StorageManager storageManager = new StorageManager();
-				storageManager.setArgs(indexManager.getArgs());
-			    storageInterface = storageManager.get(indexManager.getStorageImpl());
-			}
+			
 			StorageObject object = new StorageObject();
 			object.setId(curID);
 			object.setContent(content);

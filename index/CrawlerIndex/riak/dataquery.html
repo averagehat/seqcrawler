@@ -1,7 +1,10 @@
  <html>                                                                  
  <head>                                                                  
- <script type="text/javascript" src="jquery-1.4.2.min.js"></script>   
-  <script type="text/javascript" src="jquery.url.packed.js"></script>       
+ <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+ <script type="text/javascript" src="jquery-ui-1.8.2.custom.min.js"></script>    
+  <script type="text/javascript" src="jquery.url.packed.js"></script>  
+ <link rel="stylesheet" type="text/css" href="main.css"/>
+ <link rel="stylesheet" type="text/css" href="jquery-ui-1.8.2.custom.css"/>     
  <script type="text/javascript">                                         
    // we will add our javascript code here
    $(document).ready(function() {
@@ -17,8 +20,19 @@
    $progressTranscript=0;
    $nbSourceShard=1;
    $nbTranscriptShard=1;
-   $("#progress_source").append("Progress source: "+$progressSource+"%");
-   $("#progress_transcript").append("Progress transcript: "+$progressTranscript+"%");
+   $("#progress_source").progressbar({ value: $progressSource  });
+   $("#progress_transcript").progressbar({ value: $progressTranscript });
+   $('.transcript .head').click(function() {
+		$(this).next().toggle();
+		return false;
+	}).next().hide();
+   $('.data .head').click(function() {
+		$(this).next().toggle();
+		return false;
+	}).next().hide();
+  
+   //$("#progress_source").append("Progress source: "+$progressSource+"%");
+   //$("#progress_transcript").append("Progress transcript: "+$progressTranscript+"%");
    loadSource($source);  
    if($id!=$source) {
 	   loadData($id);
@@ -43,8 +57,8 @@
 				         
 				         $nbTranscriptShard = size +1;
 				         $progressTranscript++; 
-				         $("#progress_transcript").replaceWith("Progress transcript: "+($progressTranscript/$nbTranscriptShard)*100+"%");
-				         
+				         //$("#progress_transcript").replaceWith("Progress transcript: "+($progressTranscript/$nbTranscriptShard)*100+"%");
+	                     $("#progress_transcript").progressbar({ value: ($progressTranscript/$nbTranscriptShard)*100 });
 				          for(s=0;s<size;s++) {
 					          //load shard
 							 shard =shards.shift();
@@ -53,7 +67,7 @@
 			          }
 				      else {
 					         $progressTranscript++; 
-					         $("#progress_transcript").replaceWith("Progress transcript: "+($progressTranscript/$nbTranscriptShard)*100+"%");
+					         $("#progress_transcript").progressbar({ value: ($progressTranscript/$nbTranscriptShard)*100 });
 
 				      }
 				   },"application/json"
@@ -105,8 +119,8 @@ function loadSource(source) {
 				         size = shards.length;
 				         $nbSourceShard = size +1;
 				         $progressSource++; 
-				         $("#progress_source").replaceWith("Progress source: "+($progressSource/$nbSourceShard)*100+"%");
-
+				         //$("#progress_source").replaceWith("Progress source: "+($progressSource/$nbSourceShard)*100+"%");
+                         $("#progress_source").progressbar({ value: ($progressSource/$nbSourceShard)*100 });
 				         
 				          for(s=0;s<size;s++) {
 					          //load shard
@@ -116,8 +130,8 @@ function loadSource(source) {
 			          }
 				      else {
 					         $progressSource++; 
-					         $("#progress_source").replaceWith("Progress source: "+($progressSource/$nbSourceShard)*100+"%");
-
+					         //$("#progress_source").replaceWith("Progress source: "+($progressSource/$nbSourceShard)*100+"%");
+					         $("#progress_source").progressbar({ value: ($progressSource/$nbSourceShard)*100 });
 				      }
 				} ,"application/json" 
 					 );
@@ -128,12 +142,12 @@ function loadSource(source) {
  <title>SeqCrawler data query page</title>                                                               
  </head>                                                                 
  <body>
-   <div id="header">Result data for query: <div id="query"></div></div>                                                                  
+   <div id="header" class="query-box">Result data for query: <div id="query"></div></div>                                                                  
    <div id="metadata"></div>
-   <div id="progress_transcript"></div>
-   <div id="progress_source"></div>
-   <div id="transcript"><p>Transcript:</p><div id="transcriptsource" style="background-color: lavender"></div><div id="transcriptContent"></div></div>
-   <div id="data"><p>Source:</p><div id="source" style="background-color: lavender"></div><div id="sourceContent"></div></div>
-   <div id="footer">Powered by GenOuest (http://www.genouest.org)</div>                                        
+   <div>Progress transcript<div id="progress_transcript"></div></div>
+   <div>Progress source<div id="progress_source"></div></div>
+   <div id="transcript" class="results"><p class="title">Transcript:</p><div id="transcriptsource" style="background-color: lavender"></div><div id="transcriptContent"></div></div>
+   <div id="data" class="results"><p class="title">Source:</p><div id="source" style="background-color: lavender"></div><div id="sourceContent"></div></div>
+   <div id="footer"><hr width="70%"/>Powered by the <a href="http://www.genouest.org">GenOuest BioInformatics Plaform</a></div>                                        
  </body>                                                                 
  </html>

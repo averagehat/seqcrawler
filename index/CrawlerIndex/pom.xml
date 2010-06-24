@@ -256,7 +256,8 @@
 				<version>2.5</version>
 				<configuration>
 					<systemPropertyVariables>
-						<storageHost>osallou.genouest.org</storageHost>>
+						<storageHost>osallou.genouest.org</storageHost>
+						<storageBucket>test</storageBucket>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>

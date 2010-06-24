@@ -174,10 +174,10 @@ public class GFFHandler implements SequenceHandler {
 	}
 	
 	/**
-	 * Send FASTA raw data in GFF file to a remote backend
+	 * Sample function to send FASTA raw data in GFF file to a remote backend
 	 */
 	private void storeFasta() {
-		//TODO
+		
 		 StorageManager storageMngr = new StorageManager();
 		 String host = indexManager.getArgs().get("stHost");
 		 String port = indexManager.getArgs().get("stPort");
