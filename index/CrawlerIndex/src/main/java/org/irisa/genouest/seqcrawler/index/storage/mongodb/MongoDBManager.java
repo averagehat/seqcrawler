@@ -1,4 +1,4 @@
-package org.irisa.genouest.seqcrawler.index.storage.cassandra;
+package org.irisa.genouest.seqcrawler.index.storage.mongodb;
 
 import java.util.List;
 
@@ -7,11 +7,11 @@ import org.irisa.genouest.seqcrawler.index.storage.StorageManagerInterface;
 import org.irisa.genouest.seqcrawler.index.storage.StorageObject;
 
 /**
- * Not yet implemented. Cassandra db manager
+ * Not yet implemented. MongoDB manager
  * @author osallou
  *
  */
-public class CassandraManager implements StorageManagerInterface {
+public class MongoDBManager implements StorageManagerInterface {
 
 	public void delete(String key) throws StorageException {
 		// TODO Auto-generated method stub
@@ -33,14 +33,14 @@ public class CassandraManager implements StorageManagerInterface {
 		return null;
 	}
 
-	public void store(StorageObject object) throws StorageException {
+	public void setBucket(String bucket) {
 		// TODO Auto-generated method stub
 
 	}
 
-	public void setBucket(String bucket) {
+	public void store(StorageObject object) throws StorageException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
