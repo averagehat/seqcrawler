@@ -42,6 +42,9 @@
    function loadData(id) {
 		$.get("/riak/bank/"+id,
 				   function(data){
+			   if(!data) {
+                       alert("empty");
+			   }
 			          //$("#transcriptContent").append(data.content);
 			          
 			          //var obj = jQuery.parseJSON(data);
@@ -103,7 +106,7 @@ function loadSource(source) {
 			          cutLeft = 0;
 			          cutRight=0;
 			          if($start>objStart) {
-                          cutLeft = $start - objStart;
+                          cutLeft = ($start -1) - objStart;
 			          }
 			          if($stop<objStop) {
                           cutRight = objStop - $stop;
@@ -144,8 +147,8 @@ function loadSource(source) {
  <body>
    <div id="header" class="query-box">Result data for query: <div id="query"></div></div>                                                                  
    <div id="metadata"></div>
-   <div>Progress transcript<div id="progress_transcript"></div></div>
-   <div>Progress source<div id="progress_source"></div></div>
+   <div>Download progress for transcript<div id="progress_transcript"></div></div>
+   <div>Download progress for source<div id="progress_source"></div></div>
    <div id="transcript" class="results"><p class="title">Transcript:</p><div id="transcriptsource" style="background-color: lavender"></div><div id="transcriptContent"></div></div>
    <div id="data" class="results"><p class="title">Source:</p><div id="source" style="background-color: lavender"></div><div id="sourceContent"></div></div>
    <div id="footer"><hr width="70%"/>Powered by the <a href="http://www.genouest.org">GenOuest BioInformatics Plaform</a></div>                                        

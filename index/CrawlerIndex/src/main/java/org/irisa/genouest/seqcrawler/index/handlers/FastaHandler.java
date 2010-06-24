@@ -222,7 +222,7 @@ public class FastaHandler implements SequenceHandler {
 				else {
 					// Fasta content
 					if(doStore!=null && doStore.equals("true")) {
-						content+= aline + "\n";
+						content+= aline;
 					}
 				}
 				nbytesread += aline.length() + lineendsize;
