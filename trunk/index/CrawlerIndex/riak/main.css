@@ -22,6 +22,18 @@ body {
 .constraints-title {
   background: gray;
 }
+#transcriptContent {
+  max-width: 80em;
+  padding-left: 10em;
+  word-wrap: break-word;	
+}
+
+#sourceContent {
+  max-width: 80em;
+  padding-left: 10em;
+  word-wrap: break-word;	
+}
+
 
 .facet-fields {
   float: left;
