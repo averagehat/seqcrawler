@@ -2,7 +2,7 @@ package Bio::DB::GFF::Adaptor::solr;
 
 =head1 NAME
 
-Bio::DB::GFF::Adaptor::solr -- Database adaptor for a 
+Bio::DB::GFF::Adaptor::solr - Database adaptor for a 
   solr indexed genome feature table set
 
 
