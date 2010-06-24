@@ -14,6 +14,15 @@ Must be updated to index data location. data dir must contain index and spellche
 
 Update host to Riak server (stHost) in itas request handler
 
+Apache configuration to restrict write operations from behind network for storage host/virtual host
+<LIMIT PUT DELETE>
+order deny,allow
+deny from all
+allow from 192.168.1.*  // ?syntaxe allow from internal network
+</LIMIT>
+
+
+
 
 ************************************
 Files installation

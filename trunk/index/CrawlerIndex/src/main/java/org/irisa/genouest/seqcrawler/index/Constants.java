@@ -12,7 +12,8 @@ public class Constants {
 	}
 	
 	public static enum STORAGEIMPL {
-		RIAK
+		RIAK,
+		CASSANDRA
 	}
 	
 	public static final String STORE = "store";

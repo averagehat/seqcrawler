@@ -48,6 +48,19 @@ public class IndexManager {
 	public void setStorageImpl(Constants.STORAGEIMPL storageImpl) {
 		this.storageImpl = storageImpl;
 	}
+	
+	public IndexManager() {
+		String storageProperty = System.getProperty("storageImplementation");
+		if(storageProperty!=null) {
+			if(storageProperty.equalsIgnoreCase("riak")) {
+				storageImpl = Constants.STORAGEIMPL.RIAK;
+			}
+			else if(storageProperty.equalsIgnoreCase("cassandra")){
+				storageImpl = Constants.STORAGEIMPL.CASSANDRA;
+				
+			}
+		}
+	}
 
 	public Map<String, String> getArgs() {
 		return args;

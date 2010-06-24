@@ -60,10 +60,13 @@ public class RiakManager implements StorageManagerInterface{
 
 	private Logger log = LoggerFactory.getLogger(RiakManager.class);
 	
-	private static final String BUCKET = "bank";
+	/**
+	 * Default bucket name is "bank".
+	 */
+	private String BUCKET = "bank";
 	
 	
-	public static String getBucket() {
+	public String getBucket() {
 		return BUCKET;
 	}
 
@@ -101,6 +104,13 @@ public class RiakManager implements StorageManagerInterface{
 			}
 		}
 		riak = new RiakClient("http://"+host+":"+port+"/riak");
+		
+		String bucket = System.getProperty("storageBucket");
+		 if(bucket!=null) {
+			 log.debug("Using bucket "+bucket+" as set in system environment");
+		     this.setBucket(bucket); 
+		 }
+		
 		log.debug("New connection: "+riak.getConfig().getUrl());
 	}
 
@@ -211,5 +221,16 @@ public class RiakManager implements StorageManagerInterface{
 	 */
 	public void delete(String key) throws StorageException {
 		riak.delete(BUCKET, key);
+	}
+
+
+
+	/**
+	 * Sets the riak bucket where to send the data
+	 */
+	public void setBucket(String bucket) {
+		log.debug("Setting bucket to"+bucket);
+		BUCKET = bucket;
+		
 	}
 }

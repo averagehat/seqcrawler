@@ -65,7 +65,7 @@ public class StorageTest extends TestCase {
 			 log.info("Using host "+host);
 		 }
 		 StorageManagerInterface storage = storageMngr.get(STORAGEIMPL.RIAK);
-
+		 
 		 StorageObject stObj = new StorageObject();
 		  stObj.setId("sampleid");
 		  HashMap<String,String> list = new HashMap<String,String>();

@@ -444,8 +444,8 @@
    <field name="seqid" type="uuid" indexed="true" stored="true" default="NEW"/>
    <field name="chr" type="lowercase" indexed="true" stored="true"/>
    <field name="feature" type="lowercase" indexed="true" stored="true"/>
-   <field name="start" type="int" indexed="true" stored="true"/>
-   <field name="end" type="int" indexed="true" stored="true"/>
+   <field name="start" type="int" indexed="true" stored="true" multiValued="true"/>
+   <field name="end" type="int" indexed="true" stored="true" multiValued="true"/>
    <field name="strand" type="lowercase" indexed="true" stored="true"/>
    
    <!--  Store attributes but do not index it, just index sub params of attributes , those sub attrs are indexed but not stored. -->

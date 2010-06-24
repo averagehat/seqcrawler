@@ -6,6 +6,8 @@ import java.util.Map;
 import org.irisa.genouest.seqcrawler.index.Constants;
 import org.irisa.genouest.seqcrawler.index.handlers.GFFHandler;
 import org.irisa.genouest.seqcrawler.index.storage.riak.RiakManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Storage Handler to send and get raw data in a remote storage.
@@ -16,6 +18,8 @@ import org.irisa.genouest.seqcrawler.index.storage.riak.RiakManager;
  */
 public class StorageManager {
 
+	private Logger log = LoggerFactory.getLogger(StorageManager.class);
+	
 	/**
 	 * @param args
 	 */
@@ -49,6 +53,12 @@ public class StorageManager {
 			manager = new RiakManager(args);
 			break;
 
+		}
+		case CASSANDRA: {
+			//TODO add cassandra implementation
+			log.error("Cassandra implementation is not yet available!");
+			System.exit(0);
+			break;
 		}
 		default: {
 			manager = new RiakManager(args);
