@@ -9,7 +9,6 @@ import java.util.Set;
 import org.irisa.genouest.seqcrawler.index.exceptions.StorageException;
 import org.irisa.genouest.seqcrawler.index.storage.StorageManagerInterface;
 import org.irisa.genouest.seqcrawler.index.storage.StorageObject;
-import org.irisa.genouest.seqcrawler.index.storage.riak.RiakManager;
 import org.irisa.genouest.seqcrawler.tools.Tools;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 public class MockStorageManager implements StorageManagerInterface {
 
-	HashMap<String,String> map = new HashMap<String,String>();
+	static HashMap<String,String> map = new HashMap<String,String>();
 	
 	private Logger log = LoggerFactory.getLogger(MockStorageManager.class);
 	

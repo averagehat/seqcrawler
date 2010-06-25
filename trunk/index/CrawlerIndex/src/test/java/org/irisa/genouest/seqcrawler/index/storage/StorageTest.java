@@ -2,6 +2,7 @@ package org.irisa.genouest.seqcrawler.index.storage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -9,11 +10,14 @@ import junit.framework.TestSuite;
 
 import org.irisa.genouest.seqcrawler.index.Constants.STORAGEIMPL;
 import org.irisa.genouest.seqcrawler.index.exceptions.StorageException;
-import org.irisa.genouest.seqcrawler.tools.ToolsTest;
+import org.irisa.genouest.seqcrawler.index.storage.mongodb.MongoDBManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 public class StorageTest extends TestCase {
 
@@ -86,6 +90,34 @@ public class StorageTest extends TestCase {
 			  log.info("delete object");
 			  storage.deleteAll(stObj.id());
 		  }
+	 }
+	 
+	 public void testMongoDBConversion() {
+		 StorageObject object = new StorageObject();
+	    	object.setId("sample");
+	    	object.setContent("sampleData");
+	    	HashMap<String, String> map = new HashMap<String,String>();
+	    	map.put("key1","value1");
+	    	map.put("key2","value2");
+	    	object.setMetadata(map);
+	    	List<String> shards = new ArrayList<String>();
+	    	shards.add("shard1");
+	    	shards.add("shard2");
+	    	object.setShards(shards);
+	    	
+			DBObject mongoObject = new BasicDBObject();
+			mongoObject.put("seqid", object.id());
+			mongoObject.put("content", object.getContent());
+			mongoObject.put("metadata", object.getMetadata());
+			mongoObject.put("shards", object.getShards());			
+			
+			MongoDBManager manager = new MongoDBManager(null);
+			
+			StorageObject stobj = manager.getStorageObject(mongoObject);
+			assertEquals(object.getContent(),stobj.getContent());
+			assertEquals(object.getMetadata(),stobj.getMetadata());
+			assertEquals(object.getShards(),stobj.getShards());
+			assertEquals(object.id(),stobj.id());
 	 }
 
 }

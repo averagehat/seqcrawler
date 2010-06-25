@@ -238,7 +238,7 @@ public class IndexTest
     	    // If not set, do not run the test
     	    if(host==null) return;
     	    log.error("Using host: "+host);
-			index.index(new String[] {"-f","./solr/test.fasta","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/","-t","fasta","-store","-stHost",host});
+			index.index(new String[] {"-f","./solr/test.fasta","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/","-t","fasta","-store","-stHost",host,"-storage","mock"});
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			fail();
@@ -264,7 +264,7 @@ public class IndexTest
 			 storageMngr.setArgs(map);
 			 log.info("Using host "+host);
 		 
-		StorageManagerInterface storage = storageMngr.get(STORAGEIMPL.RIAK);
+		StorageManagerInterface storage = storageMngr.get(STORAGEIMPL.MOCK);
 
 		
 		try {
@@ -293,7 +293,7 @@ public class IndexTest
     	    // If not set, do not run the test
     	    if(host==null) return;
     	    log.error("Using host: "+host);
-			index.index(new String[] {"-f","./solr/test.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/","-t","gff","-store","-stHost",host});
+			index.index(new String[] {"-f","./solr/test.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/","-t","gff","-store","-stHost",host,"-storage","mock"});
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			fail();
@@ -318,7 +318,7 @@ public class IndexTest
 			 storageMngr.setArgs(map);
 			 log.info("Using host "+host);
 		 
-		StorageManagerInterface storage = storageMngr.get(STORAGEIMPL.RIAK);
+		StorageManagerInterface storage = storageMngr.get(STORAGEIMPL.MOCK);
 
 		
 		try {

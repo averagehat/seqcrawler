@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -17,6 +14,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.core.CoreContainer;
 import org.irisa.genouest.seqcrawler.index.Constants.STORAGEIMPL;
+import org.irisa.genouest.seqcrawler.index.storage.StorageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -49,16 +47,14 @@ public class IndexManager {
 		this.storageImpl = storageImpl;
 	}
 	
+	/**
+	 * Main constructor. Will set storage implentation to Riak by default. If a system environment variable "storageImplementation" 
+	 * is set, default will be replaced. See {@link Constants}.
+	 */
 	public IndexManager() {
 		String storageProperty = System.getProperty("storageImplementation");
 		if(storageProperty!=null) {
-			if(storageProperty.equalsIgnoreCase("riak")) {
-				storageImpl = Constants.STORAGEIMPL.RIAK;
-			}
-			else if(storageProperty.equalsIgnoreCase("cassandra")){
-				storageImpl = Constants.STORAGEIMPL.CASSANDRA;
-				
-			}
+			storageImpl = StorageManager.getStorageImpl(storageProperty);	
 		}
 	}
 

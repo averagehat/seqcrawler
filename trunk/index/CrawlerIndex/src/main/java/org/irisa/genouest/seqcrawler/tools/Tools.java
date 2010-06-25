@@ -58,6 +58,7 @@ public class Tools {
 	 * @param metadataJson Input json such as key : value , key : value , ...
 	 * @return The corresponding map
 	 */
+	@SuppressWarnings("unchecked")
 	public static Map<String, String> Json2Map(JSONObject metadataJson) {
 		HashMap<String,String> map = new HashMap<String,String>();
 		if(metadataJson==null || metadataJson.length()==0) return null;

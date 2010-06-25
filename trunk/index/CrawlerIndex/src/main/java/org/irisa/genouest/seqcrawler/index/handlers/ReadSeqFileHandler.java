@@ -1,7 +1,6 @@
 package org.irisa.genouest.seqcrawler.index.handlers;
 
 import iubio.readseq.BioseqDoc;
-import iubio.readseq.BioseqReader;
 import iubio.readseq.Readseq;
 import iubio.readseq.SeqFileInfo;
 
@@ -10,27 +9,17 @@ import java.io.CharArrayWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Vector;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
 import org.apache.solr.client.solrj.request.AbstractUpdateRequest.ACTION;
 import org.apache.solr.common.SolrInputDocument;
-import org.apache.solr.handler.extraction.ExtractingParams;
-import org.apache.solr.util.NamedList;
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
 import org.irisa.genouest.seqcrawler.index.Constants;
 import org.irisa.genouest.seqcrawler.index.IndexManager;
 import org.irisa.genouest.seqcrawler.index.SequenceHandler;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
-import org.irisa.genouest.seqcrawler.index.handlers.gff.GFF3Record;
 import org.irisa.genouest.tools.readseq.BioseqParser;
 import org.irisa.genouest.tools.readseq.SeqDocToIndexDoc;
 import org.slf4j.Logger;
@@ -107,7 +96,7 @@ public class ReadSeqFileHandler implements SequenceHandler {
 			    outwr.reset();
 			    SolrInputDocument doc = new SolrInputDocument();
 			    doc.addField("stream_content_type", rd.getBioseqFormat().contentType());
-			    doc.addField("stream_name", f.getAbsoluteFile());
+			    doc.addField("stream_name", streamName);
 			    doc.addField("file", startPos+"-"+rd.getInsReadlen());
 			    doc.addField("bank", bank);
 			    if(rd instanceof Readseq) {

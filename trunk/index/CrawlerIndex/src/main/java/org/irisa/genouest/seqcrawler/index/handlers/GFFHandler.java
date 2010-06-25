@@ -9,8 +9,6 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
 import org.irisa.genouest.seqcrawler.index.Constants;
@@ -174,8 +172,10 @@ public class GFFHandler implements SequenceHandler {
 	}
 	
 	/**
+	 * @deprecated
 	 * Sample function to send FASTA raw data in GFF file to a remote backend
 	 */
+	@SuppressWarnings("unused")
 	private void storeFasta() {
 		
 		 StorageManager storageMngr = new StorageManager();

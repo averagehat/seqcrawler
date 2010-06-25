@@ -2,26 +2,23 @@ package org.irisa.genouest.seqcrawler.index.handlers;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Vector;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
 import org.apache.solr.client.solrj.request.AbstractUpdateRequest.ACTION;
-import org.apache.solr.handler.extraction.ExtractingParams;
-import org.apache.solr.util.NamedList;
-import org.irisa.genouest.seqcrawler.index.Constants;
 import org.irisa.genouest.seqcrawler.index.IndexManager;
 import org.irisa.genouest.seqcrawler.index.SequenceHandler;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
-import org.irisa.genouest.seqcrawler.index.handlers.gff.GFF3Record;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Handler for raw data file. Data is not interpreted by the program. The file is sent "as is" to the indexing server.
+ * The remote server can try to interpret the content (pdf, open office ...) based on  file extension and autodetection.
+ * @author osallou
+ *
+ */
 public class RawFileHandler implements SequenceHandler {
 	
 private IndexManager indexManager = null;
@@ -30,7 +27,7 @@ private IndexManager indexManager = null;
 
 	private Logger log = LoggerFactory.getLogger(RawFileHandler.class);
 	
-    private String bank=Constants.BANK_DEFAULT;
+    //private String bank=Constants.BANK_DEFAULT;
 
     public RawFileHandler() {
     	
@@ -38,7 +35,7 @@ private IndexManager indexManager = null;
     
     public RawFileHandler(String lib) {
     	if(lib!=null) {
-    	this.bank = lib;
+    	//this.bank = lib;
     	}
     }
 

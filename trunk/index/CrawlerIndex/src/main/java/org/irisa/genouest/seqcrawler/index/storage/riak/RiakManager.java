@@ -2,13 +2,9 @@ package org.irisa.genouest.seqcrawler.index.storage.riak;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
-
-import org.irisa.genouest.seqcrawler.index.IndexManager;
 import org.irisa.genouest.seqcrawler.index.exceptions.StorageException;
 import org.irisa.genouest.seqcrawler.index.storage.StorageManagerInterface;
 import org.irisa.genouest.seqcrawler.index.storage.StorageObject;
@@ -18,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.basho.riak.client.RiakBucketInfo;
 import com.basho.riak.client.RiakClient;
 import com.basho.riak.client.RiakObject;
@@ -75,7 +70,7 @@ public class RiakManager implements StorageManagerInterface{
 	
 	/**
 	 * Maximum size of shards
-	 * TODO cut object if too large for storage
+	 * cut object if too large for storage
 	 */
     private long max = 10000000L;
     
@@ -117,9 +112,9 @@ public class RiakManager implements StorageManagerInterface{
 	
 		
 	/**
-	 * Fetch an object from remote storage. Object may contain shards, it does not retreive
+	 * Fetch an object from remote storage. Object may contain shards, it does not retrieve
 	 * the whole object content with its shards but only referenced key.
-	 * @param key id of the object to retreive
+	 * @param key id of the object to retrieve
 	 * @return StorageObject with object data and metadata
 	 */
 
