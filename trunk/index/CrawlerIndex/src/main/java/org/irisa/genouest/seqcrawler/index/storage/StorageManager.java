@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.irisa.genouest.seqcrawler.index.Constants;
 import org.irisa.genouest.seqcrawler.index.handlers.GFFHandler;
+import org.irisa.genouest.seqcrawler.index.storage.mock.MockStorageManager;
 import org.irisa.genouest.seqcrawler.index.storage.riak.RiakManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +65,11 @@ public class StorageManager {
 			//TODO add mongodb implementation
 			log.error("Mongodb implementation is not yet available!");
 			System.exit(0);
-		}	
+		}
+		case MOCK: {
+			log.warn("Using MOCK implementation, this is a backend simulation only");
+			manager = new MockStorageManager(args);
+		}
 		default: {
 			manager = new RiakManager(args);
 			break;

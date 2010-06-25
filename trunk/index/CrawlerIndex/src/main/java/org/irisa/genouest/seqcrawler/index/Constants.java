@@ -14,7 +14,8 @@ public class Constants {
 	public static enum STORAGEIMPL {
 		RIAK,
 		CASSANDRA,
-		MONGODB
+		MONGODB,
+		MOCK // For test, simulate storage backend
 	}
 	
 	public static final String STORE = "store";
