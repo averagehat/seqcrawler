@@ -64,7 +64,7 @@ public class StorageTest extends TestCase {
 			 storageMngr.setArgs(map);
 			 log.info("Using host "+host);
 		 }
-		 StorageManagerInterface storage = storageMngr.get(STORAGEIMPL.RIAK);
+		 StorageManagerInterface storage = storageMngr.get(STORAGEIMPL.MOCK);
 		 
 		 StorageObject stObj = new StorageObject();
 		  stObj.setId("sampleid");
