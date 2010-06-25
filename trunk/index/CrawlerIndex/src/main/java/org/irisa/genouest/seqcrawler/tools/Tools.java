@@ -12,10 +12,25 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Utils class
+ */
 public class Tools {
 
 	private static Logger log = LoggerFactory.getLogger(Tools.class);
 	
+	/**
+	 * Calculate size based on input description.
+	 * Valid values (integers) are:
+	 * <ul><li>10</li>
+	 * <li>10k e.g. 10.000</li>
+	 * <li>10m e.g. 10 mega</li>
+	 * <li>10g e.g. 10 giga</li>
+	 * </ul>
+	 * @param size input description
+	 * @return result size
+	 * @throws Exception
+	 */
 	public static long getSize(String size) throws Exception {
 		long value = 0;
 		if(size==null || size.length()==0) throw new Exception("Size value is null");
@@ -76,8 +91,8 @@ public class Tools {
 
 	/**
 	 * Converts a JSON array to a Java List
-	 * @param shardsJson
-	 * @return
+	 * @param shardsJson Input array
+	 * @return List of String from array
 	 */
 	public static List<String> Json2List(JSONArray shardsJson) {
 		ArrayList<String> list = new ArrayList<String>();
