@@ -3,7 +3,6 @@ package org.irisa.genouest.seqcrawler.index.tokenizer;
 import java.io.Reader;
 
 import org.apache.lucene.analysis.CharTokenizer;
-import org.irisa.genouest.seqcrawler.index.IndexTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

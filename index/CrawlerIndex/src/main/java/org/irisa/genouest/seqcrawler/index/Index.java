@@ -1,7 +1,7 @@
+
 package org.irisa.genouest.seqcrawler.index;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -16,10 +16,9 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
+import org.irisa.genouest.seqcrawler.index.storage.StorageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -107,6 +106,8 @@ public class Index
         options.addOption("url", true, "url of Solr server");
 
         options.addOption("store", false, "Use database storage for raw data (Fasta in GFF file for example)");
+        options.addOption("storage", true, "Storage implementation: riak(default), mongodb, cassandra, mock(test)");
+        
         options.addOption("stHost", true, "If store,Host for storage backend, default is localhost");
         options.addOption("stPort", true, "If store,Port for storage backend, default is 8098");
         
@@ -167,7 +168,7 @@ public class Index
         
         System.setProperty("solr.solr.home", solrHome);
         System.setProperty("solr.data.dir", solrData);        
-        
+        // Create manager
         indexMngr = new IndexManager();
         
         if(cmd.hasOption("store")) {
@@ -180,8 +181,12 @@ public class Index
         		stPort = cmd.getOptionValue("stPort");
         		indexMngr.getArgs().put("port", stPort);
         	}
+        	// If storage is selected, choose the implementation
+        	if(cmd.hasOption("storage")) {
+        			indexMngr.setStorageImpl(StorageManager.getStorageImpl(cmd.getOptionValue("storage")));
+        	}
         }
-        
+        // Now init the server (embedded or remote connection)
         if(useEmbeddedServer) {
         	indexMngr.initServer(null);
         }

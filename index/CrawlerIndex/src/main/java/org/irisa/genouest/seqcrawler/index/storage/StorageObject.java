@@ -8,13 +8,12 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.basho.riak.client.RiakObject;
 
 public class StorageObject {
 	
 	private Logger log = LoggerFactory.getLogger(StorageObject.class);
 	
-	private final static String[] jsonFields = { "metadata" , "shards", "content"};
+	//private final static String[] jsonFields = { "metadata" , "shards", "content"};
 	
 	/**
 	 * Unique id of the element

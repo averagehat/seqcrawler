@@ -6,9 +6,6 @@ package org.irisa.genouest.seqcrawler.index.handlers.gff;
 
 import java.util.Enumeration;
 import java.util.Properties;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.beans.Field;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
@@ -136,7 +133,7 @@ public class GFF3Record {
 			doc.addField(key.toLowerCase(), annotations.get(key));
 			
 		}
-		
+		log.debug("getDocument: "+doc.toString());
 		return doc;
 	}
 

@@ -1,26 +1,17 @@
 package org.irisa.genouest.seqcrawler.index.handlers;
 
-import iubio.readseq.BioseqDoc;
-import iubio.readseq.Readseq;
-import iubio.readseq.SeqFileInfo;
+
 
 import java.io.BufferedReader;
-import java.io.CharArrayWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.sax.XHTMLContentHandler;
 import org.irisa.genouest.seqcrawler.index.Constants;
 import org.irisa.genouest.seqcrawler.index.IndexManager;
 import org.irisa.genouest.seqcrawler.index.SequenceHandler;
@@ -29,11 +20,8 @@ import org.irisa.genouest.seqcrawler.index.exceptions.StorageException;
 import org.irisa.genouest.seqcrawler.index.storage.StorageManager;
 import org.irisa.genouest.seqcrawler.index.storage.StorageManagerInterface;
 import org.irisa.genouest.seqcrawler.index.storage.StorageObject;
-import org.irisa.genouest.tools.readseq.BioseqParser;
-import org.irisa.genouest.tools.readseq.SeqDocToIndexDoc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
 
 public class FastaHandler implements SequenceHandler {
 
