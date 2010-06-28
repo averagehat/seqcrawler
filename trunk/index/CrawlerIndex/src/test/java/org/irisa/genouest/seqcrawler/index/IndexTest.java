@@ -84,7 +84,7 @@ public class IndexTest
     {
     	try {
     	    Index index = new Index();
-			index.index(new String[] {"-f","./solr/test.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/"});
+			index.index(new String[] {"-f","./solr/dataset/datatest/test.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/"});
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			fail();
@@ -146,7 +146,7 @@ public class IndexTest
     	Index index =null;
     	try {
 			index = new Index();
-			index.index(new String[] {"-f","./solr/testError.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/"});
+			index.index(new String[] {"-f","./solr/dataset/datatest/testError.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/"});
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			fail();
@@ -172,7 +172,7 @@ public class IndexTest
     {
     	try {
     		Index index = new Index();
-			index.index(new String[] {"-f","./solr/uniprot.dat","-b","UniProt","-C","-sh","./solr/","-sd","./solr/data/","-t","readseq"});
+			index.index(new String[] {"-f","./solr/dataset/datatest/uniprot.dat","-b","UniProt","-C","-sh","./solr/","-sd","./solr/data/","-t","readseq"});
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			fail();
@@ -203,7 +203,7 @@ public class IndexTest
     {
     	try {
     	    Index index = new Index();
-			index.index(new String[] {"-f","./solr/test.fasta","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/","-t","fasta"});
+			index.index(new String[] {"-f","./solr/dataset/datatest/test.fasta","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/","-t","fasta"});
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			fail();
@@ -237,7 +237,7 @@ public class IndexTest
     	    // If not set, do not run the test
     	    if(host==null) return;
     	    log.error("Using host: "+host);
-			index.index(new String[] {"-f","./solr/test.fasta","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/","-t","fasta","-store","-stHost",host,"-storage","mock"});
+			index.index(new String[] {"-f","./solr/dataset/datatest/test.fasta","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/","-t","fasta","-store","-stHost",host,"-storage","mock"});
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			fail();
@@ -292,7 +292,7 @@ public class IndexTest
     	    // If not set, do not run the test
     	    if(host==null) return;
     	    log.error("Using host: "+host);
-			index.index(new String[] {"-f","./solr/test.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/","-t","gff","-store","-stHost",host,"-storage","mock"});
+			index.index(new String[] {"-f","./solr/dataset/datatest/test.gff","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/","-t","gff","-store","-stHost",host,"-storage","mock"});
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			fail();
@@ -338,7 +338,7 @@ public class IndexTest
     public void testMerge() {
     	Merge app = new Merge();
     	app.setIndexesDir("./solr");
-    	app.setFinalDir("./solr/datamerge");
+    	app.setFinalDir("./solr/dataset/index");
     	app.setDEBUG(true);
     	app.setIncludeConditions(new String[] {"data"});
     	app.merge();
