@@ -3,13 +3,12 @@ package org.irisa.genouest.seqcrawler.index;
 import java.io.File;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.cli.ParseException;
-import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.irisa.genouest.seqcrawler.index.Index;
 import org.irisa.genouest.seqcrawler.index.Constants.STORAGEIMPL;
@@ -333,6 +332,28 @@ public class IndexTest
 			storage.deleteAll("NC_002745");
 		}
 		
+    }
+    
+    
+    public void testMerge() {
+    	Merge app = new Merge();
+    	app.setIndexesDir("./solr");
+    	app.setFinalDir("./solr/datamerge");
+    	app.setDEBUG(true);
+    	app.setIncludeConditions(new String[] {"data"});
+    	app.merge();
+    	assertTrue(app.getIndexes().length>0);
+    	app.setIncludeConditions(null);
+    	app.setExcludeConditions(new String[] {"datamerge"});
+    	app.merge();
+    	assertTrue(app.getIndexes().length>0);
+    	app.setExcludeConditions(null);
+    	app.setIncludeConditions(null);
+    	assertTrue(app.getIndexes().length>0);
+    	app.merge();
+    	app.setExcludeConditions(new String[] {".*"});
+    	app.merge();
+    	assertTrue(app.getIndexes().length==0);
     }
     
 }
