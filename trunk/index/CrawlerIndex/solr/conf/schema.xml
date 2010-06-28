@@ -460,6 +460,19 @@
    <field name="date" type="text" indexed="true" stored="false"/>
 	<!-- End of GFF fields -->
 	
+	
+	<!-- UniProt specific stored fields, GN, DE, AC, OS -->
+	<!-- gene -->
+	<field name="gn" type="lowercase" indexed="true" stored="true"/>
+	<!-- description -->
+	<field name="de" type="lowercase" indexed="true" stored="true"/>
+	<!-- accession -->
+	<field name="ac" type="lowercase" indexed="true" stored="true"/>
+	<!-- species -->
+	<field name="os" type="lowercase" indexed="true" stored="true"/>
+	
+	<!-- end of uniprot specifics -->
+	
 	<!-- ReadSeq specific fields -->
 	<field name="name" type="lowercase" indexed="true" stored="true"/>
     <field name="accession" type="lowercase" indexed="true" stored="true" multiValued="true"/>
