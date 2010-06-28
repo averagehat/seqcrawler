@@ -1,6 +1,5 @@
 package org.irisa.genouest.seqcrawler.tools;
 
-import org.irisa.genouest.seqcrawler.index.IndexTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
