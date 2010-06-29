@@ -220,8 +220,8 @@ sub _json2feature {
   my $chr = $jsondoc->{chr};
   my $source = $jsondoc->{bank};
   my $feattype = $jsondoc->{feature}; 
-  my $start = $jsondoc->{start};
-  my $stop = $jsondoc->{end};
+  my $start = $jsondoc->{start}[0];
+  my $stop = $jsondoc->{end}[0];
   my $score = $jsondoc->{score};
   my $strand = $jsondoc->{strand};
   my $attributes = $jsondoc->{attributes};
@@ -553,8 +553,8 @@ my @cols;
 #chr feature start stop strand
 $cols[0] = $jsondoc->{chr};
 $cols[1] = $jsondoc->{feature};
-$cols[2] = $jsondoc->{start};
-$cols[3] = $jsondoc->{end};
+$cols[2] = $jsondoc->{start}[0];
+$cols[3] = $jsondoc->{end}[0];
 $cols[4] = ($jsondoc->{strand}=~/[-]/) ? '-' : '+'; 
 return (\@cols);
 }

@@ -4,7 +4,7 @@ use ExtUtils::MakeMaker;
 # the contents of the Makefile that is written.
 WriteMakefile(
     NAME              => 'Bio::DB::GFF::Adaptor::solr',
-    VERSION_FROM      => 'lib/Bio/DB/GFF/Adaptor/solr.pm', # finds $VERSION
+    VERSION      => '0,01', # finds $VERSION
     PREREQ_PM         => { 'JSON' => 2,21,
     						'LWP::Simple' => 1.41,
     						'URI::Escape' => 3.28,

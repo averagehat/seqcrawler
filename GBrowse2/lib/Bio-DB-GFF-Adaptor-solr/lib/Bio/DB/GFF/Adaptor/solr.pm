@@ -68,7 +68,7 @@ use Bio::DB::GFF::Adaptor::SolrDBI;    #  and GFF independent
 
 use Bio::DB::GFF::Adaptor::dbi::iterator; #  works ok
 
-use constant DEBUG  => 1;
+use constant DEBUG  => 0;
 use constant NOATTR => 0;
   
 
@@ -78,7 +78,6 @@ use constant MAX_SEGMENT => 100_000_000;  # the largest a segment can get
 use vars qw(@ISA $debug);
 @ISA =  qw(Bio::DB::GFF);
 
-$VERSION = '0.01';
 
 sub patch_GFF_Feature {
   local $^W = 0;
@@ -398,7 +397,6 @@ sub get_abscoords {
   } 
     }
   }
-  warn "DEBUG OSALLOU #####  @$segfeat";
   return $segfeat; 
 }
 
@@ -881,7 +879,7 @@ sub range_query {
   if (DEBUG && defined $attributes) { warn "ATTRIBUTES=$attributes\n" ; } #when is this used?
   
   push(@args, 'orderby=gname') if $order_by_group; #??
-  warn "#DEBUG OSALLOU CALL DO QUERY WITH QUERY= ".$query; 
+  warn "#DEBUG CALL DO QUERY WITH QUERY= ".$query if(DEBUG); 
   my $sth = $self->dbh->do_query($query,@args);
 
   return $sth;
