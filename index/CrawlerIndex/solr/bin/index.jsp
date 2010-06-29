@@ -21,9 +21,8 @@
 <link rel="icon" href="favicon.ico" type="image/ico"></link>
 <link rel="shortcut icon" href="favicon.ico" type="image/ico"></link>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-<script type="text/javascript" src="/solr/admin/jquery-1.2.3.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/solr/admin/file?file=/velocity
-/main.css&contentType=text/css"/>
+<script type="text/javascript" src="/solr/itas/jquery-1.2.3.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/solr/itas/main.css"/>
 
 <title>Welcome to Seqcrawler</title>
 </head>
@@ -36,8 +35,6 @@
             Query: <input type="text" name="q" value=""/>
           </form>
         </div>
-
-<a href="."><img border="0" align="right" height="78" width="142" src="admin/solr_small.png" alt="Powered by Solr"/></a>
 
 
 <% 

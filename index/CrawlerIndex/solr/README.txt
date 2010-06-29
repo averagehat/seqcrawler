@@ -32,6 +32,7 @@ Put solr.war in a Tomcat container. Copy lib directory in WEB-INF/lib directory 
 Update WEB-INF/web.xml to point to correct solr home (var entryt solr/home) e.g. current deployed dir.
 
 Put bin/index.jsp in deployed webapp
+Copy jquery-1.2.3.min.js and main.css under webapp /itas/
 
 Access to localhost:8080/solr
 Admin access: localhost:8080/solr/admin

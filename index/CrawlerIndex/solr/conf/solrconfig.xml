@@ -496,10 +496,17 @@
        <str name="fl">*</str>
        <str name="version">2.1</str>
         -->
-      <!--  <str name="shards">shardserver1/solr/,shardserver2/solr/,...</str> -->
      </lst>
   </requestHandler>
-  
+ 
+  <!-- shard search handler, required for GBrowse integration -->
+   <requestHandler name="shard" class="solr.SearchHandler">
+    <!-- default values for query parameters -->
+     <lst name="defaults">
+       <str name="echoParams">explicit</str>
+      <!--  <str name="shards">shardserver1/solr/,shardserver2/solr/,...</str> -->
+     </lst>
+  </requestHandler> 
   
   <!-- Solritas implementation, requires solritas lib in tomcat deployment -->
     <requestHandler name="/mobiledetails" class="solr.SearchHandler">
@@ -553,7 +560,7 @@
        <str name="v.template">browse</str>
        <str name="v.properties">velocity.properties</str>
        <str name="v.contentType">text/html;charset=UTF-8</str>
-       <str name="title">Solritas</str>
+       <str name="title">SeqCrawler</str>
        <str name="stHost">localhost</str>
        <str name="stPort">8098</str>
        <str name="gbHost">localhost</str>
@@ -891,13 +898,15 @@
 
   <!-- a search component that enables you to configure the top results for
        a given query regardless of the normal lucene scoring.-->
+  <!--
   <searchComponent name="elevator" class="solr.QueryElevationComponent" >
-    <!-- pick a fieldType to analyze queries -->
     <str name="queryFieldType">string</str>
     <str name="config-file">elevate.xml</str>
   </searchComponent>
-
+  -->
   <!-- a request handler utilizing the elevator component -->
+
+  <!--
   <requestHandler name="/elevate" class="solr.SearchHandler" startup="lazy">
     <lst name="defaults">
       <str name="echoParams">explicit</str>
@@ -906,7 +915,7 @@
       <str>elevator</str>
     </arr>
   </requestHandler>
-
+  -->
 
   <!-- Update request handler.  
 

@@ -61,6 +61,7 @@ public class ReadSeqFileHandler implements SequenceHandler {
 		long nbDocs = 0;
 		long startPos = 0;
 		
+		
 		streamName = f.getAbsoluteFile().toString();
 		
 		Readseq rd= new Readseq();
@@ -114,6 +115,7 @@ public class ReadSeqFileHandler implements SequenceHandler {
 			    }
 			    indexManager.getServer().add(doc);
 			    nbDocs++;
+			    indexManager.getServer().commit(false,false);
 			    startPos += rd.getInsReadlen();
 			    
 			    keyValues.clear();

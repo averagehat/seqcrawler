@@ -11,7 +11,7 @@
      </p>
      #end
   #end
-  #if($doc.getFieldValues("stream_content_type").get(0)=="biosequence/gff" && doc.containsKey('id'))
+  #if($doc.getFieldValues("stream_content_type").get(0)=="biosequence/gff" && $doc.containsKey('id'))
    <p>
       <!-- HOST defined in solrConfig-->
       <a href="http://#param('stHost'):#param('stPort')/riak/web/dataquery.html?id=$doc.getFieldValues('id').get(0)&source=$doc.getFieldValues('chr').get(0)&start=$doc.getFieldValues('start').get(0)&stop=$doc.getFieldValues('end').get(0)" target="_blank">Get raw data</a>

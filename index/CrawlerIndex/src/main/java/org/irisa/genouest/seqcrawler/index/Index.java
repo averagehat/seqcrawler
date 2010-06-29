@@ -2,9 +2,11 @@
 package org.irisa.genouest.seqcrawler.index;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
+import java.util.Properties;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -43,8 +45,8 @@ public class Index
 	int shardsSize = 10;
 	boolean useShards = false;
 	
-	String solrHome = "/opt/solr/apache-solr-1.4.0/seqcrawler/solr";
-	String solrData = "/opt/solr/apache-solr-1.4.0/seqcrawler/solr/data/";
+	String solrHome = Constants.SOLRHOME;
+	String solrData = Constants.SOLRDATA;
 	
 	String solrUrl ="http://localhost/solr";
 	boolean useEmbeddedServer = true;
@@ -72,7 +74,8 @@ public class Index
 	 */
     public static void main( String[] args ) throws IOException, ParserConfigurationException, SAXException, SolrServerException, ParseException
     {
-    	Index application = new Index();	
+    	Index application = new Index();
+    	application.init();
     	application.index(args);
     }
     
@@ -317,5 +320,29 @@ public class Index
 	 */
 	public static boolean debug() {
 		return DEBUG;
+	}
+	
+	/**
+	 * Initialize properties if a property file is present in current path.
+	 */
+	private void init() {
+		// Read properties file. 
+		Properties properties = new Properties();
+		try {
+			File props = new File("seqcrawler.properties");
+			if(props.exists()) {
+			properties.load(new FileInputStream(props)); }
+			if(properties.containsKey("solr.solr.home")) {
+				solrHome = properties.getProperty("solr.solr.home");
+				log.info("Using solr home "+solrHome+" from properties");
+			}
+			if(properties.containsKey("solr.data.dir")) {
+				solrData = properties.getProperty("solr.data.dir");
+				log.info("Using solr data dir "+solrData+" from properties");
+			}
+		}
+		catch (IOException e) { 
+			log.error(e.getMessage());
+		} 
 	}
 }
