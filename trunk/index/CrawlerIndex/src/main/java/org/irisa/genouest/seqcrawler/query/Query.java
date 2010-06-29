@@ -1,7 +1,10 @@
 package org.irisa.genouest.seqcrawler.query;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 import java.util.Map.Entry;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
@@ -18,6 +21,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
+import org.irisa.genouest.seqcrawler.index.Constants;
 import org.irisa.genouest.seqcrawler.index.Index;
 import org.irisa.genouest.seqcrawler.index.IndexManager;
 import org.slf4j.Logger;
@@ -35,8 +39,8 @@ public class Query {
 	
 
 	
-	String solrHome = "/opt/solr/apache-solr-1.4.0/seqcrawler/solr";
-	String solrData = "/opt/solr/apache-solr-1.4.0/seqcrawler/solr/data/";
+	String solrHome = Constants.SOLRHOME;
+	String solrData = Constants.SOLRDATA;
 	String solrUrl ="http://localhost/solr";
 	boolean useEmbeddedServer = true;
 	
@@ -51,7 +55,8 @@ public class Query {
 	 * @throws SolrServerException 
 	 */
 	public static void main(String[] args) throws ParseException, IOException, ParserConfigurationException, SAXException, SolrServerException {
-	        Query application = new Query();
+		    Query application = new Query();
+		    application.init();
 	        Options options = new Options();
 	        options.addOption("sh", true, "solr home path");
 	        options.addOption("sd", true, "solr data index path");
@@ -156,6 +161,30 @@ public class Query {
 	 */
 	public static boolean debug() {
 		return DEBUG;
+	}
+	
+	/**
+	 * Initialize properties if a property file is present in current path.
+	 */
+	private void init() {
+		// Read properties file. 
+		Properties properties = new Properties();
+		try {
+			File props = new File("seqcrawler.properties");
+			if(props.exists()) {
+			properties.load(new FileInputStream(props)); }
+			if(properties.containsKey("solr.solr.home")) {
+				solrHome = properties.getProperty("solr.solr.home");
+				log.info("Using solr home "+solrHome+" from properties");
+			}
+			if(properties.containsKey("solr.data.dir")) {
+				solrData = properties.getProperty("solr.data.dir");
+				log.info("Using solr data dir "+solrData+" from properties");
+			}
+		}
+		catch (IOException e) { 
+			log.error(e.getMessage());
+		} 
 	}
 	
 }
