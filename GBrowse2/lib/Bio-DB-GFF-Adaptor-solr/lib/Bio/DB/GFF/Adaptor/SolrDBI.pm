@@ -122,7 +122,7 @@ sub solrSearch {
   #Limit each query to 200 results then loop if required
   my $query = "q="._luqueryescape($self->{query})."&rows=200&wt=json&fl=*%2Cscore&start=".$step;
   if(DEBUG) { print STDERR "#QUERY,bank $self->{BANK}, querying with: $query"; }
-  my $url = 'http://'.$self->{server_host}.':'.$self->{server_port}.'/solr/select/?'.$query;
+  my $url = 'http://'.$self->{server_host}.':'.$self->{server_port}.'/solr/shard/?'.$query;
 
   my $content = get $url;
   die "Couldn't get $url" unless defined $content;
