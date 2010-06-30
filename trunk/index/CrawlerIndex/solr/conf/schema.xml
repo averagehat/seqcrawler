@@ -454,7 +454,10 @@
    <field name="id" type="lowercase" indexed="true" stored="true"/>
    <field name="file" type="lowercase" indexed="false" stored="true"/>
    
+   
    <!-- attributes field , not to be stored -->
+   <!-- change to true if faceted search is required on attribute -->
+   <field name="organism" type="text" indexed="true" stored="false"/>
    <field name="dbxref" type="text" indexed="true" stored="false"/> 
    <!-- <field name="dbxref" type="separator" indexed="true" stored="false"/> -->
    <field name="note" type="text" indexed="true" stored="false"/>
