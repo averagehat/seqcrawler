@@ -50,4 +50,4 @@ GFF type is preferred when possible (files should be transformed first).
 Call crawler.sh -h for usage
 
 merge.sh is a script to merge multiple indexes.
-Call merge.sh path_to_newindex path2index1 path2index2 ...
+Call merge.sh -h for usage
