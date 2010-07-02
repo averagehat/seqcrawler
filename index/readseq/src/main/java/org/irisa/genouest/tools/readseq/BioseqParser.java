@@ -77,8 +77,7 @@ public class BioseqParser {
 				contentHandler.element(key.toLowerCase(), val);
 			}
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 	}
 
