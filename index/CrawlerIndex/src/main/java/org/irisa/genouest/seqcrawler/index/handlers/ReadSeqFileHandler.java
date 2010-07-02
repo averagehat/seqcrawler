@@ -59,7 +59,7 @@ public class ReadSeqFileHandler implements SequenceHandler {
 	 */
 	public void parse(File f) {
 		long nbDocs = 0;
-		long startPos = 0;
+		int startPos = 0;
 		
 		
 		streamName = f.getAbsoluteFile().toString();
@@ -98,7 +98,7 @@ public class ReadSeqFileHandler implements SequenceHandler {
 			    SolrInputDocument doc = new SolrInputDocument();
 			    doc.addField("stream_content_type", rd.getBioseqFormat().contentType());
 			    doc.addField("stream_name", streamName);
-			    doc.addField("file", startPos+"-"+rd.getInsReadlen());
+			    doc.addField("file", startPos+"-"+(rd.getInsReadlen()-startPos));
 			    doc.addField("bank", bank);
 			    if(rd instanceof Readseq) {
 			    

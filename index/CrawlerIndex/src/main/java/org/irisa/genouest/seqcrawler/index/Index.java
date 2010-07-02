@@ -114,6 +114,8 @@ public class Index
         options.addOption("stHost", true, "If store,Host for storage backend, default is localhost");
         options.addOption("stPort", true, "If store,Port for storage backend, default is 8098");
         
+        options.addOption("max", true, "Maximum number of documents before a commit, default is "+Constants.MAXCOMMITS);
+        
         CommandLineParser parser = new PosixParser();
         CommandLine cmd = parser.parse( options, args);
         
@@ -136,6 +138,10 @@ public class Index
         if(cmd.hasOption("h")) {
         	showUsage(options);
         	System.exit(0);
+        }
+        
+        if(cmd.hasOption("max")) {
+        	Constants.MAXCOMMITS = Long.parseLong(cmd.getOptionValue("max"));
         }
         
         if(cmd.hasOption("b")) {
@@ -229,6 +235,9 @@ public class Index
         	}
         	else if(t.equalsIgnoreCase("readseq")) {
         		format = Constants.FORMATS.READSEQ;
+        	}
+        	else if(t.equalsIgnoreCase("embl")) {
+        		format = Constants.FORMATS.EMBL;
         	}
         }
         log.info("Input file format is "+format.toString());
