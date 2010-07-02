@@ -16,7 +16,8 @@ public class Constants {
 		FASTA,
 		GENBANK,
 		RAW,
-		READSEQ
+		READSEQ,
+		EMBL
 	}
 	
 	/**
@@ -39,5 +40,5 @@ public class Constants {
 	/**
 	 * Max number of documents of manager before a commit.
 	 */
-	public static final long MAXCOMMITS = 100;
+	public static long MAXCOMMITS = 100;
 }

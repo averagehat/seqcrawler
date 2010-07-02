@@ -192,10 +192,10 @@ public class IndexTest
 		
 			SolrDocumentList docs  = execQuery("bank:UniProt");
 	        assertTrue(docs.size()>=2);
-	        log.info("Original content 1 : "+docs.get(0).getFieldValue("stream_content_type")+","+docs.get(0).getFieldValue("stream_name")+","+docs.get(0).getFieldValue("file"));
-	        log.info("Original content 2 : "+docs.get(1).getFieldValue("stream_content_type")+","+docs.get(1).getFieldValue("stream_name")+","+docs.get(1).getFieldValue("file"));
-	        assertEquals(docs.get(0).getFieldValue("file"),"0-2368");
-	        assertEquals(docs.get(1).getFieldValue("file"),"2368-4735");
+	        log.debug("Original content 1 : "+docs.get(0).getFieldValue("stream_content_type")+","+docs.get(0).getFieldValue("stream_name")+","+docs.get(0).getFieldValue("file"));
+	        log.debug("Original content 2 : "+docs.get(1).getFieldValue("stream_content_type")+","+docs.get(1).getFieldValue("stream_name")+","+docs.get(1).getFieldValue("file"));
+	        assertEquals("0-2368",docs.get(0).getFieldValue("file"));
+	        assertEquals("2368-2367",docs.get(1).getFieldValue("file"));
     }
 
     
@@ -236,7 +236,7 @@ public class IndexTest
     	   
     	    // If not set, do not run the test
     	    if(host==null) return;
-    	    log.error("Using host: "+host);
+    	    log.info("Using host: "+host);
 			index.index(new String[] {"-f","./solr/dataset/datatest/test.fasta","-b","GenBank","-C","-sh","./solr/","-sd","./solr/data/","-t","fasta","-store","-stHost",host,"-storage","mock"});
 		} catch (IOException e) {
 			log.error(e.getMessage());
@@ -354,6 +354,37 @@ public class IndexTest
     	app.setExcludeConditions(new String[] {".*"});
     	app.merge();
     	assertTrue(app.getIndexes().length==0);
+    }
+    
+    
+    public void testIndexEMBL()
+    {
+    	try {
+    		Index index = new Index();
+			index.index(new String[] {"-f","./solr/dataset/datatest/uniprot.dat","-b","UniProt","-C","-sh","./solr/","-sd","./solr/data/","-t","embl"});
+		} catch (IOException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParserConfigurationException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SAXException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SolrServerException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParseException e) {
+			log.error(e.getMessage());
+			fail();
+		}
+		
+			SolrDocumentList docs  = execQuery("bank:UniProt");
+	        assertTrue(docs.size()>=2);
+	        log.info("Original content 1 : "+docs.get(0).getFieldValue("stream_content_type")+","+docs.get(0).getFieldValue("stream_name")+","+docs.get(0).getFieldValue("file"));
+	        log.info("Original content 2 : "+docs.get(1).getFieldValue("stream_content_type")+","+docs.get(1).getFieldValue("stream_name")+","+docs.get(1).getFieldValue("file"));
+	        assertEquals("0-2368",docs.get(0).getFieldValue("file"));
+	        assertEquals("2368-2368",docs.get(1).getFieldValue("file"));
     }
     
 }

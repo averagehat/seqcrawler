@@ -153,7 +153,9 @@ public class FastaHandler implements SequenceHandler {
 					
 					doc = new SolrInputDocument();
 				    doc.addField("stream_content_type", "biosequence/fasta");
+				    if(streamName!=null) {
 				    doc.addField("stream_name", streamName);
+				    }
 				    doc.addField("bank", bank);
 
 
@@ -219,7 +221,7 @@ public class FastaHandler implements SequenceHandler {
 		} catch (IOException e1) {
 			log.error(e1.getMessage());
 		}
-		log.error("file: "+docStartbyte+"-"+nbytesread);
+		log.debug("file: "+docStartbyte+"-"+nbytesread);
 		doc.addField("file", docStartbyte+"-"+nbytesread);
 		try {
 			finishMainRecord(doc,id,doStore,content);

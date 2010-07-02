@@ -1,5 +1,6 @@
 package org.irisa.genouest.seqcrawler.index;
 
+import org.irisa.genouest.seqcrawler.index.handlers.EMBLHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.FastaHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.GFFHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.RawFileHandler;
@@ -40,6 +41,11 @@ public class GenericSequenceHandler {
 		case FASTA:
 		{
 			handler = new FastaHandler(bank);
+			break;
+		}
+		case EMBL:
+		{
+			handler = new EMBLHandler(bank);
 			break;
 		}
 		default:
