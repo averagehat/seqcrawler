@@ -51,3 +51,52 @@ Call crawler.sh -h for usage
 
 merge.sh is a script to merge multiple indexes.
 Call merge.sh -h for usage
+
+
+***************************************
+Apache Frontend:
+it is advised to uyse apache as a front end to solr tomcat webapp and storage backend to hdie port and restrict access to PUT and DELETE operations (security constraints)
+Apache can load balance on Solr masters.
+
+To limit operations, place the following in a Directory section. See paache conf for user authentification
+<Limit POST PUT DELETE>
+      Require valid-user
+</Limit>
+
+For proxy, specify a virtualhost with proxy to correct hosts/ports:
+
+<VirtualHost *:80>
+    ProxyPass           /solr  http://192.168.1.237:8080/solr
+    ProxyPassReverse /solr  http://192.168.1.237:8080/solr
+
+    ProxyPass           /riak  http://192.168.1.237:8098/riak
+    ProxyPassReverse /riak  http://192.168.1.237:8098/riak
+
+
+</VirtualHost>
+
+For load balancing:
+<Proxy balancer://mysolrcluster>
+BalancerMember http://192.168.1.50:8080
+BalancerMember http://192.168.1.51:8080
+</Proxy>
+ProxyPass /solr balancer://mysolrcluster 
+
+<Proxy balancer://myriakcluster>
+BalancerMember http://192.168.1.50:8098
+BalancerMember http://192.168.1.51:8098
+</Proxy>
+ProxyPass /riak balancer://myriakcluster 
+
+Optionally to manage the cluster
+ <Location /balancer-manager>
+               SetHandler balancer-manager
+               Order Deny,Allow
+               Deny from all
+               Allow from aHostNameToAllowManager
+ </Location>
+
+
+
+
+

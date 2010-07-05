@@ -467,13 +467,13 @@
 	
 	<!-- UniProt specific stored fields, GN, DE, AC, OS -->
 	<!-- gene -->
-	<field name="gn" type="lowercase" indexed="true" stored="true"/>
+	<field name="gn" type="text" indexed="true" stored="true"/>
 	<!-- description -->
-	<field name="de" type="lowercase" indexed="true" stored="true"/>
+	<field name="de" type="text" indexed="true" stored="true"/>
 	<!-- accession -->
-	<field name="ac" type="lowercase" indexed="true" stored="true"/>
+	<field name="ac" type="text" indexed="true" stored="true"/>
 	<!-- species -->
-	<field name="os" type="lowercase" indexed="true" stored="true"/>
+	<field name="os" type="text" indexed="true" stored="true"/>
 	
 	<!-- end of uniprot specifics -->
 	
@@ -504,7 +504,7 @@
    
    <!-- by default, take all GFF attributes as single elements not to tokenize -->
   
-   <dynamicField name="*" type="lowercase"    indexed="true"  stored="false"/>
+   <dynamicField name="*" type="text"    indexed="true"  stored="false"/>
    
  </fields>
 
