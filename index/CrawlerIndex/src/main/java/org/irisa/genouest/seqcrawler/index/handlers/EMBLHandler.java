@@ -318,6 +318,7 @@ public class EMBLHandler implements SequenceHandler {
 	 */
 	private void finishfield(String key, StringBuffer value) {
 		//Multiple values are not accepted, check if present. If present concat field
+		key = key.toLowerCase();
 		if(doc.containsKey(key)) {
 			String tmpVal = (String)(doc.removeField(key)).getValue();
 			doc.addField(key,tmpVal+" "+value.toString());
