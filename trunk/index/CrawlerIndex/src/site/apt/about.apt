@@ -1,3 +1,3 @@
-About
+Architecture
 
-  CrawIndex index documents to a Solr backend.
+  The system architecture is presented here with an apache frontend solution with high availability and scalability: {{{apache.html}web architecture}}.
