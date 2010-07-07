@@ -1,0 +1,36 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>SeqCrawler Export Servlet</display-name>
+  
+   <servlet>
+    <servlet-name>export</servlet-name>
+    <servlet-class>org.irisa.genouest.seqcrawler.webapp.ExportServlet</servlet-class>
+<!-- Location to write the exported file -->
+		<init-param>
+			<param-name>downloadUrl</param-name>
+			<param-value>http://seqcrawler.genouest.org/tmpdata</param-value>
+		</init-param>
+		<init-param>
+		<!-- Location to write the exported file -->
+			<param-name>downloadDir</param-name>
+			<param-value>/tmp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>solrUrl</param-name>
+			<param-value>http://seqcrawler.genouest.org/solr</param-value>
+		</init-param>
+		<!-- request handler to use -->
+		<init-param>
+			<param-name>queryType</param-name>
+			<param-value>shard</param-value>
+		</init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>export</servlet-name>
+    <url-pattern>/export</url-pattern>
+  </servlet-mapping>
+  
+</web-app>
