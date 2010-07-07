@@ -35,10 +35,11 @@ public class ExportServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+	
 		downloadUrl =  getServletConfig().getInitParameter("downloadUrl");
 		Export export = new Export();
 		export.setQuery(request.getParameter("query"));
+		export.setQueryType(getServletConfig().getInitParameter("queryType"));
 		export.setExportRanges(request.getParameter("ranges").split(","));
 		UUID random = UUID.randomUUID();
     	String outputFile = getServletConfig().getInitParameter("downloadDir")+"/tmpexport_"+random.toString()+".txt";
