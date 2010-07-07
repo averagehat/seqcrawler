@@ -47,7 +47,7 @@ public class Export {
 
 	String outputFile=null;
 	String tmpDir = "/tmp";
-	String downloadUrl = "http://localhost/tmp";
+	
 	
 	static boolean DEBUG=false;
 	
@@ -160,7 +160,7 @@ public class Export {
 	        System.setProperty("solr.data.dir", solrData);     
 	}
 
-	private void export() throws IOException, ParseException, ParserConfigurationException, SAXException, SolrServerException {
+	public void export() throws IOException, ParseException, ParserConfigurationException, SAXException, SolrServerException {
 	        
 	        IndexManager indexMngr = null;	              
 	        // Create manager
@@ -301,10 +301,7 @@ public class Export {
 				tmpDir = properties.getProperty("dir.tmp");
 				log.info("Using tmp dir "+tmpDir+" from properties");
 			}
-			if(properties.containsKey("url.download")) {
-				downloadUrl = properties.getProperty("url.download");
-				log.info("Using download url "+downloadUrl+" from properties");
-			}
+			
 		}
 		catch (IOException e) { 
 			log.error(e.getMessage());
@@ -319,6 +316,63 @@ public class Export {
 		 HelpFormatter formatter = new HelpFormatter();
 		 formatter.printHelp( "OptionsTip", options );
 
+	}
+
+	public String getOutputFile() {
+		return outputFile;
+	}
+
+	public void setOutputFile(String outputFile) {
+		this.outputFile = outputFile;
+	}
+
+	public String getTmpDir() {
+		return tmpDir;
+	}
+
+	public void setTmpDir(String tmpDir) {
+		this.tmpDir = tmpDir;
+	}
+
+
+	public String getSolrHome() {
+		return solrHome;
+	}
+
+	public void setSolrHome(String solrHome) {
+		this.solrHome = solrHome;
+	}
+
+	public String getSolrData() {
+		return solrData;
+	}
+
+	public void setSolrData(String solrData) {
+		this.solrData = solrData;
+	}
+
+	public String[] getExportRanges() {
+		return exportRanges;
+	}
+
+	public void setExportRanges(String[] exportRanges) {
+		this.exportRanges = exportRanges;
+	}
+
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 }
