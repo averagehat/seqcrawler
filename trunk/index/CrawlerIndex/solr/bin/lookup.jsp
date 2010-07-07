@@ -9,7 +9,7 @@ else {
 	response.setContentType("text/plain"); 
 } 
 
-String AUTHDIR ="/db";
+String AUTHDIR ="/";
 int buffSize = 100;
 
 String fileName = request.getParameter("file");
