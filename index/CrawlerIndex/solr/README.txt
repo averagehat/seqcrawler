@@ -24,7 +24,6 @@ allow from 192.168.1.*  // ?syntaxe allow from internal network
 
 
 
-
 ************************************
 Files installation
 
@@ -41,6 +40,10 @@ Admin access should be securized in Tomcat server.
 Web interface for query:
 localhost:8080/solr/itas?q=aa
 
+
+Copy solr/bin/lookup.jsp in webapp dir. Edit file to update:
+String AUTHDIR ="/";
+AUTHDIR is a directory filter to restrict file access to a defined sub directory structure
 
 **************************************
 Usages:
