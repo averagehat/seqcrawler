@@ -21,7 +21,7 @@
       <a href="http://#param('gbHost'):#param('gbPort')/gb2/gbrowse/#param('gbBank')?name=$doc.getFieldValues('chr').get(0):$doc.getFieldValues('start').get(0)..$doc.getFieldValues('end').get(0)" target="_blank">Browse data</a>
    </p>
   #elseif($doc.getFieldValues("stream_content_type").get(0).startsWith("biosequence") && $doc.containsKey('id'))
-    <p>      <a href="lookup.jsp?file=$doc.getFieldValues('stream_name').get(0)&position=$doc.getFieldValues("file").get(0)"  target="_blank">Get raw data</a>
+    <p>      <a href="lookup.jsp?file=$doc.getFieldValues('stream_name').get(0)&position=$doc.getFieldValues("file").get(0)&content-type=$doc.getFieldValues("stream_content_type").get(0)"  target="_blank">Get raw data</a>
    </p>   
   #end
   #if($params.getBool("debugQuery",false))

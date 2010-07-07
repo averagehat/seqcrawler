@@ -4,6 +4,11 @@
 <%
 if(request.getParameter("content-type")!=null)  { 
 	response.setContentType(request.getParameter("content-type")); 
+	String[] type = request.getParameter("content-type").split("/");
+	if(type==null || type.length!=2) {
+		type = new String[] { "text", "txt"};
+	}
+    response.setHeader("Content-Disposition", "attachment;filename=result."+type[1]);
 } 
 else { 
 	response.setContentType("text/plain"); 
