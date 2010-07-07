@@ -59,6 +59,8 @@ public class Export {
 	
 	String query=null;
 	
+	String queryType=null;
+	
 	String url=null;
 	
 	final static String XMLHEADER="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<docs>\n";
@@ -89,6 +91,7 @@ public class Export {
 	        options.addOption("h", false, "show usage");
 	        options.addOption("v", false, "show version");
 	        options.addOption("query", true, "original query");
+	        options.addOption("queryType", true, "request handler to use");
 	        options.addOption("ranges", true, "Ranges to export, format is:  A-B,C-D,E-F");
 	        options.addOption("url", true, "URL to index server");
 	        CommandLineParser parser = new PosixParser();
@@ -140,6 +143,9 @@ public class Export {
 	        } else {
 	        	log.error("No query given as input, please specify one");
 	        }
+	        if(cmd.hasOption("queryType")) {
+	        	queryType = cmd.getOptionValue("queryType");
+	        }
 	        
 	        if(cmd.hasOption("url")) {
 	        	url = cmd.getOptionValue("url");
@@ -180,9 +186,13 @@ public class Export {
 	        	int start = Integer.parseInt(startstop[0]);
 	        	int stop = Integer.parseInt(startstop[1]);
 	        
-	        //TODO manage export
+
 			SolrQuery solrQuery = new SolrQuery();
 	        solrQuery.setQuery(query);
+	        if(queryType!=null) {
+	        	solrQuery.setQueryType(queryType);
+	        	log.debug("Using handler "+queryType);
+	        }
 	        solrQuery.setParam("start", String.valueOf(start));
 	        //Do not get more than 100 matches for same request
 	        boolean multipleQueries = false;
@@ -212,6 +222,9 @@ public class Export {
 	        	start+=100;
 	        	solrQuery = new SolrQuery();
 		        solrQuery.setQuery(query);
+		        if(queryType!=null) {
+		        	solrQuery.setQueryType(queryType);
+		        }
 		        solrQuery.setParam("start", String.valueOf(start));
 	        	solrQuery.setParam("rows", "100");
 		        rsp = indexMngr.getServer().query(solrQuery);
@@ -262,7 +275,12 @@ public class Export {
 			for(Object fieldName : fieldNames) {
 				try {
 					fw.write("<"+(String) fieldName+">");
+					if(doc.getFieldValue((String)fieldName) instanceof Integer) {
+					fw.write((Integer)doc.getFieldValue((String)fieldName));
+					}
+					else {
 					fw.write((String)doc.getFieldValue((String)fieldName));
+					}
 					fw.write("</"+(String) fieldName+">\n");
 				} catch (IOException e) {
 					log.error(e.getMessage());
@@ -373,6 +391,14 @@ public class Export {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getQueryType() {
+		return queryType;
+	}
+
+	public void setQueryType(String queryType) {
+		this.queryType = queryType;
 	}
 
 }
