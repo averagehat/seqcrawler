@@ -8,7 +8,7 @@
     </encoder>
   </appender>
 
-  <logger name="org.irisa.genouest.seqcrawler" level="DEBUG">
+  <logger name="org.irisa.genouest.seqcrawler" level="INFO">
   
   
   </logger>
