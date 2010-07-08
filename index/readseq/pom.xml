@@ -8,7 +8,7 @@
   <packaging>jar</packaging>
 
   <name>readseq</name>
-  <description>This is a copy of the original readseq software (public domain)  available at http://sourceforge.net/projects/readseq/.</description>
+  <description>This is a copy of the original readseq software (public domain)  available at http://sourceforge.net/projects/readseq/. Refactored for maven support and  Apache Tika integration</description>
   <url>http://maven.apache.org</url>
 
   <properties>
