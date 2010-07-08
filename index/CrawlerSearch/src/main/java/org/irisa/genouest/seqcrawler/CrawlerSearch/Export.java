@@ -183,8 +183,13 @@ public class Export {
 	        	if(startstop.length!=2){
 	        		continue;
 	        	}
+	        	/*
+	        	 * Start and stop values starts at 1. Solr queries starts at 0, so lower each value by one.
+	        	 */
 	        	int start = Integer.parseInt(startstop[0]);
 	        	int stop = Integer.parseInt(startstop[1]);
+	        	if(start>0) start-=1;
+	        	if(stop>0) stop-=1;
 	        
 
 			SolrQuery solrQuery = new SolrQuery();
