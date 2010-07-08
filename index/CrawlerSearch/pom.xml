@@ -8,6 +8,7 @@
   <packaging>jar</packaging>
 
   <name>CrawlerSearch</name>
+  <description>Export function for SeqCrawler</description>
   <url>http://maven.apache.org</url>
 
   <properties>
