@@ -2,14 +2,60 @@ Installation
 
 * Ready to use ISO image
 
+ An Ubuntu ISO image is available with all software installed and ready to run. Only a few network 
+parameters needs customization (hostname, shards...) after installation.
+
+ The image can be used as a live CD for  quick lookup and can be installed at anytime on a server or on a virtual image.
+
+ For multiple shards, install an image on multiple servers then update configuration for sharding.
+
+ An administrator guide is available on the image with installation steps and usage on Desktop.
 
 * Manual installation
 
 ** Requirements
 
-  TODO.
+ * Linux/Unix system (validated on RH5 and Ubuntu 9.10)
+ 
+ * GBrowse2 must be installed with BioPerl
+ 
+ * Tomcat6
+ 
+ * JDK 1.6+
+ 
+ * Apache2
+ 
+ * Riak for backend storage
+ 
+ Additional Perl packages:
+
+ * 'JSON' => 2,21,
+ 
+ * 'LWP::Simple' => 1.41,
+ 
+ * 'URI::Escape' => 3.28,
+
   
 ** Installation steps  
 
-  TODO.
-  
+*** Available packages
+
+ For an install from scratch, several packages are available:
+
+ * {{{crawlerindex.html}CrawlerIndex}}: package to index some biological data locally with an embedded server or remotly to an index server with a configured schema.
+
+ * {{{crawlersearchwebapp.html}CrawlerSearchWebApp}}: provide an export function to the search engine
+
+ * {{{gbrowse2.html}GBrowse2 library}}: DBI interface between the GBrowse2 application and the search engine
+
+ All packages are provided ready for install, without compilation need.
+
+
+*** Installation instructions
+
+ TODO
+
+usage
+
+ TODO
+

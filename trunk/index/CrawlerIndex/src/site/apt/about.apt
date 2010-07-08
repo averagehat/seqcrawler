@@ -1,3 +1,13 @@
 Architecture
 
+* High-level
+
   The system architecture is presented here with an apache frontend solution with high availability and scalability: {{{apache.html}web architecture}}.
+  
+* In-depth
+
+ SeqCrawler integrates many open source products. Very extensible by nature, a server can be decomposed in a number of feature blocks.
+ 
+ Each block should be assigned at least 1 cpu (or core) for production systems and 1GB of RAM. Of course, depending on indexation needs (and components), lower or higher configurations will be used.
+ 
+[images/architecture.png] Architecture 
