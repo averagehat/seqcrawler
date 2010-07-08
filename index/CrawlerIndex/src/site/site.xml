@@ -23,7 +23,7 @@
       <item name="Download" href="https://sourceforge.net/projects/seqcrawler/files/"/>
       <item name="Installation" href="installation.html"/>
       <item name="Release Notes" href="release-notes.html" />
-      <item name="General Information" href="about.html"/>
+      <item name="A deeper look" href="about.html"/>
     </menu>
 
     <menu ref="reports"/>
