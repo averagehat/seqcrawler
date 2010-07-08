@@ -45,6 +45,8 @@ Copy solr/bin/lookup.jsp in webapp dir. Edit file to update:
 String AUTHDIR ="/";
 AUTHDIR is a directory filter to restrict file access to a defined sub directory structure
 
+Copy solr/bin/seqcrawler.js under webapp /itas/
+
 **************************************
 Usages:
 
