@@ -8,6 +8,11 @@
  <script type="text/javascript">                                         
    // we will add our javascript code here
    $(document).ready(function() {
+   
+   $("#metadata").ajaxError(function(event, request, settings){
+   $(this).append("<li>Error requesting page " + settings.url + "</li>");
+   });
+
    // generate markup
    $source = jQuery.url.param("source")
    $id = jQuery.url.param("id")
@@ -140,7 +145,7 @@ function loadSource(source) {
 					 );
 		
 	}
-                                        
+
  </script>
  <title>SeqCrawler data query page</title>                                                               
  </head>                                                                 

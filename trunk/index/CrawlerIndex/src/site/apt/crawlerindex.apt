@@ -1,0 +1,15 @@
+CrawlerIndex
+
+* Index process overview
+
+ CrawlerIndex jar file is in charge of indexing the biological format documents. Many formats are accepted as input, but behaviour won't be the same.
+
+ It is based on ReadSeq for many formats, but it implements specific parsers for GFF, EMBL and Fasta formats.
+
+ Here is a basic view of the index process:
+ 
+[images/indexationProcess.png] Index process
+
+* Components
+
+ TODO
