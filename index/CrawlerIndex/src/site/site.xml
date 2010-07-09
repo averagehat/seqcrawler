@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="CrawIndex">
+<project name="SeqCrawler">
   <bannerLeft>
-    <name>CrawIndex</name>
-    <src>http://maven.apache.org/images/apache-maven-project.png</src>
+    <name>SeqCrawler</name>
+    <src>images/seqCrawler.png</src>
     <href>http://seqcrawler.genouest.org/</href>
   </bannerLeft>
   <bannerRight>
