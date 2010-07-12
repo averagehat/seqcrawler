@@ -23,6 +23,16 @@ import org.irisa.genouest.seqcrawler.index.storage.StorageObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Handler for Fasta formatted sequences. Several fasta are supported, see following regular expressions:
+ * 	<br/><p>	String regex_fasta_id = "^>(\\S+)";</p>
+ *	<p>	String regex_fasta_vals = "[;,\\|\\s]+([^;,\\|\\s]+)";</p>
+ *	<p>	String regex_fasta_keyval = "(\\w+)[=:](.*)";</p>
+ *	<p>	String regex_fasta_ncbi = "^>(\\w+)\\|([^|\\s]+)\\|?([^|\\s]*)\\|?([^|\\s]*)\\|?([^|\\s]*)\\|?([^|\\s]*)";</p>
+ *	<p>	// >gi|4027974|gb|AF064181.1|AF064181 Description here...</p>
+ * @author osallou
+ *
+ */
 public class FastaHandler implements SequenceHandler {
 
 	private IndexManager indexManager = null;
@@ -114,8 +124,7 @@ public class FastaHandler implements SequenceHandler {
 		String regex_fasta_keyval = "(\\w+)[=:](.*)";
 
 		String onep = "\\|?([^|\\s]*)";
-		String regex_fasta_ncbi = "^>(\\w+)\\|([^|\\s]+)" + onep + onep + onep
-				+ onep; // +"\\s*(.*)";
+		String regex_fasta_ncbi = "^>(\\w+)\\|([^|\\s]+)" + onep + onep + onep	+ onep; // +"\\s*(.*)";
 		// >gi|4027974|gb|AF064181.1|AF064181 Description here...
 
 		Pattern faid = Pattern.compile(regex_fasta_id);

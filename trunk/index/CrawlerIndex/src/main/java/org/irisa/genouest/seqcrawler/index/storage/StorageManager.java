@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Storage Handler to send and get raw data in a remote storage.
- * Used to get a @{link StorageManagerInterface} based on storage implementation and arguments
+ * Used to get a {@link StorageManagerInterface} based on storage implementation and arguments
  * <br/>Example usage:<br/>    
  *      <p>StorageManager storageMngr = new StorageManager();</p>
  *		<p>HashMap<String,String> map = new HashMap<String,String>();</p>

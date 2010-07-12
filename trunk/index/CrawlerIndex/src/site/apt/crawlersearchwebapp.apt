@@ -1,0 +1,20 @@
+CrawlerSearchWebApp
+
+* CrawlerSearch
+
+ CrawlerSearch jar file is in charge of exporting the biological format documents. See usage with "-h" option.
+ Basically, it takes a query and a list of range as input to query the index server (embedded or remote). It will write to a file all the results within the ranges in a XML format.
+ XML fields match the document fields.
+ 
+* CrawlerSearchWebApp
+
+ This is a simple servlet, packaged in a war file, used as a wrapper above CrawlerSearch. It maps to the export url.
+ The servlet requires some parameters defined in the web.xml and takes a few parameters in HTTP request:
+ 
+ * query : input string used as query to export data
+ 
+ * ranges: list of range (e.g. range of matches to export). Range is defined with a start and stop position, separated by a dash ("-").
+ Ranges are separated by commas.
+ Example: 1-10,100-110
+ 
+ Both parameters are mandatory. A JSON object is returned with the link to the generated file: \{ "url" : "linktofile" \}

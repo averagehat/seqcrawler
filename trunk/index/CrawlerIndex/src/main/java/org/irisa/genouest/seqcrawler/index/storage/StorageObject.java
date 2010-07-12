@@ -8,7 +8,11 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ * Psuedo object used to handle NOSQL backends. It contains metadata information and raw data. It may be split in smaller parts to fit to the backend requirements.
+ * @author osallou
+ *
+ */
 public class StorageObject {
 	
 	private Logger log = LoggerFactory.getLogger(StorageObject.class);
