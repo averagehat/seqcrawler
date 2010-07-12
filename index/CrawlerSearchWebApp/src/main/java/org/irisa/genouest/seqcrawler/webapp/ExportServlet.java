@@ -46,7 +46,6 @@ public class ExportServlet extends HttpServlet {
 		export.setOutputFile(outputFile);
 		export.setUrl(getServletConfig().getInitParameter("solrUrl"));
 		
-		//TODO set variables
 		try {
 			export.export();
 		} catch (ParseException e) {
