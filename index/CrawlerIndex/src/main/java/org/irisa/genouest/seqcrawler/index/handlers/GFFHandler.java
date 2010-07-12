@@ -26,7 +26,10 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * GFF sequence handler. Reads a GFF3 records file and index all records
+ * GFF sequence handler. Reads a {@link GFF3Record} records file and index all records.
+ * <br/> <p>If storage is active, it expects to find a <b>##FASTA</b> line separation between GFF records and Fasta content.</p>
+ * <p>When separation line is found, all following content should be FASTA formated.</p>
+ * <p>Use {@link FastaHandler} to handle the FASTA part</p>
  * @author osallou
  */
 public class GFFHandler implements SequenceHandler {

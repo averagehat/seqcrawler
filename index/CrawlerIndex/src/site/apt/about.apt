@@ -36,6 +36,7 @@ Architecture
  
  * content : raw data (first shard if any, or whole object content)
  
+ []
  
  Example: \{ "metadata" : " this is a gene" , "shards" : \[ "shardid1", "shardid2" \] , "content" : "acgt" \} 
  
@@ -50,6 +51,8 @@ Architecture
  * start : start position to extract from the source
  
  * stop : stop position to extract from the source
+ 
+ []
  
  Dataquery.html will take in charge of assembling the data with internal data shards.
  

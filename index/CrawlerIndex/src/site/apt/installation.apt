@@ -7,7 +7,7 @@ parameters needs customization (hostname, shards...) after installation.
 
  The image can be used as a live CD for  quick lookup and can be installed at anytime on a server or on a virtual image.
 
- For multiple shards, install an image on multiple servers then update configuration for sharding.
+ For multiple shards, install an image on multiple servers then update configuration for sharding (see {{configuration}}).
 
  An administrator guide is available on the image with installation steps and usage on Desktop.
 
@@ -27,6 +27,8 @@ parameters needs customization (hostname, shards...) after installation.
  
  * Riak for backend storage
  
+ []
+ 
  Additional Perl packages:
 
  * 'JSON' => 2,21,
@@ -35,6 +37,7 @@ parameters needs customization (hostname, shards...) after installation.
  
  * 'URI::Escape' => 3.28,
 
+ []
   
 ** Installation steps  
 
@@ -48,12 +51,63 @@ parameters needs customization (hostname, shards...) after installation.
 
  * {{{gbrowse2.html}GBrowse2 library}}: DBI interface between the GBrowse2 application and the search engine
 
+ []
+
  All packages are provided ready for install, without compilation need.
 
 
 *** Installation instructions
 
+===
+ 
+ <<Solr install>>:
+
+ Download and unzip {{{http://apache.cict.fr/lucene/solr/1.4.1/apache-solr-1.4.1.zip}apache-solr-1.4.1.zip}} in a directory (let's say /opt)
+ 
+ In newly created directory, create a new directory "seqcrawler" and copy the solr directory in this one. You will have for example:
+ 
++-- 
+
+/opt/apache-solr-1.4.1/seqcrawler/solr
+                                      - /bin
+                                      - /conf
+                                      - /data
+                                      - /dataset
+                                      - /lib
+
++--
+
+ In Tomcat instance (or other Servlet container), deploy the apache-solr-1.4.1.war. For Tomcat, copy it to the webapps directory.
+ 
+ To enable the <itas> request handler, e.g. the default web interface, the lib directory content must be copied to the web application in WEB-INF/lib directory.
+ 
+ That's it, Solr instance is ready. Now we can to configure it.
+
+===
+
+ <<{Solr configuration}>>:
+ 
+ Two main files require configuration. For "expert" configuration, please refer to the Solr documentation.
+ 
+ * conf/solrconfig.xml:
+ 
  TODO
+
+ * conf/schema.xml: 
+
+ TODO
+
+ []
+
+ Once configuration is over, the web container must be restarted (or the application reloaded).
+ 
+===
+
+ <<Interface customization>>
+ 
+ TODO
+
+===
 
 usage
 
