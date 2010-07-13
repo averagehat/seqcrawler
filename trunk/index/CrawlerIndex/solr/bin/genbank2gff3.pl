@@ -482,7 +482,9 @@ for my $file ( @files ) {
                 my $aa= delete $proteinfa{$aid}; 
                 $method{'RESIDUES(tr)'} += length($aa);
                 $aa =~ s/(\S{60})/$1\n/g; 
-                print $fa_out ">$aid\n$aa\n"; 
+                #print $fa_out ">$aid\n$aa\n";
+                #OSALLOU, FIX to make Transcript unique among all sequences
+                print $fa_out ">".$seq_name."_".$aid."\n$aa\n";
                 }
                
           }
@@ -495,7 +497,9 @@ for my $file ( @files ) {
                 my $aa= delete $proteinfa{$aid}; 
                 $method{'RESIDUES(tr)'} += length($aa);
                 $aa =~ s/(\S{60})/$1\n/g; 
-                print $lumpfa_fh ">$aid\n$aa\n"; 
+                #print $lumpfa_fh ">$aid\n$aa\n";
+                #OSALLOU, FIX to make Transcript unique among all sequences
+                print $lumpfa_fh ">".$seq_name."_".$aid."\n$aa\n"; 
                 }
           }
           

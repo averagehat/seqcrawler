@@ -9,3 +9,42 @@ Architecture of the solution for high availability
   Each master/shard is replicated. If using NAS, index can be in a mounted directory and read by all servers. Else, index need to be manually replicated. though Solr supports replication, it is advised to manually create the index, then copy it as banks such as Genbank are really large to handle. this version does not suppoirt automatic failover, e.g. if a shard server is down, the master will not swith to an other replicated shard. High availability is supported by master only for the moment. Future version of Solr will allow complete failover mechanisms.
 
   For NOSQL backends hosting raw sequence data, backend act as a ring with no point of failure. Apache can safely load-balance the requests among the nodes. Data is automatically replicated. Thus, if a backend node fails, an other can answer. 
+  
+  Possible configuration to load balance to solr and riak clusters and hide the ports.
+
++--
+
+#For proxy, specify a virtualhost with proxy to correct hosts/ports:
+
+<VirtualHost *:80>
+    ProxyPass           /solr  http://192.168.1.237:8080/solr
+    ProxyPassReverse /solr  http://192.168.1.237:8080/solr
+
+    ProxyPass           /riak  http://192.168.1.237:8098/riak
+    ProxyPassReverse /riak  http://192.168.1.237:8098/riak
+
+
+</VirtualHost>
+
+#For load balancing:
+<Proxy balancer://mysolrcluster>
+BalancerMember http://192.168.1.50:8080
+BalancerMember http://192.168.1.51:8080
+</Proxy>
+ProxyPass /solr balancer://mysolrcluster 
+
+<Proxy balancer://myriakcluster>
+BalancerMember http://192.168.1.50:8098
+BalancerMember http://192.168.1.51:8098
+</Proxy>
+ProxyPass /riak balancer://myriakcluster 
+
+Optionally to manage the cluster
+ <Location /balancer-manager>
+               SetHandler balancer-manager
+               Order Deny,Allow
+               Deny from all
+               Allow from aHostNameToAllowManager
+ </Location>
+
++--

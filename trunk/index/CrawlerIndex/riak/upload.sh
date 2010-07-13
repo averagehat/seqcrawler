@@ -18,6 +18,6 @@ echo "Uploading $file..."
       ;;
   esac
 
-curl --silent -X PUT -H "${content_type}" --data-binary @$file http://osallou.genouest.org:8098/riak/web/$file;
+curl --silent -X PUT -H "${content_type}" --data-binary @$file http://seqcrawler.genouest.org:8098/riak/web/$file;
 
 done

@@ -528,6 +528,9 @@
        <str name="qf">
           text^0.5 id^1.5
        </str>
+       <!-- For shards support
+       <str name="shards">shardserver1/solr/,shardserver2/solr/,...</str>
+       -->
      </lst>
    </requestHandler>
   <requestHandler name="/mobile" class="solr.SearchHandler">
@@ -549,6 +552,9 @@
        <str name="qf">
           text^0.5 id^1.5
        </str>
+       <!-- For shards support
+       <str name="shards">shardserver1/solr/,shardserver2/solr/,...</str>
+       -->
      </lst>
 
   </requestHandler>
