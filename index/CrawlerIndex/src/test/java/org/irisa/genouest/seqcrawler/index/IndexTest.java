@@ -387,4 +387,30 @@ public class IndexTest
 	        assertEquals("2368-2368",docs.get(1).getFieldValue("file"));
     }
     
+    public void testRecoder()
+    {
+    	try {
+    	    Index index = new Index();
+    	    index.setPROPFILE("./solr/bin/seqcrawler.properties");
+			index.index(new String[] {"-f","./solr/dataset/datatest/testrecode.gff","-b","recode","-C","-sh","./solr/","-sd","./solr/data/"});
+		} catch (IOException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParserConfigurationException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SAXException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SolrServerException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParseException e) {
+			log.error(e.getMessage());
+			fail();
+		}
+		// Look for chr NC_002745
+		SolrDocumentList docs = execQuery("sampletest:sampletest");
+        assertTrue( docs.size()>0 );
+    }
 }

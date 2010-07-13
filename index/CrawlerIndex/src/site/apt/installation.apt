@@ -7,7 +7,7 @@ parameters needs customization (hostname, shards...) after installation.
 
  The image can be used as a live CD for  quick lookup and can be installed at anytime on a server or on a virtual image.
 
- For multiple shards, install an image on multiple servers then update configuration for sharding (see {{configuration}}).
+ For multiple shards, install an image on multiple servers then update configuration for sharding (see {{Solr_configuration}}).
 
  An administrator guide is available on the image with installation steps and usage on Desktop.
 
@@ -98,6 +98,8 @@ allow from 192.168.1.*  // to allow from internal network only
  Copy the solr/bin/index.jsp and lookup.jsp to the deployed webapp. Loopup.jsp is a web application to return a document from a file and index.jsp provides direct access to the query interface.
  In lookup.jsp, update <String AUTHDIR ="/";>. <<AUTHDIR>> is a directory filter to restrict file access to a defined sub directory structure (to restrict file access)
  
+ Copy the readseq.jar to the WEB-INF/lib to support Apache Tika indexation.
+ 
  To enable the <itas> request handler, e.g. the default web interface, the lib directory content must be copied to the web application in WEB-INF/lib directory and an <itas> directory must be created in the webapp directory.
  Copy in this new directory the seqcrawler.js,jquery and main.css files.
  
@@ -129,7 +131,7 @@ allow from 192.168.1.*  // to allow from internal network only
   </requestHandler> 
 +--   
 
-   Do the same for <<itas>>,<<mobile>>,<<mobiledetails>> handlers.
+   Do the same for <<itas>>,<<mobile>>,<<mobiledetails>> handlers. In this same handlers, update the gbHost and stHost to the GBrowse and storage backend host names (could be localhost, but Riak for example will listen on a specific network interface).
    
    The <shards> parameter tells the system to query all those index server (current host must be specified too) to get the matches. If not set, only current host is queried.
   
@@ -140,6 +142,8 @@ allow from 192.168.1.*  // to allow from internal network only
  This file contains the index structure. It defines both field types and fields. Many field types are predefined and should be enough (int types, string types...), but you should know that it is possible to develop your own field types.
  To do so, one can create a new fieldType definition in the schema, using existing tokenizers etc... or one can create new tokenizers or filters, add them to the classpath and specify it in the schema. Again, please refer to Solr documentation for more information.
  Available field types are in the installed schema.xml.
+ 
+ SeqCrawler index tool lowercase all the field names. As such, all field names should be declared lowercased in schema and queried as lowercase.
  
  Fields need to be defined to be indexed. Example of fields definition:
  
@@ -283,6 +287,13 @@ allow from 192.168.1.*  // to allow from internal network only
  * The <solr.data> points to the directory that will contain the index of the current host.
  If <solr.data> points to /index/data, Solr will create sub-directories index and spellchecker.
  If <solr.data> is not set, then the default value set in solrconfig.xml will be used. This variable will often be used for intermediate index shard creation to point to specific data directory.
+
+ * It is possible to define field recoders. With recoders, a field will be transformed on-the-fly to an other or multiple fields. It could be used to transform a group of data to single elements for example.
+ The program do not provide any recoder for the moment but it is easy to developp new ones. To do so, a Java class must implements the FieldRecoder interface which provide a recode function. The returned list will be indexed the way fields would have been indexed in original document.
+ Recoded field will not be indexed. If required, it should also be returned in the pair list. If a key is already present in the document, it will be concatenated.
+ 
+ To specify a recoder, add in the seqcrawler.properties a proerty with value: <bankname>.<fieldname>.recode = <class_of_recoder>
+ Of course, the class should be in the classpath of the program.
 
  []
    

@@ -17,6 +17,7 @@ import org.irisa.genouest.seqcrawler.index.SequenceHandler;
 import org.irisa.genouest.seqcrawler.index.Constants.STORAGEIMPL;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
 import org.irisa.genouest.seqcrawler.index.exceptions.StorageException;
+import org.irisa.genouest.seqcrawler.index.handlers.field.FieldRecoder;
 import org.irisa.genouest.seqcrawler.index.handlers.gff.GFF3Record;
 import org.irisa.genouest.seqcrawler.index.storage.StorageManager;
 import org.irisa.genouest.seqcrawler.index.storage.StorageManagerInterface;
@@ -106,7 +107,31 @@ public class GFFHandler implements SequenceHandler {
                     for (int count = 0; count < attributes.length; count++) {
                         String[] attribute = attributes[count].split("=");
                         if (attribute != null && attribute.length > 1) {
+                        	// recode?
+                        	String recodeKey = bank+"."+attribute[0]+".recode";
+                        	if(indexManager.getArgs().containsKey(recodeKey)) {          
+                        		String className = indexManager.getArgs().get(recodeKey);
+                        		try {
+									Class recodeClass = Class.forName(className);
+									FieldRecoder recoder = (FieldRecoder) recodeClass.newInstance();
+									String[][] newAttributes = recoder.recode(attribute[0], attribute[1]);
+									if(newAttributes!=null) {
+									for(int na = 0; na < newAttributes.length; na++) {
+									rec.getAnnotations().setProperty(newAttributes[na][0], newAttributes[na][1]);
+									}
+									}
+									
+								} catch (ClassNotFoundException e) {
+									log.error(e.getMessage());
+								} catch (InstantiationException e) {
+									log.error(e.getMessage());
+								} catch (IllegalAccessException e) {
+									log.error(e.getMessage());
+								}          
+                        	}
+                        	else {
                             rec.getAnnotations().setProperty(attribute[0], attribute[1]);
+                        	}
                         }
                     }
                     
