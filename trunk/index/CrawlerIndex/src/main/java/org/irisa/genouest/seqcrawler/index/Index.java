@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Properties;
+import java.util.Map.Entry;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -34,6 +35,8 @@ import org.xml.sax.SAXException;
 public class Index 
 {
 	private Logger log = LoggerFactory.getLogger(Index.class);
+	
+	private static String PROPFILE ="seqcrawler.properties";
 	
 	String bank=Constants.BANK_DEFAULT;
 	String inputFile=null;
@@ -195,6 +198,10 @@ public class Index
         			indexMngr.setStorageImpl(StorageManager.getStorageImpl(cmd.getOptionValue("storage")));
         	}
         }
+        
+        //has field recoders ?
+        setRecoders(indexMngr);
+        
         // Now init the server (embedded or remote connection)
         if(useEmbeddedServer) {
         	indexMngr.initServer(null);
@@ -314,6 +321,32 @@ public class Index
     }
 
     /**
+     * Adds recorders defined in properties file to the config
+     * @param indexMngr Index Manager instance
+     */
+    private void setRecoders(IndexManager indexMngr) {
+    	Properties properties = new Properties();
+		try {
+			File props = new File(PROPFILE);
+			if(props.exists()) {
+			properties.load(new FileInputStream(props)); }
+			for(Entry<Object,Object> prop :properties.entrySet()) {
+				String key = (String) prop.getKey();
+				String value = (String) prop.getValue();
+				if(key.endsWith(".recode")) {
+					// If mybank.myfield.recode = org.irisa.....field.SampleRecoder , then add to recoders.
+					log.debug("loading recoder "+key);
+					indexMngr.getArgs().put(key, value);
+				}
+			}
+		}
+		catch (IOException e) { 
+			log.error(e.getMessage());
+		} 
+		
+	}
+
+	/**
      * Prints to console the command line usage
      * @param options Options supported
      */
@@ -338,7 +371,7 @@ public class Index
 		// Read properties file. 
 		Properties properties = new Properties();
 		try {
-			File props = new File("seqcrawler.properties");
+			File props = new File(PROPFILE);
 			if(props.exists()) {
 			properties.load(new FileInputStream(props)); }
 			if(properties.containsKey("solr.solr.home")) {
@@ -353,5 +386,13 @@ public class Index
 		catch (IOException e) { 
 			log.error(e.getMessage());
 		} 
+	}
+
+	public static String getPROPFILE() {
+		return PROPFILE;
+	}
+
+	public static void setPROPFILE(String pROPFILE) {
+		PROPFILE = pROPFILE;
 	}
 }

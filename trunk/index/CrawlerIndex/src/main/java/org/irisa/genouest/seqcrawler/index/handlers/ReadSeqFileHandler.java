@@ -20,6 +20,7 @@ import org.irisa.genouest.seqcrawler.index.Constants;
 import org.irisa.genouest.seqcrawler.index.IndexManager;
 import org.irisa.genouest.seqcrawler.index.SequenceHandler;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
+import org.irisa.genouest.seqcrawler.index.handlers.field.FieldRecoder;
 import org.irisa.genouest.tools.readseq.BioseqParser;
 import org.irisa.genouest.tools.readseq.SeqDocToIndexDoc;
 import org.slf4j.Logger;
@@ -106,12 +107,18 @@ public class ReadSeqFileHandler implements SequenceHandler {
 			    log.debug("Document position: "+startPos+"-"+rd.getInsReadlen());
 			    
 			    for(String[] keyval : keyValues) {
+			    	String recodeKey = bank+"."+keyval[0]+".recode";
+			    	if(indexManager.getArgs().containsKey(recodeKey)) {
+			    		recodeField(doc,keyval[0],keyval[1]);
+			    	}
+			    	else {
 			    	String value = keyval[1];
 			    	if(doc.containsKey(keyval[0])) {
 			    		value += "\n" + (String) doc.getFieldValue(keyval[0]);
 			    		doc.removeField(keyval[0]);
 			    	}
 			    	doc.addField(keyval[0], value);
+			    	}
 			    }
 			    indexManager.getServer().add(doc);
 			    nbDocs++;
@@ -144,6 +151,39 @@ public class ReadSeqFileHandler implements SequenceHandler {
 		
 	}
 	
+	
+	/**
+	 * Recode input field according to configured recoder
+	 * @param key field name
+	 * @param value field value
+	 */
+	private void recodeField(SolrInputDocument doc,String key, String value) {
+    	    String recodeKey = bank+"."+key+".recode";
+    		String className = indexManager.getArgs().get(recodeKey);
+    		try {
+				Class recodeClass = Class.forName(className);
+				FieldRecoder recoder = (FieldRecoder) recodeClass.newInstance();
+				String[][] newAttributes = recoder.recode(key, value);
+				if(newAttributes!=null) {
+				for(int na = 0; na < newAttributes.length; na++) {
+					if(doc.containsKey(newAttributes[na][0])) {
+						String tmpVal = (String)(doc.removeField(newAttributes[na][0])).getValue();
+						doc.addField(newAttributes[na][0],tmpVal+" "+newAttributes[na][1]);
+					}
+					else {
+						doc.addField(newAttributes[na][0], newAttributes[na][1]);
+					}
+				}
+				}
+				
+			} catch (ClassNotFoundException e) {
+				log.error(e.getMessage());
+			} catch (InstantiationException e) {
+				log.error(e.getMessage());
+			} catch (IllegalAccessException e) {
+				log.error(e.getMessage());
+			}          
+	}
 
 	/**
 	 * Takes a file as raw input data, not trying to interpret the content. Simply submit it as

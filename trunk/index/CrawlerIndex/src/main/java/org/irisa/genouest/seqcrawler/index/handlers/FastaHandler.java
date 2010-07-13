@@ -17,6 +17,7 @@ import org.irisa.genouest.seqcrawler.index.IndexManager;
 import org.irisa.genouest.seqcrawler.index.SequenceHandler;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
 import org.irisa.genouest.seqcrawler.index.exceptions.StorageException;
+import org.irisa.genouest.seqcrawler.index.handlers.field.FieldRecoder;
 import org.irisa.genouest.seqcrawler.index.storage.StorageManager;
 import org.irisa.genouest.seqcrawler.index.storage.StorageManagerInterface;
 import org.irisa.genouest.seqcrawler.index.storage.StorageObject;
@@ -210,7 +211,13 @@ public class FastaHandler implements SequenceHandler {
 								key = mkv.group(1);
 								val = mkv.group(2);
 							}
+							String recodeKey = bank+"."+key+".recode";
+					    	if(indexManager.getArgs().containsKey(recodeKey)) {
+					    		recodeField(doc,key,val);
+					    	}
+					    	else {
 							doc.addField(key, val);
+					    	}
 							nkeys++;
 						}
 					}
@@ -246,6 +253,36 @@ public class FastaHandler implements SequenceHandler {
 		log.info("Number of documents indexed: "+nbDocs);
 	}
 
+	/**
+	 * Recode input field according to configured recoder
+	 * @param doc Solr document to index
+	 * @param key field name
+	 * @param value field value
+	 */
+	private void recodeField(SolrInputDocument doc, String key, String value) {
+    	    String recodeKey = bank+"."+key+".recode";
+    		String className = indexManager.getArgs().get(recodeKey);
+    		try {
+				Class recodeClass = Class.forName(className);
+				FieldRecoder recoder = (FieldRecoder) recodeClass.newInstance();
+				String[][] newAttributes = recoder.recode(key, value);
+				if(newAttributes!=null) {
+				for(int na = 0; na < newAttributes.length; na++) {
+						doc.addField(newAttributes[na][0], newAttributes[na][1]);
+					
+				}
+				}
+				
+			} catch (ClassNotFoundException e) {
+				log.error(e.getMessage());
+			} catch (InstantiationException e) {
+				log.error(e.getMessage());
+			} catch (IllegalAccessException e) {
+				log.error(e.getMessage());
+			}          
+	}
+	
+	
 	/**
 	 * Adds id field and send doc to index server. If store property is set, storage it on storage backend
 	 * @param doc Current index document

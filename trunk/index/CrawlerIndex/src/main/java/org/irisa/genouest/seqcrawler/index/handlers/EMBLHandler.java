@@ -11,6 +11,7 @@ import org.irisa.genouest.seqcrawler.index.Constants;
 import org.irisa.genouest.seqcrawler.index.IndexManager;
 import org.irisa.genouest.seqcrawler.index.SequenceHandler;
 import org.irisa.genouest.seqcrawler.index.exceptions.IndexException;
+import org.irisa.genouest.seqcrawler.index.handlers.field.FieldRecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -319,6 +320,12 @@ public class EMBLHandler implements SequenceHandler {
 	private void finishfield(String key, StringBuffer value) {
 		//Multiple values are not accepted, check if present. If present concat field
 		key = key.toLowerCase();
+		
+    	String recodeKey = bank+"."+key+".recode";
+    	if(indexMngr.getArgs().containsKey(recodeKey)) {
+    		recodeField(key,value.toString());
+    	}
+		else {
 		if(doc.containsKey(key)) {
 			String tmpVal = (String)(doc.removeField(key)).getValue();
 			doc.addField(key,tmpVal+" "+value.toString());
@@ -326,8 +333,43 @@ public class EMBLHandler implements SequenceHandler {
 		else {
 			doc.addField(key, value.toString());
 		}
+		}
 		value.setLength(0);
 		
+	}
+	
+	
+	/**
+	 * Recode input field according to configured recoder
+	 * @param key field name
+	 * @param value field value
+	 */
+	private void recodeField(String key, String value) {
+    	    String recodeKey = bank+"."+key+".recode";
+    		String className = indexMngr.getArgs().get(recodeKey);
+    		try {
+				Class recodeClass = Class.forName(className);
+				FieldRecoder recoder = (FieldRecoder) recodeClass.newInstance();
+				String[][] newAttributes = recoder.recode(key, value);
+				if(newAttributes!=null) {
+				for(int na = 0; na < newAttributes.length; na++) {
+					if(doc.containsKey(newAttributes[na][0])) {
+						String tmpVal = (String)(doc.removeField(newAttributes[na][0])).getValue();
+						doc.addField(newAttributes[na][0],tmpVal+" "+newAttributes[na][1]);
+					}
+					else {
+						doc.addField(newAttributes[na][0], newAttributes[na][1]);
+					}
+				}
+				}
+				
+			} catch (ClassNotFoundException e) {
+				log.error(e.getMessage());
+			} catch (InstantiationException e) {
+				log.error(e.getMessage());
+			} catch (IllegalAccessException e) {
+				log.error(e.getMessage());
+			}          
 	}
 
 	/**

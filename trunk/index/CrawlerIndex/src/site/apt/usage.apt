@@ -1,6 +1,6 @@
 Usage
 
-* What I should know first 
+* What I should know 
  
  GFF documents are completely indexed/stored with the provided schema. This means that the original document is not required (and can be deleted, or not available from index server).
  For Genbank sheets, the script genbank2gff3.pl can be used to convert a file to GFF3 format (GFF+Fasta) and indexed as such.
@@ -51,3 +51,27 @@ Usage
 +--
 
  The Web GUI is accessible directly at the root url of the application and code is hosted in the webapp directory of the application.
+
+ 
+* How to index documents
+
+ To index a document (be it composed of several documents such as multi fasta, or gff), one should use:
+
++--
+
+ For usage: java -jar CrawlerIndex-0.1-jar-with-dependencies.jar -h
+ 
+ Example:
+ Index with no storage
+ java -jar CrawlerIndex-0.1-jar-with-dependencies.jar -b uniprot -f /tmp/uniprot.dat -t embl 
+
+ Index with storage, clean index for specified bank before
+ java -jar CrawlerIndex-0.1-jar-with-dependencies.jar -c -b mypersonalbank -f /tmp/my.gff -t gff -store -stHost http://myhost
+
++--
+
+* Posting document
+
+ Help with Solr and Tika, it is possible to post via HTTP a document and to index it automatically.
+ However only readseq conversion is supported here and it will work only if original document is a unique document (no multi fasta for example).
+ To do so, refer to Solr documentation. There is no auto-detect implementation for the moment, so content-type should be specified (biosequence/embl for example).
