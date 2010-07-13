@@ -23,7 +23,8 @@ Architecture
 
  If no shard is specified, the Solr instance will at its local index. If shards are set, it will look at the specified instances, which can include itself.
  
-[images/solrquery.png] Architecture 
+[images/solrquery.png] Architecture
+ 
 
 ** Storage query
 

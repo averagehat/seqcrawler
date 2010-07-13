@@ -1,0 +1,20 @@
+Usage
+
+ TODO
+ 
+ 
+ GFF documents are completly indexed/stored in the initial configuration. This means that the original document is not required (and can be deleted).
+ For Genbank sheets, the script genbank2gff3 can be used to convert them in GFF and indexed as such.
+ GFF indexation integrates the indexed data with GBrowse. Other formats cannot be integrated, only GFF is supported.
+ 
+ The following fields are added by the indexer CrawlerIndex, and are document dependant.
+ Those are used in web interface and to extract documents.
+ 
++-- 
+    <field name="stream_name" type="lowercase" indexed="false" stored="true"/>
+    <field name="stream_content_type" type="lowercase" indexed="false" stored="true"/>
++--    
+    <stream_name> contains original file name and path. It will be used by lookupjsp todownload the content from the original document.
+    
+    <stream_content_type> contains the content-type of the document. For Biological data it will be <<biosequence/xxx>> (gff, embl,...).
+    Others will be usual content-type (text/plain, text/html...)

@@ -28,7 +28,7 @@ allow from 192.168.1.*  // ?syntaxe allow from internal network
 Files installation
 
 Put solr.war in a Tomcat container. Copy lib directory in WEB-INF/lib directory of deployed web app.
-Update WEB-INF/web.xml to point to correct solr home (var entryt solr/home) e.g. current deployed dir.
+Update WEB-INF/web.xml to point to correct solr home (var entry solr/home) e.g. current deployed dir.
 
 Put bin/index.jsp in deployed webapp
 Copy jquery-1.2.3.min.js and main.css under webapp /itas/
