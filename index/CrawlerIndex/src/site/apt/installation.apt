@@ -59,6 +59,22 @@ parameters needs customization (hostname, shards...) after installation.
 *** Installation instructions
 
 ===
+
+ All installation should be hidden by an Apache frontend. This will hide the multiple ports used (Tomcat, Riak...) and ease access for people behind firewalls and allow easier securization with filters.
+ 
+ Apache configuration should restrict write operations from behind network for storage host/virtual host
+
+ Example configuration:
+ 
++--
+<LIMIT PUT DELETE>
+order deny,allow
+deny from all
+allow from 192.168.1.*  // to allow from internal network only
+</LIMIT>
++--
+
+===
  
  <<Solr install>>:
 
@@ -79,6 +95,11 @@ parameters needs customization (hostname, shards...) after installation.
 
  In Tomcat instance (or other Servlet container), deploy the apache-solr-1.4.1.war. For Tomcat, copy it to the webapps directory.
  
+ Copy the solr/bin/index.jsp and lookup.jsp to the deployed webapp. Loopup.jsp is a web application to return a document from a file and index.jsp provides direct access to the query interface.
+ In lookup.jsp, update <String AUTHDIR ="/";>. <<AUTHDIR>> is a directory filter to restrict file access to a defined sub directory structure (to restrict file access)
+ 
+ 
+ 
  To enable the <itas> request handler, e.g. the default web interface, the lib directory content must be copied to the web application in WEB-INF/lib directory.
  
  That's it, Solr instance is ready. Now we can to configure it.
@@ -91,25 +112,168 @@ parameters needs customization (hostname, shards...) after installation.
  
  * conf/solrconfig.xml:
  
- TODO
+ solrconfig file is the main configuration of the index server, following needs to be updated:
+ 
+   *  <dataDir>${solr.data.dir:./solr/data}</dataDir> : dataDir point to the directory containing the index. It can be a relative path.
+   
+   * Other parameters require advanced knowledge of the Solr system. Please refer to the Solr documentation.
 
  * conf/schema.xml: 
 
- TODO
+ This file contains the index structure. It defines both field types and fields. Many field types are predefined and should be enough (int types, string types...), but you should know that it is possible to develop your own field types.
+ To do so, one can create a new fieldType definition in the schema, using existing tokenizers etc... or one can create new tokenizers or filters, add them to the classpath and specify it in the schema. Again, please refer to Solr documentation for more information.
+ Available field types are in the installed schema.xml.
+ 
+ Fields need to be defined to be indexed. Example of fields definition:
+ 
++-- 
+   <!-- 
+     Field with name "feature", will be indexed (searchable) and stored (value can be returned in search interface).
+     It is indexed with type "lowercase" e.g. all letters will be lowercased but works won't be splitted.
+   -->
+   <field name="feature" type="lowercase" indexed="true" stored="true"/>
+
+   <!--
+     Field with name "start" is of type "int", e.g. an integer that can be queried with range values. It is indexed and stored (searchable and value available in matches) 
+     but it is also multiValued (e.g. a same document can have multiple start fields).
+   -->
+   <field name="start" type="int" indexed="true" stored="true" multiValued="true"/>
+
+   <!--
+     Field with name text of type text (lowercased, cut in words), is indexed but not stored (searchable but content not available in interface).
+   -->
+   <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
++--
+  
+  Dynamic fields can also be defined, this means that a field is defined based on a pattern on its name (if and only if it is not explicitly defined in the schema):
+  
++--
+  <!--
+    This is a default that will match all fields not previously defined
+    CAUTION: it is not multi-valued, fields with multiple values will be rejected here.
+  -->
+  <dynamicField name="*" type="text"    indexed="true"  stored="false"/>
+  
+  <!-- Example of a dynamic field matching all my* field names with a different definition -->
+  <dynamicField name="my*" type="text"    indexed="true"  stored="true"/>
+  
++--
+
+ At least, here are a few important configuration elements (should not require modification for seqcrawler use cases):
+ 
++--
+
+ <!--
+   Field used as a unique identifier. In seqcrawler, this field is automatically generated for each document.
+ -->
+ <uniqueKey>seqid</uniqueKey>
+
+ <!-- 
+   Field for the QueryParser to use when an explicit field name is absent
+ -->
+ <defaultSearchField>text</defaultSearchField>
+
+ <!--
+ SolrQueryParser configuration: defaultOperator="AND|OR"
+ This means that query "solr lucene" will search for "solr OR lucene"
+ -->
+ <solrQueryParser defaultOperator="OR"/>
+
+  <!--
+  copyField commands copy one field to another at the time a document
+  is added to the index.  It's used either to index the same field differently,
+  or to add multiple fields to the same field for easier/faster searching.
+  -->
+   
+  <copyField source="*" dest="text"/>
+
++--
+
+ 
+ * TOMCAT_HOME/webapps/solr_app_name/WEB-INF/web.xml
+ 
+ Update the parameter entry <solr/home> to point to the index directory.
+ 
+ It is also advised (but not mandatory) to secure the admin interface of Solr (solrurl/admin). This can be wdone this way:
+ 
++--
+
+<security-constraint>
+    <web-resource-collection>
+      <web-resource-name>
+        Protected Section
+      </web-resource-name>
+      <!-- This would protect the entire site -->
+      <url-pattern> /admin/* </url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <!-- Roles that have access -->
+      <role-name>crawleradmin</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <!-- Define reference to the user database for looking up roles -->
+  <resource-env-ref>
+    <description>
+      Link to the UserDatabase instance from which we request lists of
+      defined role names.  Typically, this will be connected to the global
+      user database with a ResourceLink element in server.xml or the context
+      configuration file for the Manager web application.
+    </description>
+    <resource-env-ref-name>users</resource-env-ref-name>
+    <resource-env-ref-type>
+      org.apache.catalina.UserDatabase
+    </resource-env-ref-type>
+  </resource-env-ref>
+
+  <!-- BASIC authentication -->
+  <login-config>
+    <auth-method> BASIC </auth-method>
+    <realm-name> Seqcrawler Basic Authentication </realm-name>
+  </login-config>
+
+  <!-- Security roles referenced by this web application -->
+  <security-role>
+    <description>
+      The role that is required to log in to the Admin section
+    </description>
+    <role-name>crawleradmin</role-name>
+  </security-role>
+
+
++-- 
+
+ Then all you need is to define a user with the role <crawleradmin> in your web container.
 
  []
 
  Once configuration is over, the web container must be restarted (or the application reloaded).
- 
-===
-
- <<Interface customization>>
- 
- TODO
 
 ===
 
-usage
+ <<SeqCrawler configuration>>:
+ 
+ SeqCrawler shells in solr/bin directory must be updated. the INDEXHOME environment variable needs to be set to the solr/bin path.
+ Shells are not mandatory, they are only wrappers to call the call program directly.
+ 
+ A seqcrawler.properties is also present in solr/bin directory. Though not mandatory, it can be used to specify the <solr.home> and <solr.data> directories.
+ Indeed, the program requires at least the <solr.home> variable to be set to run. Those variables can be specified via command-line with <sh> and <sd> parameters but it can be easier to specify them only once via the properties file.
 
+ <<Warning>>: seqcrawler.properties will be search in current path location when running a script or executing the Java jar. If script is executed from /tmp for example, the properties file should be in /tmp too.
+ 
+ * The <solr.home> points to the solr directory (under which conf directory is present). It is mandatory.
+ 
+ * The <solr.data> points to the directory that will contain the index of the current host.
+ If <solr.data> points to /index/data, Solr will create sub-directories index and spellchecker.
+ If <solr.data> is not set, then the default value set in solrconfig.xml will be used. This variable will often be used for intermediate index shard creation to point to specific data directory.
+
+ []
+   
+===
+
+ <<Interface customization>>:
+ 
  TODO
+
+
 
