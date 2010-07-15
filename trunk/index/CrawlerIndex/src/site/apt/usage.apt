@@ -50,6 +50,13 @@ Usage
  http://localhost:8983/solr/select/?q=protein&qt=shard&wt=json
 +--
 
+ To query only the index shard of the queried host, remove the query type parameter (qt):
+
++-- 
+ http://localhost:8983/solr/select/?q=protein&wt=json
++--
+ 
+
  The Web GUI is accessible directly at the root url of the application and code is hosted in the webapp directory of the application.
 
  
