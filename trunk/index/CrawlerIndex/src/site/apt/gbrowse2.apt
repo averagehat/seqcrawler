@@ -9,7 +9,7 @@ GBrowse2
 +-- 
   db_args       = -adaptor    solr
     -FORMAT     gff
-    -STORAGEURL http://my_riak_external_hostname:riak_port/riak/web/dataquery.html
+    -STORAGEURL http://my_riak_external_hostname:riak_port/riak
     -BANK       GenBank (optional, default is all)
 +--
 

@@ -88,7 +88,7 @@ public class StorageManager {
 	/**
 	 * Returns storage implementation based on input storage name
 	 * @param storage name of the implementation
-	 * @return
+	 * @return The Storage implementation enum value
 	 */
 	public static Constants.STORAGEIMPL getStorageImpl(String storage) {
 		if(storage.equalsIgnoreCase(Constants.STORAGEIMPL.RIAK.toString())) {

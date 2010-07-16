@@ -376,7 +376,7 @@ public class EMBLHandler implements SequenceHandler {
 	 * Manage input field depending on current document parsing status. May store document, add field, skip field...
 	 * @param key Name of field, null for documents
 	 * @param val Value of the field, null for documents
-	 * @param state {@link STATES} status of the parsing
+	 * @param state  status of the parsing
 	 * @throws IOException
 	 */
 	protected void processField(String key, String val,	STATES state) throws IOException {

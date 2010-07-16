@@ -316,6 +316,18 @@ allow from 192.168.1.*  // to allow from internal network only
  Script to upload data need the <<curl>> program. Other tools can be used to upload data but script should be updated accordingly.
  
  To load the web interface, just call the upload.sh with the name of the file to upload.
+ 
+ Web interface is accessible at http://myhost:8098/riak/web/dataquery.html with parameters:
+ 
+ * id : Identifier of the element (gene id for example)
+ 
+ * source : Identifier of the source element (id of the chromosome for example, to extract raw dna sequence)
+ 
+ * start : (optional) Start position to extract from data source
+ 
+ * stop : (optional) Stop position to extract from data source
+ 
+ 
  The host name in upload.sh should be updated before:
  
 +--

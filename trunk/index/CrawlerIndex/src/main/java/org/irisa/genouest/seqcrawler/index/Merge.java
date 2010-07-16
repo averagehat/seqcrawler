@@ -147,7 +147,6 @@ public class Merge {
 
 	/**
 	 * Merge a list of directory
-	 * @param args Directory where to create the index and directory hosting the indexes to merge
 	 */
 	public void merge() {
 		File INDEXES_DIR  = new File(indexesDir);
