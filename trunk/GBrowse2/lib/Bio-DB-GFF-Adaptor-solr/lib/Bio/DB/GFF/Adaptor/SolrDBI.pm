@@ -256,7 +256,7 @@ sub _json2feature {
     elsif (!$name && $tag =~ /^Alias$/i) { $name= $values[0]; }
     }
     
-  push @attributes,['raw data' => '<a href="'.$self->{STORAGEURL}.'?id='.$id.'&source='.$chr.'&start='.$start.'&stop='.$stop.'"> See raw sequence and transcript</a>'] if($self->{STORAGEURL} ne "undefined");;
+  push @attributes,['raw data' => '<a href="'.$self->{STORAGEURL}.'/web/dataquery.html?id='.$id.'&source='.$chr.'&start='.$start.'&stop='.$stop.'"> See raw sequence and transcript</a>'] if($self->{STORAGEURL} ne "undefined");;
     
 
   my $gclass= $feattype;  ## what is gclass - group class - need parent class if parent !
