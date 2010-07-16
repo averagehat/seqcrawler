@@ -674,7 +674,7 @@ sub getSourceInfo {
       || $is_rich ? $seq->get_dates() : ();
   my ($comment)= $seq->annotation->get_Annotations("comment");
   my ($species)= $seq->annotation->get_Annotations("species") 
-               || ( $seq->can('species') ? $seq->species()->binomial() : undef );
+               || ($seq->species() && ($seq->can('species')) ? $seq->species()->binomial() : undef );
                
   # update source feature with main GB fields
   $sf->add_tag_value( ID => $seq_name ) unless $sf->has_tag('ID');
@@ -755,8 +755,11 @@ sub gene_features {
         for my $expar ($rna_id, $ncrna_id) { 
           next unless($expar);
           if ( $exonpar{$expar} ) {
-            my @vals = $f->get_tag_values('Parent');
-            next if (grep {$expar eq $_} @vals);
+            #OSALLOU, fix issue found with a few Genbank sheets
+            if($f->has_tag('Parent')) {
+              my @vals = $f->get_tag_values('Parent');
+              next if (grep {$expar eq $_} @vals);
+            }
             }
           $exonpar{$expar}++;
           $f->add_tag_value( Parent => $expar); 
