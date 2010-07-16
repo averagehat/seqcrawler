@@ -71,6 +71,8 @@ use Bio::DB::GFF::Adaptor::dbi::iterator; #  works ok
 use constant DEBUG  => 0;
 use constant NOATTR => 0;
   
+use LWP::Simple;
+use JSON;
 
   
 use constant MAX_SEGMENT => 100_000_000;  # the largest a segment can get
@@ -234,52 +236,53 @@ sub dna_lib {
 }
 
 
-
-sub get_dna_from_raw {  
+# Loads DNA from backend storage, concatenate shards if any
+sub get_dna_from_raw {
   my $self = shift;
   my ($id,$start,$stop,$class) = @_;
-
   # start = 1-based; 0-based for seek
   return unless(defined $stop);
   $start = 1 if !defined $start;
   my $reversed= 0;
   if ($start>$stop) {
-    $reversed=1; 
+    $reversed=1;
     ($start,$stop)= ($stop,$start);
     }
 
-  my $dnafiles= $self->{dnafiles};
-  if (ref $dnafiles) {
-    (my $did= $id) =~ s,:,/,g; # fix for dbname:chromo prefixes
-    my @files= grep(/\b$did\b/, @$dnafiles); # check for 2+ id files?
+  my $url = $self->{STORAGEURL}."/bank/".$id;
+  my $content = get $url;
+  warn "Couldn't get $url" unless defined $content;
+  return unless defined $content;
 
-    if (@files == 0) { warn "no dna files for id=$id"; return; }
+  my $jsonDna = decode_json $content;
+  my $alldna = $jsonDna->{content};
 
-
-    if (@files > 1) {
-      if ($did !~ m,/,) {
-        my $dnadir= $self->{DNA_LIB};
-        @files= grep( m|$dnadir/[^/]*$did\b|, @$dnafiles); # check for 2+ id files?
-        }
-      if(@files > 1) { warn "two+ dna files for id=$id : ",join(",",@files); return; }
+  my $shardsref = $jsonDna->{shards};
+  my @shards = @$shardsref;
+  my $shardSize = @shards;
+  if(@shards && $shardSize>0) {
+    if(DEBUG) {
+       warn "Loading shards for raw dna, nb shards = ".$shardSize;
+    }
+      for my $shard (@shards) {
+          $url = $self->{STORAGEURL}."/bank/".$shard;
+          $content = get $url;
+          warn "Couldn't get $url" unless defined $content;
+          $jsonDna = decode_json $content;
+          #Add shards content
+          $alldna = $alldna.$jsonDna->{content};
       }
-      
-    my $file= shift @files;
-    my $dna;
-    my $size= ($stop-$start+1);
-    open(DNA,$file) or do { warn "cant read dnafile $file"; return; };
-    seek(DNA, $start-1, 0);
-    read(DNA, $dna, $size);
-    close(DNA);
+  }
+  my $size= ($stop-$start+1);
+  my $dna = substr $alldna, $start-1, $size;
 
     if ($reversed) {
       $dna =~ tr/gatcGATC/ctagCTAG/;
       $dna = reverse $dna;
       }
-    return $dna;
-    }
-  return;
+  return $dna;
 }
+
 
 #FIXME
 sub load_or_store_fasta {
