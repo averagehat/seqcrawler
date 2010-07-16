@@ -17,7 +17,9 @@ parameters needs customization (hostname, shards...) after installation.
 
  * Linux/Unix system (validated on RH5 and Ubuntu 9.10)
  
- * GBrowse2 must be installed with BioPerl
+ * GBrowse2 must be installed
+ 
+ * BioPerl 1.6.1
  
  * Tomcat6
  
