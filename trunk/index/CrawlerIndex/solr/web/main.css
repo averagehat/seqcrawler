@@ -2,6 +2,42 @@
  background-color: grey;	
 }
 
+.icon {
+	width: 30px;
+	height: 30px;
+	padding: 10px;
+		
+}
+
+.doclinks {
+	float: right;	
+}
+
+
+
+a:link { 
+	color: #FFFFFF;
+	text-decoration: none;
+	}
+a:visited { 
+	color: #FFFFFF;
+	text-decoration: none;
+	}
+a:hover { 
+	color: #FFFFFF;
+	background-color: #FFFFFF;
+	text-decoration: none;
+	}
+a:active { 
+	color: #FFFFFF;
+	text-decoration: none;
+	}
+
+.genouest {
+	color: #000000;
+	}
+
+
 .nav {
 	padding: 5px;
 	float: left;
@@ -146,7 +182,7 @@ body {
 
 .query-box input {
   margin-left: 8px;
-  width: 85%;
+  
 }
 
 .pagination {
