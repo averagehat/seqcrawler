@@ -17,6 +17,20 @@ Architecture of the solution for high availability
 #For proxy, specify a virtualhost with proxy to correct hosts/ports:
 
 <VirtualHost *:80>
+    # Restrict update operations to authenticated users, could also use ip or domain restrictions.
+	<Proxy *>
+	         AuthName "only for registered users"
+	         AuthType Basic
+	         AuthUserFile "/etc/apache2/passwd.httpd"
+	<Limit PUT POST DELETE CONNECT OPTIONS>
+	Require valid-user
+	# Or for domain restriction
+	# Order deny,allow
+    # Deny from all
+    # Allow from 192.168.1.*
+	</Limit>
+	</Proxy>
+
     ProxyPass           /solr  http://192.168.1.237:8080/solr
     ProxyPassReverse /solr  http://192.168.1.237:8080/solr
 

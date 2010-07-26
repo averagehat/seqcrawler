@@ -2,6 +2,68 @@
  background-color: grey;	
 }
 
+.nav {
+	padding: 5px;
+	float: left;
+	color: blue;
+}
+	
+.field {
+	padding-left: 10px;
+	padding-top: 5px;
+}
+
+.doclink {
+	padding-left: 10px;
+	padding-top: 5px;
+}
+
+#header {
+	width: 100%;
+}
+
+#content {
+	width: 100%;
+}
+
+#metadata {
+	width: 100%;
+	text-align: center;
+}
+
+#footer {
+	clear: both;
+	width: 100%;
+	padding: 30px;
+}
+
+#results {
+	float:left;
+	margin-left:50px;
+	width: 70%;
+}
+
+#facets {
+	float: left;
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+	background: none repeat scroll 0 0 #FD9644;
+}
+
+.document {
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+}	
+
+.fieldName {
+	float: left;	
+}
+
+.fieldValue {
+	padding-left: 200px;	
+}
 
 .array-field {
   border: 2px solid #474747;
