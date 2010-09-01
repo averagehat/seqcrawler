@@ -45,6 +45,28 @@
    });  
    }); 
    
+   
+   function appendField(fieldname) {
+   
+   $("input#query").val($("input#query").val()+" "+fieldname+":");
+   
+   }
+   
+   function showFields() {
+   		$.get("fields.txt",
+				   function(data){
+				   var result = jQuery.parseJSON(data);
+				   var fields = result["fields"];
+				   var fieldlist = "";
+				   for(var field in fields) {
+				   	fieldlist += "<p onclick=\"appendField('"+fields[field]+"')\">"+fields[field]+"</p>";
+				   }
+				   $("#documentDetails" ).html(fieldlist);
+				   $("#documentDetails" ).dialog({ title: 'List of available fields' , width : '300px' });
+				   
+		});
+   }
+   
    function goToPage() {
 		$("#documentDetails" ).html('<p class="wait"><img title="loading" alt="loading" src="images/waiting.gif"/></p>');
 	 	$("#documentDetails" ).dialog({ title: 'Loading, please wait' , width : '200px'  });
@@ -224,7 +246,10 @@
    <div id="header" class="query-box">
    <div id="query">
    <form id="queryForm" name="queryForm" action="">
+   
    <label for="query" id="query_label">Query</label>
+   <img  onclick="showFields()" title="List of fields" alt="List of fields" src="images/ihelp.png" class="icon"/>
+   
    <input type="text" name="query" id="query" size="100" value="" class="text-input"/>
    <label class="error" for="query" id="query_error">This field is required.</label> 
    <input type="submit" name="submit" class="button" id="submit_button" value="Submit"/>
