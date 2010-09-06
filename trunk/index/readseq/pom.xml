@@ -31,14 +31,14 @@
     	<artifactId>tika</artifactId>
     	<version>0.2</version>
     	<type>jar</type>
-    	<scope>runtime</scope>
+    	<scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>org.slf4j</groupId>
     	<artifactId>slf4j-api</artifactId>
     	<version>1.6.0</version>
     	<type>jar</type>
-    	<scope>runtime</scope>
+    	<scope>compile</scope>
     </dependency>
   </dependencies>
 </project>
