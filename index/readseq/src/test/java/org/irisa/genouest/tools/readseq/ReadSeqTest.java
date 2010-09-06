@@ -54,7 +54,9 @@ public class ReadSeqTest
      */
     public void testReadSeqEMBL() throws IOException, SAXException, TikaException
     {
-		InputStream input = new FileInputStream(new File("test/uniprot.dat"));
+    	File inputfile = new File("test/uniprot.dat");
+    	if(!inputfile.exists()) fail("Test file test/uniprot.dat could not be found");
+		InputStream input = new FileInputStream(inputfile);
 		ContentHandler textHandler = new BodyContentHandler();
 		Metadata metadata = new Metadata();
 		ReadSeqParser parser = new ReadSeqParser();
