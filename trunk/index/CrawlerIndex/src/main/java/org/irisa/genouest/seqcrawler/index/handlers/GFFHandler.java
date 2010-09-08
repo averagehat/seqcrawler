@@ -144,9 +144,11 @@ public class GFFHandler implements SequenceHandler {
                 	if(!inError) {
                     SolrInputDocument doc = rec.getDocument();  
                     doc.addField("stream_content_type", "biosequence/gff");
-    			    if(sourceFile!=null) {
+                    // If stream_name not already present in gff attributes
+    			    if(sourceFile!=null && doc.getFieldValue("stream_name")==null) {
     			    	doc.addField("stream_name", sourceFile);
     			    }
+    			    
                     try {
             			this.log.debug("Index new GFF record "+doc.toString());
             			indexManager.getServer().add(doc);			
