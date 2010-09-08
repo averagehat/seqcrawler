@@ -1,6 +1,7 @@
 #!/usr/bin/perl -w
 
 #$Id: genbank2gff3.PLS,v 1.11 2007/03/19 16:42:05 bosborne Exp $;
+# v1.2 2010/09/08 osallou update for solr integration + minor fixes
 
 =pod
 
@@ -350,9 +351,12 @@ for my $file ( @files ) {
     my $in = Bio::SeqIO->new(-fh => \*FH, -format => $FORMAT, -debug=>$DEBUG);
     my $gffio = Bio::Tools::GFF->new( -noparse => 1, -gff_version => $GFF_VERSION );
 
+	my $start=0;
     while ( my $seq = $in->next_seq ) {
         my $seq_name = $seq->accession_number;
         my $end = $seq->length;
+        my $stream_file = $start."-".$end;
+        $start += $end;
         my @to_print;
 
         # arrange disposition of GFF output
@@ -408,6 +412,10 @@ for my $file ( @files ) {
             # dgg; need to convert some Genbank to GFF tags: note->Note; db_xref->Dbxref;
             ## also, pull any GO:000 ids from /note tag and put into Ontology_term
             maptags2gff($feature);
+            
+            #solr integration, add stream info to get original data information
+            $feature->add_tag_value('file' => $stream_file);
+            $feature->add_tag_value('stream_name' => File::Spec->rel2abs( $file ));
             
             # current gene name.  The unflattened gene features should be in order so any
             # exons, CDSs, etc that follow will belong to this gene
