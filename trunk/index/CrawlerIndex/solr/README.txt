@@ -5,7 +5,7 @@ Updates in configuration to be done:
 
 conf/solrconfig.xml:
 
-If index shards is supported, the following lines must be uncommented and updated:
+If index shards is supported, the following lines must be uncommented and updated in shard request handler:
 <str name="shards">shardserver1/solr/,shardserver2/solr/,...</str>
 
 Must be updated to index data location. data dir must contain index and spellchecker subdirectories.
@@ -30,10 +30,9 @@ Files installation
 Put solr.war in a Tomcat container. Copy lib directory in WEB-INF/lib directory of deployed web app.
 Update WEB-INF/web.xml to point to correct solr home (var entry solr/home) e.g. current deployed dir.
 
-Put bin/index.jsp in deployed webapp
-Copy jquery-1.2.3.min.js and main.css under webapp /itas/
+Put web directory in deployed webapp/ Configure index.html with correct hosts.
 
-Access to localhost:8080/solr
+Access to localhost:8080/solr/index.html
 Admin access: localhost:8080/solr/admin
 Admin access should be securized in Tomcat server.
 

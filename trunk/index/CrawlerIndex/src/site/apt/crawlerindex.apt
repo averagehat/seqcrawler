@@ -22,7 +22,7 @@ CrawlerIndex
  
  * org.irisa.genouest.seqcrawler.query.Query: this is a simple tool to query the index. Only first results will be sent back to logger.
  
- * org.irisa.genouest.seqcrawler.index.utils.Utils: useful functions to analyse the index. Used to get the list of available fields (option listfields).
+ * org.irisa.genouest.seqcrawler.index.utils.Utils: useful functions to analyse the index. Used to get the list of available fields (option listfields). Result (in JSON), should be placed in solr webapp dir and named fields.txt.
 
  The indexer works with file format handlers. There is a specific handler for several formats (Embl, Fasta, GFF), while the ReadSeq utility is used to handle the other biosequence formats (though readseq handler needs to be specified at command-line).
  
