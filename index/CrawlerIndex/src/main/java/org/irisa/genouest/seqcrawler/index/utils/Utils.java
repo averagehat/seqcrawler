@@ -168,17 +168,17 @@ public class Utils {
 		if(fields.length>0) {
 			if(file!=null) {
         	FileWriter fw = new FileWriter(file);
-        	fw.write(" { fields = ["+fields[0]);
+        	fw.write(" { \"fields\" = [\""+fields[0]+"\"");
         	for(int i=1;i<fields.length;i++) {
-        		fw.write(","+fields[i]);
+        		fw.write(",\""+fields[i]+"\"");
         	}
         	fw.write(" ] } \n ");
         	fw.close();
 			}
 			else {
-        	String test = " { fields = ["+fields[0];
+        	String test = " { \"fields\" = [\""+fields[0]+"\"";
         	for(int i=1;i<fields.length;i++) {
-        		test+=","+fields[i];
+        		test+=",\""+fields[i]+"\"";
         	}
         	test+=" ] } \n ";
         	JSONObject jsonobj = new JSONObject(test);

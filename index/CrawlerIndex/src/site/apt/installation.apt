@@ -97,10 +97,24 @@ allow from 192.168.1.*  // to allow from internal network only
 
  In Tomcat instance (or other Servlet container), deploy the apache-solr-1.4.1.war. For Tomcat, copy it to the webapps directory.
  
- Copy the solr/bin/index.jsp and lookup.jsp to the deployed webapp. Loopup.jsp is a web application to return a document from a file and index.jsp provides direct access to the query interface.
+ Copy the solr/web content to the deployed webapp. Lookup.jsp is a web application to return a document from a file and index.html provides direct access to the query interface.
  In lookup.jsp, update <String AUTHDIR ="/";>. <<AUTHDIR>> is a directory filter to restrict file access to a defined sub directory structure (to restrict file access)
+ In index.html, the following lines must be configured:
+ 
++--
+ 
+$pageCountResults = 20;  // Number fo results per page
+$solrUrl = "http://seqcrawler.genouest.org/solr/select?rows="+$pageCountResults+"&qt=shard&wt=json&";  // Update host name
+$solrFacet ="facet=on&facet.field=bank&";  // Update to add fields to facet (one facet.field per field)
+$storageurl = "http://seqcrawler.genouest.org"; // Update host
+$gburl = "http://seqcrawler.genouest.org"; // Update host
+$gbbank = "genouest"; // Update to GBrowse configuration name.
+ 
++--
  
  Copy the readseq.jar to the WEB-INF/lib to support Apache Tika indexation.
+ 
+ An other web interface can be used (itas), in place of the dynamic web interface in index.html.
  
  To enable the <itas> request handler, e.g. the default web interface, the lib directory content must be copied to the web application in WEB-INF/lib directory and an <itas> directory must be created in the webapp directory.
  Copy in this new directory the seqcrawler.js,jquery and main.css files.
