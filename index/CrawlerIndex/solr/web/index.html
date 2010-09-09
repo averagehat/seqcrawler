@@ -136,8 +136,8 @@
 		
 	};
    
-   function submitFacet(facet) {
-   	$("input#query").val($("input#query").val()+" +bank:"+facet);
+   function submitFacet(key,facet) {
+   	$("input#query").val($("input#query").val()+" +"+key+":"+facet);
     doQuery($("input#query").val(),0);
    }
    
@@ -200,7 +200,7 @@
    			facetlist = facets[key];
 			facet = facetlist.shift();
 			if(facet) {
-				content+='<li class="facet" onclick="submitFacet(\''+facet+'\')">'+facet;
+				content+='<li class="facet" onclick="submitFacet(\''+key+'\',\''+facet+'\')">'+facet;
 			}
 			facet = facetlist.shift();
 			if(facet) {
