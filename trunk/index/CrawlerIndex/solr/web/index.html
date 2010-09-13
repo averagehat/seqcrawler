@@ -120,7 +120,6 @@
 				 );
 		}
 		else {
-		//TODO Check if urlencoding is required
 		var fileurl = "lookup.jsp?file="+$.URLEncode(name)+"&content-type="+content_type;
 		if(file) {
 		  fileurl += "&position="+file;
@@ -164,7 +163,6 @@
   }
 	
   function showNavigation(nbdocs) {
-  	//TODO
   	
   	if(nbdocs/$pageCountResults>10) {
   		var nav="";
