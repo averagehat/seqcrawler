@@ -11,6 +11,7 @@
 	height: 30px;
 	padding: 10px;
 	vertical-align: middle;
+	margin-right: 30px;
 		
 }
 
@@ -20,7 +21,8 @@
 
 ul
 {
-padding-left:15px;
+padding-left:25px;
+padding-left:10px;
 }
 li
 {
@@ -72,7 +74,7 @@ a:active {
 	width: 80%;
 	min-width: 600px;
 	margin-left: 50px;
-	background-image:url(images/background.png);
+	<!--background-image:url(images/background.png);-->
 	
 	
 }
@@ -97,9 +99,9 @@ a:active {
 	width: 80%;
 	min-width: 600px;
 	padding: 5px;
-	color: white;
+	<!-- color: white; -->
 	margin-left: 50px;
-	background-image:url(images/footer.png);
+	<!-- background-image:url(images/footer.png); -->
 }
 
 #documents {
@@ -107,13 +109,12 @@ a:active {
 }
 
 #results {
-	float:left;
+	right;
 	margin-left:50px;
 	width: 70%;
 }
 
 #facets {
-	float: left;
 	border-style: solid;
 	border-color: black;
 	border-width: 1px;
@@ -149,7 +150,7 @@ a:active {
 body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 10pt;
-  background-color: #E6E6E6;
+  <!-- background-color: #E6E6E6; -->
 }
 
 .constraints-title {
@@ -206,9 +207,9 @@ body {
 
 .query-box, .constraints {
   padding: 5px;
-  border: 3px solid #474747;
-  color: white;
-  background: #FD9644;
+  <!-- border: 3px solid #474747; -->
+  <!-- color: white; -->
+  <!-- background: #FD9644; -->
   font-weight: bold;
   font-size: 16px;
 }

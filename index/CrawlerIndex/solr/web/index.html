@@ -97,11 +97,11 @@
 									var attr = doc[key].split(";");
 									for(var attrkey in attr) {
 								   	 	var attribute = attr[attrkey].split("=");
-										details+='<div class="field"><div class="fieldName">'+attribute[0]+'</div><div class="fieldValue">'+attribute[1]+'</div></div>';	
+										details+='<div class="field"><div class="fieldName">'+attribute[0]+'</div><div class="fieldValue">'+$.URLDecode(attribute[1])+'</div></div>';	
 									}
 								}
 								else {
-									details+='<div class="field"><div class="fieldName">'+key+'</div><div class="fieldValue">'+doc[key]+'</div></div>';		
+									details+='<div class="field"><div class="fieldName">'+key+'</div><div class="fieldValue">'+$.URLDecode(doc[key])+'</div></div>';		
 								}
 							}
 						} // end for
@@ -233,7 +233,7 @@
 		
 		for(var key in doc) {
 		if(key.indexOf('stream_')==-1 && key.indexOf('seqid')==-1 && key.indexOf('id')==-1) {
-		content+='<div class="field"><div class="fieldName">'+key+'</div><div class="fieldValue">'+doc[key]+'</div></div>';		
+		content+='<div class="field"><div class="fieldName">'+key+'</div><div class="fieldValue">'+$.URLDecode(doc[key])+'</div></div>';		
 		}
 		}
 	 
@@ -251,6 +251,7 @@
  </head>                                                                 
  <body>
    <div id="header" class="query-box">
+   <img src="images/crawlit_banner.png"/>
    <div id="query">
    <form id="queryForm" name="queryForm" action="">
    
@@ -268,7 +269,8 @@
    <p>Example: "+bank:genbank +feature:rna" or "yeast" </p>
    </div>                                                                  
    <div id="content">
-   <div id="facets"></div><div id="results"><div id="documents"></div><div id="navigation"/></div></div>
+   <div id="results"><div id="documents"></div><div id="navigation"/></div></div>
+   <div id="facets"></div>
    </div>
    <div id="footer"><hr width="70%"/>Powered by the GenOuest BioInformatics Plaform (http://www.genouest.org)</div>                                        
    <div id="documentDetails"/>
