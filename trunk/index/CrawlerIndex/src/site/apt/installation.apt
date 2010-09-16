@@ -320,6 +320,9 @@ $gbbank = "genouest"; // Update to GBrowse configuration name.
  A basic web interface <itas> is accessible to query the index. It is managed by the <itas> request handler in solrconfig.xml.
  The web interface can be customized easilly. The templaces are Velocity templates located in <SOLR_HOME/conf/velocity>. The css and javascript files are under <webapp_directory>/itas.
 
+ A more complete interface with Ajax support is available via index.html. It uses JQuery and sends background requests to Solr. Fields and results are written with specific handlers depending on content-type (gff,embl,...).
+ The Javascript can be modified to change the display of the results. The file main.css handles the CSS of the web page.
+
 ===
  
  <<Riak install>>:
