@@ -11,8 +11,22 @@
 	height: 30px;
 	padding: 10px;
 	vertical-align: middle;
-	margin-right: 30px;
 		
+}
+
+
+
+.fieldattribute {
+     float: left;
+}
+
+.doclinks a {
+          color: #FFFFFF;
+}
+
+.pubmed a {
+         padding-left: 20px;
+         color: #FFFFFF;
 }
 
 .doclinks {
@@ -22,7 +36,7 @@
 ul
 {
 padding-left:25px;
-padding-left:10px;
+padding-right:10px;
 }
 li
 {
@@ -32,20 +46,16 @@ padding-left:5px;
 
 
 a:link { 
-	color: #FFFFFF;
 	text-decoration: none;
 	}
 a:visited { 
-	color: #FFFFFF;
 	text-decoration: none;
 	}
 a:hover { 
-	color: #FFFFFF;
 	background-color: #FFFFFF;
 	text-decoration: none;
 	}
 a:active { 
-	color: #FFFFFF;
 	text-decoration: none;
 	}
 
@@ -63,6 +73,13 @@ a:active {
 .field {
 	padding-left: 10px;
 	padding-top: 5px;
+    clear:left;
+}
+
+.fieldDetail {
+	padding-left: 10px;
+	padding-top: 5px;
+    clear:left;
 }
 
 .doclink {
@@ -74,13 +91,12 @@ a:active {
 	width: 80%;
 	min-width: 600px;
 	margin-left: 50px;
-	<!--background-image:url(images/background.png);-->
 	
 	
 }
 
 #content {
-	width: 80%;
+        width: 80%;
 	min-width: 600px;
 	min-height: 400px;
 	margin-left: 50px;
@@ -99,9 +115,7 @@ a:active {
 	width: 80%;
 	min-width: 600px;
 	padding: 5px;
-	<!-- color: white; -->
 	margin-left: 50px;
-	<!-- background-image:url(images/footer.png); -->
 }
 
 #documents {
@@ -109,7 +123,7 @@ a:active {
 }
 
 #results {
-	right;
+	float:right;
 	margin-left:50px;
 	width: 70%;
 }
@@ -118,7 +132,9 @@ a:active {
 	border-style: solid;
 	border-color: black;
 	border-width: 1px;
-	background: none repeat scroll 0 0 #FD9644;
+	background: none repeat scroll 0 0 #4B8A08;
+        font-family: Comic Sans MS;
+        font-size: 12px;
 }
 
 .document {
@@ -127,12 +143,31 @@ a:active {
 	border-width: 1px;
 }	
 
+.documentOdd {
+        border-style: solid;
+        border-color: black;
+        border-width: 1px;
+}
+
+.documentEven {
+        border-style: solid;
+        border-color: black;
+        border-width: 1px;
+        background-color: #EDF6F5;
+}
+
 .fieldName {
-	float: left;	
+<!--	float: left;	-->
+        width: 100px;
 }
 
 .fieldValue {
-	padding-left: 200px;	
+        float: right;
+       <!-- width: 400px; -->
+}
+
+.pubmed {
+        floar: left;
 }
 
 .array-field {
@@ -150,7 +185,6 @@ a:active {
 body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 10pt;
-  <!-- background-color: #E6E6E6; -->
 }
 
 .constraints-title {
@@ -208,8 +242,7 @@ body {
 .query-box, .constraints {
   padding: 5px;
   <!-- border: 3px solid #474747; -->
-  <!-- color: white; -->
-  <!-- background: #FD9644; -->
+  color: white;
   font-weight: bold;
   font-size: 16px;
 }
