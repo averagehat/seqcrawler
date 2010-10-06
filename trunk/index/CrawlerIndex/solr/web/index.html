@@ -4,8 +4,9 @@
  <script type="text/javascript" src="jquery-ui-1.8.2.custom.min.js"></script>    
  <script type="text/javascript" src="jquery.url.packed.js"></script>  
  <script type="text/javascript" src="urlEncode.js"></script> 
+ <link rel="stylesheet" type="text/css" href="jquery-ui-1.8.2.custom.css"/>
  <link rel="stylesheet" type="text/css" href="main.css"/>
- <link rel="stylesheet" type="text/css" href="jquery-ui-1.8.2.custom.css"/>     
+       
  <script type="text/javascript">                                         
    // we will add our javascript code here
    $(document).ready(function() {
@@ -38,8 +39,7 @@
        $("input#query").focus();  
        return false;  
      }   
-     $("#documentDetails" ).html('<p class="wait"><img title="loading" alt="loading" src="images/waiting.gif"/></p>');
-	 $("#documentDetails" ).dialog({ title: 'Loading, please wait...' , width : '200px'  });
+
      doQuery(queryField,0);
      return false;
    });  
@@ -97,11 +97,11 @@
 									var attr = doc[key].split(";");
 									for(var attrkey in attr) {
 								   	 	var attribute = attr[attrkey].split("=");
-										details+='<div class="field"><div class="fieldName">'+attribute[0]+'</div><div class="fieldValue">'+$.URLDecode(attribute[1])+'</div></div>';	
+										details+='<div class="fieldDetail">'+attribute[0]+': '+$.URLDecode(attribute[1])+'</div>';	
 									}
 								}
 								else {
-									details+='<div class="field"><div class="fieldName">'+key+'</div><div class="fieldValue">'+$.URLDecode(doc[key])+'</div></div>';		
+									details+='<div class="fieldDetail">'+key+': '+$.URLDecode(doc[key])+'</div>';		
 								}
 							}
 						} // end for
@@ -112,7 +112,7 @@
 		  							fileurl += "&position="+file;
 								}
 								fileurl += '">Genbank sheet</a>';
-								details+='<div class="field">'+fileurl+'</div>';
+								details+='<div class="fieldDetail">'+fileurl+'</div>';
 						}
 			   			$("#documentDetails" ).html(details);
 						$("#documentDetails" ).dialog({ title: 'Document' , width : '600px'  });
@@ -142,6 +142,10 @@
    
    function doQuery(solrQuery,start) {
    		$pageCount=1;
+   		// Show loading windows
+   		$("#documentDetails" ).html('<p class="wait"><img title="loading" alt="loading" src="images/waiting.gif"/></p>');
+	    $("#documentDetails" ).dialog({ title: 'Loading, please wait...' , width : '200px'  });
+   		
 		$.get($solrUrl+$solrFacet+"q="+solrQuery+"&start="+start,
 				   function(data){
 				        $("#documentDetails" ).dialog( "close" );
@@ -215,8 +219,10 @@
   	size = docs.length;
     var content = '';
     for(s=0;s<size;s++) {
-		doc = docs.shift();	
-		content+='<div class="document">';
+		doc = docs.shift();
+        var subclass = 'Odd';
+        if(s%2==0) subclass= 'Even'
+        content+='<div class="document'+subclass+'">';
 
 		content+='<div class="doclinks">';
 		content+='<img  onclick="showDetails(\''+doc["seqid"]+'\',\''+ doc["stream_content_type"] +'\',\''+ doc["stream_name"]  +'\',\''+ doc["file"]  +'\')" title="Show details" alt="Show details" src="images/ihelp.png" class="icon"/>';
@@ -231,7 +237,7 @@
 		
 		for(var key in doc) {
 		if(key.indexOf('stream_')==-1 && key.indexOf('seqid')==-1 && key.indexOf('id')==-1) {
-		content+='<div class="field"><div class="fieldName">'+key+'</div><div class="fieldValue">'+$.URLDecode(doc[key])+'</div></div>';		
+		content+='<div class="field">'+key+': '+$.URLDecode(doc[key])+'</div>';		
 		}
 		}
 	 
