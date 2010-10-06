@@ -3,7 +3,7 @@ Usage
 * What I should know 
  
  GFF documents are completely indexed/stored with the provided schema. This means that the original document is not required (and can be deleted, or not available from index server).
- For Genbank sheets, the script genbank2gff3.pl can be used to convert a file to GFF3 format (GFF+Fasta) and indexed as such.
+ For Genbank sheets, the script {{{genbank2gff.html}genbank2gff3.pl}} can be used to convert a file to GFF3 format (GFF+Fasta) and indexed as such.
  GFF index integrates the indexed data with GBrowse. Other formats cannot be integrated, only GFF is supported.
  
  For a description of the GFF fields, refer to {{{gff.html}this page}}.

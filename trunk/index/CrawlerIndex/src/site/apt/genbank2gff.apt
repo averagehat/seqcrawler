@@ -1,0 +1,18 @@
+Genbank to GFF conversion
+
+* Genbank2gff3.pl 
+ 
+  This script is used to convert some Genbank format files to the GFF3 format (including Fasta).
+  All features describes in the sheet will result in a GFF entry.
+  
+  GFF entries will also refer to original Genbank file with an additional attribute to allow the download of original sheet for any entry.
+
+* Usage
+
+  The script is located in solr/bin directory of the distribution and requires BioPerl.
+
+  Calling genbank2gff.pl with no option will output help usage. Basic usage is:
+
++--
+  perl genbank2gff3.pl --dir path_to_files --outdir path_to_converted_files
++--

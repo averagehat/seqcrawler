@@ -17,10 +17,6 @@ parameters needs customization (hostname, shards...) after installation.
 
  * Linux/Unix system (validated on RH5 and Ubuntu 9.10)
  
- * GBrowse2 must be installed
- 
- * BioPerl 1.6.1
- 
  * Tomcat6
  
  * JDK 1.6+
@@ -29,9 +25,15 @@ parameters needs customization (hostname, shards...) after installation.
  
  * Riak for backend storage
  
+** Optional
+
+ * {{{gbrowse2.html}GBrowse2}} must be installed for genome browsing. 
+ 
+ * BioPerl 1.6.1 (For GBrowse2 and {{{genbank2gff.html}genbank2gff3.pl}})
+ 
  []
  
- Additional Perl packages:
+** Additional Perl packages:
 
  * 'JSON' => 2,21,
  
@@ -99,6 +101,7 @@ allow from 192.168.1.*  // to allow from internal network only
  
  Copy the solr/web content to the deployed webapp. Lookup.jsp is a web application to return a document from a file and index.html provides direct access to the query interface.
  In lookup.jsp, update <String AUTHDIR ="/";>. <<AUTHDIR>> is a directory filter to restrict file access to a defined sub directory structure (to restrict file access)
+
  In index.html, the following lines must be configured:
  
 +--
@@ -114,8 +117,7 @@ $gbbank = "genouest"; // Update to GBrowse configuration name.
  
  Copy the readseq.jar to the WEB-INF/lib to support Apache Tika indexation.
  
- An other web interface can be used (itas), in place of the dynamic web interface in index.html.
- 
+ An other web interface can be used (itas) in place of the dynamic web interface in index.html.
  To enable the <itas> request handler, e.g. the default web interface, the lib directory content must be copied to the web application in WEB-INF/lib directory and an <itas> directory must be created in the webapp directory.
  Copy in this new directory the seqcrawler.js,jquery and main.css files.
  
@@ -317,7 +319,7 @@ $gbbank = "genouest"; // Update to GBrowse configuration name.
 
  <<Interface customization>>:
  
- A basic web interface <itas> is accessible to query the index. It is managed by the <itas> request handler in solrconfig.xml.
+ If installed, the basic web interface <itas> is accessible to query the index. It is managed by the <itas> request handler in solrconfig.xml.
  The web interface can be customized easilly. The templaces are Velocity templates located in <SOLR_HOME/conf/velocity>. The css and javascript files are under <webapp_directory>/itas.
 
  A more complete interface with Ajax support is available via index.html. It uses JQuery and sends background requests to Solr. Fields and results are written with specific handlers depending on content-type (gff,embl,...).
