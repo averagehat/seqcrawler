@@ -13,6 +13,25 @@ GBrowse2
     -BANK       GenBank (optional, default is all)
 +--
 
+* Features configuration
+
+ The system is preconfigured for a number of features (rna, cds, ...). However, if indexed data adds new features, the gbrowse configuration should be updated to specify their display.
+ To do so, edit the seqcrawler configuration file (/etc/gbrowse2/gbrowse.conf/seqcrawler.conf) and append the new features (see GBrowse configuration manual).
+ Example:
+ 
++--
+[chromosome]
+feature  = chromosome
+glyph    = segments
+bgcolor  = lightslategray
+fgcolor  = black
+key      = chromosome
+citation = chromosome
+category = Analysis
+das category = experimental
++-- 
+
+
 * Web interface
 
  GBrowse provides a web interface to visualize a genome and browse it.

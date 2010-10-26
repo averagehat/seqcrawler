@@ -59,6 +59,10 @@ Usage
 
  The Web GUI is accessible directly at the root url of the application and code is hosted in the webapp directory of the application.
 
+
+ Solr has many language clients to query (perl cpan, java client) and can be used to get programmatic access to the index.
+ The only requirement to query seqcrawler is to set the query type parameter to <<shard>>.
+ 
  
 * How to index documents
 
