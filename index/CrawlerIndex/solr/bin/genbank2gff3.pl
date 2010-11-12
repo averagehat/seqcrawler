@@ -354,7 +354,7 @@ for my $file ( @files ) {
 	my $start=0;
     while ( my $seq = $in->next_seq ) {
         my $seq_name = $seq->accession_number;
-        my $end = $seq->length;
+        my $end = FH->tell;
         my $stream_file = $start."-".$end;
         $start += $end;
         my @to_print;
