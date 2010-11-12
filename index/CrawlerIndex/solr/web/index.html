@@ -96,8 +96,10 @@
 									//Split attributes
 									var attr = doc[key].split(";");
 									for(var attrkey in attr) {
+										if(attrkey.indexOf('stream_')==-1 && attrkey.indexOf('seqid')==-1 && attrkey.indexOf('file')==-1) {									
 								   	 	var attribute = attr[attrkey].split("=");
-										details+='<div class="fieldDetail">'+attribute[0]+': '+$.URLDecode(attribute[1])+'</div>';	
+										details+='<div class="fieldDetail">'+attribute[0]+': '+$.URLDecode(attribute[1])+'</div>';
+										}	
 									}
 								}
 								else {
