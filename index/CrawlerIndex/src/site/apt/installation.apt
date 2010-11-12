@@ -5,11 +5,11 @@ Installation
  An Ubuntu ISO image is available with all software installed and ready to run. Only a few network 
 parameters needs customization (hostname, shards...) after installation.
 
- The image can be used as a live CD for  quick lookup and can be installed at anytime on a server or on a virtual image.
+ The image can be used as a live CD for quick lookup and can be installed at anytime on a server or on a virtual image.
 
  For multiple shards, install an image on multiple servers then update configuration for sharding (see {{Solr_configuration}}).
 
- An administrator guide is available on the image with installation steps and usage on Desktop.
+ An administrator guide is available in the documentation section with installation steps and usage on Desktop.
 
 * Manual installation
 
