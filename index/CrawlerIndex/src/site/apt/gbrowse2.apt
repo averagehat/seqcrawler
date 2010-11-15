@@ -8,9 +8,22 @@ GBrowse2
  
 +-- 
   db_args       = -adaptor    solr
-    -FORMAT     gff
     -STORAGEURL http://my_riak_external_hostname:riak_port/riak
     -BANK       GenBank (optional, default is all)
++--
+
+* Usage
+
+ Available options are the following
+ 
++--
+db_args       = -adaptor    solr
+				// Following is optional
+                -port (default: 8080, solr server port)
+                -host  (default: localhost, solr server host)
+                -maxresult (default: 99999999, max mnuber of returned results)
+                -BANK (default: all, bank name in index as a filter)
+                -STORAGEURL (default: undefined, url to the sequence backend. If not set, dna or protein sequences will not be retrieved)
 +--
 
 * Features configuration
