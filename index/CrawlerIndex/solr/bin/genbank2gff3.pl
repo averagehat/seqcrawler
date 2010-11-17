@@ -2,6 +2,7 @@
 
 #$Id: genbank2gff3.PLS,v 1.11 2007/03/19 16:42:05 bosborne Exp $;
 # v1.2 2010/09/08 osallou update for solr integration + minor fixes
+# v1.3 2010/11/17 osallou error in file parameter (wring start end end pos)
 
 =pod
 
@@ -355,8 +356,9 @@ for my $file ( @files ) {
     while ( my $seq = $in->next_seq ) {
         my $seq_name = $seq->accession_number;
         my $end = FH->tell;
-        my $stream_file = $start."-".$end;
-        $start += $end;
+        my $size = $end - $start;
+        my $stream_file = $start."-".$size;
+        $start = $end;
         my @to_print;
 
         # arrange disposition of GFF output
