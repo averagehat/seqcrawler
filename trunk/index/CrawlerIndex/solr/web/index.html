@@ -31,14 +31,30 @@
     $('.error').hide(); 
     
      
-    $(".button").click(function() { 
+    $("#submit_export").click(function() { 
+     $('.error').hide();
+     if($("#export_query").val()=="") { return false;}
+     // Call export, show link                     
+     $.get("/CrawlerSearchWebApp/export?query="+$("#export_query").val()+"&ranges="+$("#ranges").val(),
+     	function(data){
+        	var result = jQuery.parseJSON(data);
+            var resultUrl = result["url"];
+            $("#export_link" ).html("<a target="_blank" href=\""+resultUrl+"\">Export results</a>");
+        });
+     return false;
+   });  
+     
+     
+     
+    $("#submit_button").click(function() { 
      $('.error').hide();
      var queryField = $("input#query").val();  
      if (queryField == "") {  
        $("label#query_error").show();  
        $("input#query").focus();  
        return false;  
-     }   
+     }
+     $("input#export_query").val(queryField);   
 
      doQuery(queryField,0);
      return false;
@@ -277,6 +293,21 @@
    <div id="content">
    <div id="results"><div id="documents"></div><div id="navigation"/></div></div>
    <div id="facets"></div>
+   
+   <div id="export_form">
+    <form name="export" action="/CrawlerSearchWebApp">
+    	<fieldset>
+        	<input type="hidden" name="query" id="export_query" size="30" value="" class="text-input" />        <label for="ranges" id="ranges_label">Ranges</label>
+        	<input type="text" name="ranges" id="ranges" size="30" value="" class="text-input" />
+       		<label class="error" for="ranges" id="ranges_error">This field is required.</label>
+       		<br />
+       		<input type="submit" name="submit" class="button" id="submit_export" value="Export" />
+     </fieldset>
+   </form>
+   <div id="export_link"/>
+</div>
+   
+   
    </div>
    <div id="footer"><hr width="70%"/>Powered by the GenOuest BioInformatics Plaform (http://www.genouest.org)</div>                                        
    <div id="documentDetails"/>
