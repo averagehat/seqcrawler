@@ -281,7 +281,7 @@ public class Export {
 				try {
 					fw.write("<"+(String) fieldName+">");
 					if(doc.getFieldValue((String)fieldName) instanceof Integer) {
-					fw.write((Integer)doc.getFieldValue((String)fieldName));
+					fw.write(""+doc.getFieldValue((String)fieldName));
 					}
 					else {
 					fw.write((String)doc.getFieldValue((String)fieldName));
