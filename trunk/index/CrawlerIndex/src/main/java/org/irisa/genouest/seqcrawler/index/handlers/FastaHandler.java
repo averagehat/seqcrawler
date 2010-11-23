@@ -52,6 +52,11 @@ public class FastaHandler implements SequenceHandler {
 	
     private String streamName = null;
 	
+    /**
+     * If set to true, do not index data but only store objects
+     */
+    private boolean storeOnly = false;
+    
 	public long getNbParsingErrors() {
 		return nbParsingErrors;
 	}
@@ -300,7 +305,7 @@ public class FastaHandler implements SequenceHandler {
 				doc.addField("id", curID);
 				}
 		
-		indexManager.getServer().add(doc);
+		if(!storeOnly) { indexManager.getServer().add(doc); }
 		
 		if(doStore!=null && doStore.equals("true") && curID!=null) {
 			
@@ -315,6 +320,14 @@ public class FastaHandler implements SequenceHandler {
 			}	
 	    }
 		
+	}
+
+	public boolean isStoreOnly() {
+		return storeOnly;
+	}
+
+	public void setStoreOnly(boolean storeOnly) {
+		this.storeOnly = storeOnly;
 	}
 
 	

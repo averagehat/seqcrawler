@@ -185,6 +185,8 @@ public class GFFHandler implements SequenceHandler {
 			log.info("Parse Fasta of GFF file");
 			FastaHandler fastaHandler = new FastaHandler(this.bank);
 			fastaHandler.setIndexManager(indexManager);
+			// Store fasta content, but do not index fasta headers
+			fastaHandler.setStoreOnly(true);
 			fastaHandler.parseFasta(fr);
 		}
 		
