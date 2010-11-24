@@ -184,6 +184,7 @@ public class Index
         indexMngr = new IndexManager();
         
         if(cmd.hasOption("store")) {
+        	log.debug("Use storage in addition to index");
         	indexMngr.getArgs().put("store", "true");
         	if(cmd.hasOption("stHost")) {
         		stHost = cmd.getOptionValue("stHost");
