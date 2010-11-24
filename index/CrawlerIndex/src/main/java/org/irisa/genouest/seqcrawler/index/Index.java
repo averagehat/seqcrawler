@@ -221,6 +221,7 @@ public class Index
         
         if(cmd.hasOption("f")) {
         	inputFile = cmd.getOptionValue("f");
+        	log.info("Indexing input file "+inputFile);
         }
         else {
         	log.error("WARNING: Input file command line option is missing (-f) ");
