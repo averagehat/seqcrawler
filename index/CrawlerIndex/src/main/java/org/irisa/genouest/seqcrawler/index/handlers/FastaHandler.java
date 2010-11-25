@@ -117,6 +117,8 @@ public class FastaHandler implements SequenceHandler {
 		boolean ended = false;
 		boolean firstdoc = true;
 		SolrInputDocument doc = null;
+		
+		long lineCount =0;
 
 		BufferedReader bin;
 		if (in instanceof BufferedReader)
@@ -147,6 +149,8 @@ public class FastaHandler implements SequenceHandler {
 		int nids = 0;
 		try {
 			while (ended == false && (aline = bin.readLine()) != null) {
+				
+				lineCount++;
 
 				if (aline.startsWith(">")) {
 					log.debug ("New doc "+aline);
