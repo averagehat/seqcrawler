@@ -11,6 +11,8 @@ parameters needs customization (hostname, shards...) after installation.
 
  An administrator guide is available in the documentation section with installation steps and usage on Desktop.
 
+ {{{image/adminguide.html}Administrator guide}}
+
 * Manual installation
 
 ** Requirements
