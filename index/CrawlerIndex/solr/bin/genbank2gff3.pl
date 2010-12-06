@@ -3,6 +3,7 @@
 #$Id: genbank2gff3.PLS,v 1.11 2007/03/19 16:42:05 bosborne Exp $;
 # v1.2 2010/09/08 osallou update for solr integration + minor fixes
 # v1.3 2010/11/17 osallou error in file parameter (wring start end end pos)
+# v1.4 2010/12/06 osallou add json export function for fasta (mongodb import usage)
 
 =pod
 
@@ -49,6 +50,7 @@ genbank2gff3.pl -- Genbank-E<gt>gbrowse-friendly GFF3
         --GFF_VERSION 3 is default, 2 and 2.5 and other Bio::Tools::GFF versions available
         --quiet       dont talk about what is being processed 
         --typesource  SO sequence type for source (e.g. chromosome; region; contig)
+        --json        Export Fasta as JSON
         --help    -h  display this message
 
 
@@ -213,6 +215,9 @@ my $PROTEIN_TYPE = 'polypeptide'; # for noCDSkeep;
   # protein = flybase chado usage; GMOD Perls use 'polypeptide' with software support
 
 my $FORMAT="GenBank"; # swiss ; embl; genbank ; ** guess from SOURCEID **
+
+my $json = 0;
+
 my $SOURCEID= $FORMAT; # "UniProt" "GenBank"  "EMBL" should work  
    # other Bio::SeqIO formats may work.  TEST: EntrezGene < problematic tags; InterPro  KEGG 
 
@@ -244,6 +249,7 @@ my $ok= GetOptions( 'd|dir|input:s'   => \$dir,
             'GFF_VERSION=s' => \$GFF_VERSION,
             'quiet!'    => \$quiet, # swap quiet to verbose
             'DEBUG!'    => \$DEBUG,
+            'json'       =>\$json,
             'n|nolump'  => \$nolump);
 
 my $lump = 1 unless $nolump || $split;
@@ -323,7 +329,7 @@ for my $file ( @files ) {
     die "$! $file" unless($stdin || -e $file);
     print "# Input: $file\n" if($verbose);
 
-    my ($lump_fh, $lumpfa_fh, $outfile, $outfa);
+    my ($lump_fh, $lumpfa_fh, $outfile, $outfa, $json_fh);
     if ($stdout) {
       $lump_fh= *STDOUT; $lump="stdout$$";
       $outfa= "stdout$$.fa";  # this is a temp file ... see below
@@ -336,6 +342,8 @@ for my $file ( @files ) {
         ($outfa= $lump) =~ s/\.gff/\.fa/;
         open $lump_fh, ">$lump" or die "Could not create a lump outfile called ($lump) because ($!)\n";
         open $lumpfa_fh, ">$outfa" or die "Could not create a lump outfile called ($outfa) because ($!)\n";
+        my $lump_json = $outfa.".json";
+        if($json) { open $json_fh, ">$lump_json" or die "Could not create json file\n"; }
 
     }
     
@@ -503,9 +511,11 @@ for my $file ( @files ) {
           ## see e.g. Mouse: mm_ref_chr19.gbk has NT_082868 and NT_039687 parts in one .gbk
           ## maybe write this to temp .fa then cat to end of lumped gff $out
               print $lumpfa_fh ">$seq_name\n$dna" if $dna;
+              if($json)  { print $json_fh "{\"id\" : \"".$seq_name."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($dna)."} , \"content\" : \"".$dna."\"}\n" if ($dna && length($dna)>1); }
               foreach my $aid (sort keys %proteinfa) { 
                 my $aa= delete $proteinfa{$aid}; 
                 $method{'RESIDUES(tr)'} += length($aa);
+                if($json) { print $json_fh "{\"id\" : \"".$seq_name."_".$aid."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($aa)."} , \"content\" : \"".$aa."\"}\n"};
                 $aa =~ s/(\S{60})/$1\n/g; 
                 #print $lumpfa_fh ">$aid\n$aa\n";
                 #OSALLOU, FIX to make Transcript unique among all sequences
@@ -551,6 +561,7 @@ for my $file ( @files ) {
     
      ## FIXME for piped output w/ split FA files ...
     close($lumpfa_fh);
+    close($json_fh);
     if (!$split && $outfa && $lump_fh) {     
       print $lump_fh "##FASTA\n"; # GFF3 spec
       open $lumpfa_fh, $outfa or warn "reading FA $outfa: $!";
@@ -1035,5 +1046,6 @@ sub _add_flattened_SeqFeatures  {
     }
 
 }
+
 
 
