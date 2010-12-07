@@ -32,7 +32,7 @@ public class MongoDBManager implements StorageManagerInterface {
 
 	private Logger log = LoggerFactory.getLogger(MongoDBManager.class);
 	
-	private static final String ID = "seqid";
+	private static final String ID = "_id";
 	private static final String METADATA = "metadata";
 	private static final String SHARDS = "shards";
 	private static final String CONTENT = "content";
@@ -102,7 +102,7 @@ public class MongoDBManager implements StorageManagerInterface {
 	
 	public void delete(String key) throws StorageException {
 		DBCollection coll = db.getCollection(BUCKET);
-		coll.remove(new BasicDBObject("seqid",key));
+		coll.remove(new BasicDBObject(ID,key));
 	}
 
 	public void deleteAll(String key) throws StorageException {
@@ -122,7 +122,7 @@ public class MongoDBManager implements StorageManagerInterface {
 		DBCollection coll = db.getCollection(BUCKET);
 		BasicDBObject query = new BasicDBObject();
 
-        query.put("seqid", key);
+        query.put(ID, key);
 
         DBCursor cur = coll.find(query);
         DBObject object = null;

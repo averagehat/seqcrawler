@@ -106,7 +106,7 @@ public class StorageTest extends TestCase {
 	    	object.setShards(shards);
 	    	
 			DBObject mongoObject = new BasicDBObject();
-			mongoObject.put("seqid", object.id());
+			mongoObject.put("_id", object.id());
 			mongoObject.put("content", object.getContent());
 			mongoObject.put("metadata", object.getMetadata());
 			mongoObject.put("shards", object.getShards());			

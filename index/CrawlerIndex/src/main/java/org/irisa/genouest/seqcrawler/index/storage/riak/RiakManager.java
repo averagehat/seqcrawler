@@ -194,7 +194,7 @@ public class RiakManager implements StorageManagerInterface{
 	}
 
 	/**
-	 * Deletes an object from backend ith its shards
+	 * Deletes an object from backend with its shards
 	 */
 	public void deleteAll(String key) throws StorageException {
 		StorageObject object = get(key);
