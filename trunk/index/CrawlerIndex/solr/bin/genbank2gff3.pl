@@ -487,6 +487,7 @@ for my $file ( @files ) {
         my ($fa_out,$fa_outfile);
         my $dna = $seq->seq;
         if($dna || %proteinfa) {
+          if($json)  { print $json_fh "{\"_id\" : \"".$seq_name."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($dna)."} , \"content\" : \"".$dna."\"}\n" if ($dna && length($dna)>1); }
           $method{'RESIDUES'} += length($dna);
           $dna    =~ s/(\S{60})/$1\n/g;
           $dna   .= "\n";
@@ -515,7 +516,7 @@ for my $file ( @files ) {
               foreach my $aid (sort keys %proteinfa) { 
                 my $aa= delete $proteinfa{$aid}; 
                 $method{'RESIDUES(tr)'} += length($aa);
-                if($json) { print $json_fh "{\"id\" : \"".$seq_name."_".$aid."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($aa)."} , \"content\" : \"".$aa."\"}\n"};
+                if($json) { print $json_fh "{\"_id\" : \"".$seq_name."_".$aid."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($aa)."} , \"content\" : \"".$aa."\"}\n"};
                 $aa =~ s/(\S{60})/$1\n/g; 
                 #print $lumpfa_fh ">$aid\n$aa\n";
                 #OSALLOU, FIX to make Transcript unique among all sequences
