@@ -512,7 +512,7 @@ for my $file ( @files ) {
           ## see e.g. Mouse: mm_ref_chr19.gbk has NT_082868 and NT_039687 parts in one .gbk
           ## maybe write this to temp .fa then cat to end of lumped gff $out
               print $lumpfa_fh ">$seq_name\n$dna" if $dna;
-              if($json)  { print $json_fh "{\"id\" : \"".$seq_name."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($dna)."} , \"content\" : \"".$dna."\"}\n" if ($dna && length($dna)>1); }
+              if($json)  { print $json_fh "{\"_id\" : \"".$seq_name."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($dna)."} , \"content\" : \"".$dna."\"}\n" if ($dna && length($dna)>1); }
               foreach my $aid (sort keys %proteinfa) { 
                 my $aa= delete $proteinfa{$aid}; 
                 $method{'RESIDUES(tr)'} += length($aa);
