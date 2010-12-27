@@ -249,7 +249,7 @@ sub get_dna_from_raw {
     ($start,$stop)= ($stop,$start);
     }
 
-  my $url = $self->{STORAGEURL}."/bank/".$id;
+  my $url = $self->{STORAGEURL}.$id;
   my $content = get $url;
   warn "Couldn't get $url" unless defined $content;
   return unless defined $content;
@@ -265,7 +265,7 @@ sub get_dna_from_raw {
        warn "Loading shards for raw dna, nb shards = ".$shardSize;
     }
       for my $shard (@shards) {
-          $url = $self->{STORAGEURL}."/bank/".$shard;
+          $url = $self->{STORAGEURL}.$shard;
           $content = get $url;
           warn "Couldn't get $url" unless defined $content;
           $jsonDna = decode_json $content;
