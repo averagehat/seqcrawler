@@ -2,7 +2,8 @@ Bio-DB-GFF-Adaptor-solr version 0.01
 ====================================
 
 This module is an Adaptator for GBrowse2 using DBI interface.
-It connects to a solar server to get GFF indexed documents.
+It connects to a solr server to get GFF indexed documents.
+
 
 INSTALLATION
 
