@@ -35,6 +35,42 @@ parameters needs customization (hostname, shards...) after installation.
  
  []
  
++--
+ 
+ To install GBrowse2 and BioPerl you can use the following script. This is a helper, it is however advised to refer to appropriate documentation.
+
+perl -MCPAN -e 'o conf commit'
+perl -MCPAN -e 'install Module::Build'
+perl -MCPAN -e 'install IO::String'
+perl -MCPAN -e 'install CJFIELDS/BioPerl-1.6.1.tar.gz'
+perl -MCPAN -e 'install Bio::SeqIO::entrezgene'
+perl -MCPAN -e 'install GD::SVG'
+perl -MCPAN -e 'install Bio::Graphics'
+perl -MCPAN -e 'install JSON'
+perl -MCPAN -e 'install LWP'
+perl -MCPAN -e 'install Storable'
+perl -MCPAN -e 'install Capture::Tiny'
+perl -MCPAN -e 'install File::Temp'
+perl -MCPAN -e 'install Digest::MD5'
+perl -MCPAN -e 'install CGI::Session'
+perl -MCPAN -e 'install Statistics::Descriptive'
+perl -MCPAN -e 'install DBI'
+perl -MCPAN -e 'install DBD::mysql'
+perl -MCPAN -e 'install DBD::Pg'
+perl -MCPAN -e 'install DB_File::Lock'
+perl -MCPAN -e 'install File::NFSLock'
+perl -MCPAN -e 'install Template'
+perl -MCPAN -e 'install Archive::Zip'
+perl -MCPAN -e 'install Module::Build'
+perl -MCPAN -e 'install Date::Parse'
+perl -MCPAN -e 'install Math::BigInt'
+perl -MCPAN -e 'install Math::BigInt::FastCalc'
+perl -MCPAN -e 'install Math::BigInt::GMP'
+perl -MCPAN -e 'install Net::OpenID::Consumer'
+perl -MCPAN -e 'install Bio::Graphics::Browser2'
+ 
++--
+ 
 ** Additional Perl packages:
 
  * 'JSON' => 2,21,
