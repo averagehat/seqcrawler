@@ -47,11 +47,21 @@ BalancerMember http://192.168.1.51:8080
 </Proxy>
 ProxyPass /solr balancer://mysolrcluster 
 
+#For Riak
 <Proxy balancer://myriakcluster>
 BalancerMember http://192.168.1.50:8098
 BalancerMember http://192.168.1.51:8098
 </Proxy>
 ProxyPass /riak balancer://myriakcluster 
+
+#For MongoDB
+<Proxy balancer://mongocluster>
+BalancerMember http://192.168.1.50
+BalancerMember http://192.168.1.51
+</Proxy>
+ProxyPass /mongo balancer://mongocluster
+ProxyPass /cgi-bin/mongo balancer://mongocluster 
+
 
 Optionally to manage the cluster
  <Location /balancer-manager>

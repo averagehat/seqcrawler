@@ -25,7 +25,7 @@ parameters needs customization (hostname, shards...) after installation.
  
  * Apache2
  
- * Riak for backend storage
+ * Riak or MongoDB for backend storage
  
 ** Optional
 
@@ -78,6 +78,8 @@ perl -MCPAN -e 'install Bio::Graphics::Browser2'
  * 'LWP::Simple' => 1.41,
  
  * 'URI::Escape' => 3.28,
+ 
+ * 'MongoDB' for MongoDB if used => 0.40
 
  []
   
@@ -366,6 +368,8 @@ $gbbank = "genouest"; // Update to GBrowse configuration name.
 ===
  
  <<Riak install>>:
+ 
+ Riak is a really nice solution, however, it is quite slow for very large imports. If large amount of data needs to be imported first, I suggest the use of MongoDB (see next chapter).
 
  Once Riak is installed and running, web interface to query it must be installed. A basic interface is available under riak directory of seqcrawler.
  This interface can be easily customized (<dataquery.html>).
@@ -409,3 +413,40 @@ curl --silent -X PUT -H "${content_type}" --data-binary @$file http://seqcrawler
  
  []   
  
+===
+ 
+ <<MongoDB install>>:
+ 
+ Refer to the web site for the installation procedure. Note that it is packaged for several distributions (ubuntu, fedora...).
+ To use MongoDB as a backend, the MongoDB perl package is also required.
+ Once MongoDB is installed, configure it to point to a storage directory (in /etc/mongodb.conf) and give required rights to write in directory.
+ 
+ Data can be imported with the mongoimport tool with command like:
+ 
++--
+mongoimport --dbpath MYDBPATH -d seqcrawler -c bank --file MYJSONFILE
++--
+
+ To provide a web interface to the storage, the following files must be copied in Apache directories:
+ 
+ * In /var/www/mongo (depends on system)
+
+   * dataquery.html Web interface is accessible at http://myhostname/mongo/dataquery.html
+ 
+   *jquery-1.4.2.min.js
+ 
+   * jquery-ui.1.8.2.custom.css
+ 
+   * jquery-ui.1.8.2.custom.min.js
+ 
+   * jquery.url.packed.js
+  
+   * main.css
+ 
+   []
+ 
+ * In /usr/lib/cgi-bin/mongo (depends on system)
+
+   * mongo.pl Data can be queried with url like http://myhostname/cgi-bin/mongo/mongo.pl?id=BX005216
+ 
+ [] 

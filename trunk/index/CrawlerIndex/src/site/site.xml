@@ -14,6 +14,7 @@
       <item name="Solr" href="http://lucene.apache.org/solr/"/>
       <item name="GBrowse" href="http://gmod.org/"/>
       <item name="Riak" href="https://wiki.basho.com/display/RIAK/Riak/"/>
+      <item name="MongoDB" href="http://www.mongodb.org/"/>    
       <item name="SeqCrawler" href="http://seqcrawler.sourceforge.net//"/>
     </links>
 

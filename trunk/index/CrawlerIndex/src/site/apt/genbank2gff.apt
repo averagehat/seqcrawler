@@ -16,3 +16,6 @@ Genbank to GFF conversion
 +--
   perl genbank2gff3.pl --dir path_to_files --outdir path_to_converted_files
 +--
+
+  A --json option is available to extract sequence data (nucleic or proteic) and to write them in a flat file in the JSON format.
+  This format is supported as input for riak and mongodb. Furthermore mongodb provides an import tool that takes input from json files, really convenient for bulk uploads (first import for example).
