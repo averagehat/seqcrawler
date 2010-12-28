@@ -3,6 +3,8 @@ package org.irisa.genouest.seqcrawler.webapp;
 import java.io.IOException;
 import java.util.UUID;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,25 +29,37 @@ public class ExportServlet extends HttpServlet {
 
 	private Logger log = LoggerFactory.getLogger(ExportServlet.class);
 	
-	String downloadUrl = null;
+	static String downloadUrl = null;
+	
+	static String downloadDir = "/tmp/";
+	
+	static String solrUrl = null;
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	  public void init(ServletConfig config)throws ServletException {
+		    super.init(config);
+			ServletContext application = config.getServletContext();
+			downloadUrl = application.getInitParameter("downloadUrl");
+			downloadDir = application.getInitParameter("downloadDir");
+			solrUrl = application.getInitParameter("solrUrl");
+		  }
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 	
-		downloadUrl =  getServletConfig().getInitParameter("downloadUrl");
+		//downloadUrl =  getServletConfig().getInitParameter("downloadUrl");
 		Export export = new Export();
 		export.setQuery(request.getParameter("query"));
 		export.setQueryType(getServletConfig().getInitParameter("queryType"));
 		export.setExportRanges(request.getParameter("ranges").split(","));
 		UUID random = UUID.randomUUID();
-    	String outputFile = getServletConfig().getInitParameter("downloadDir")+"/tmpexport_"+random.toString()+".txt";
+    	String outputFile = downloadDir+"/tmpexport_"+random.toString()+".txt";
 		export.setOutputFile(outputFile);
-		export.setUrl(getServletConfig().getInitParameter("solrUrl"));
+		export.setUrl(solrUrl);
 		
 		try {
 			export.export();
