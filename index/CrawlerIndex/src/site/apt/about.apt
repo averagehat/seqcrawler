@@ -31,6 +31,8 @@ Architecture
  SeqCrawler can store raw sequence data in a NOSQL backend storage (transcript, raw dna) from a GFF/Fasta file. Large data are splitted in lower size documents by the indexer.
  The structure of a document in the backend is an object accessible with a unique identifier. It is a JSON object:
  
+ * _id : id of the element
+
  * metadata :  information on data (optional)
  
  * array of shards (ids of shard object if any)
@@ -39,9 +41,9 @@ Architecture
  
  []
  
- Example: \{ "metadata" : " this is a gene" , "shards" : \[ "shardid1", "shardid2" \] , "content" : "acgt" \} 
+ Example: \{ "_id" : "BX1234" , "metadata" : " this is a gene" , "shards" : \[ "shardid1", "shardid2" \] , "content" : "acgt" \} 
  
- SeqCrawler provides a basic web interface, dataquery.html stored on the backend itself (acting as a web server), to query the storage.
+ SeqCrawler provides a basic web interface, dataquery.html, to query the storage.
 
  It can be queried via simple HTTP GET request with parameters:
  
