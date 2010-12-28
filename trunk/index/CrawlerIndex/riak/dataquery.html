@@ -47,9 +47,7 @@
    function loadData(id) {
 		$.get("/riak/bank/"+id,
 				   function(data){
-			   if(!data) {
-                       alert("empty");
-			   }
+			   
 			          //$("#transcriptContent").append(data.content);
 			          
 			          //var obj = jQuery.parseJSON(data);
