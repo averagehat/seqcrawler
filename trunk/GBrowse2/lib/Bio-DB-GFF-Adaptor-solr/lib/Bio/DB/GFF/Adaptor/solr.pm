@@ -258,8 +258,16 @@ sub get_dna_from_raw {
   my $alldna = $jsonDna->{content};
 
   my $shardsref = $jsonDna->{shards};
-  my @shards = @$shardsref;
-  my $shardSize = @shards;
+  
+  my @shards;
+  my $shardSize=0;
+
+  if($shardsref) {
+  @shards = @$shardsref;
+  $shardSize = @shards;
+  }
+  
+  
   if(@shards && $shardSize>0) {
     if(DEBUG) {
        warn "Loading shards for raw dna, nb shards = ".$shardSize;

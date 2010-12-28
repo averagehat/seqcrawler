@@ -255,8 +255,9 @@ sub _json2feature {
        } # format:Target=name+tstar+tstop
     elsif (!$name && $tag =~ /^Alias$/i) { $name= $values[0]; }
     }
-    
-  push @attributes,['raw data' => '<a href="'.$self->{STORAGEURL}.'/web/dataquery.html?id='.$id.'&source='.$chr.'&start='.$start.'&stop='.$stop.'"> See raw sequence and transcript</a>'] if($self->{STORAGEURL} ne "undefined");;
+   
+  #Remove to keep storage web interface address agnostic of the system  
+  #push @attributes,['raw data' => '<a href="'.$self->{URL}.'/web/dataquery.html?id='.$id.'&source='.$chr.'&start='.$start.'&stop='.$stop.'"> See raw sequence and transcript</a>'] if($self->{STORAGEURL} ne "undefined");;
     
 
   my $gclass= $feattype;  ## what is gclass - group class - need parent class if parent !
@@ -338,8 +339,10 @@ sub _luqueryName {
   my $luq="";
   if ($val) {
     if (ref($val) =~ /ARRAY/) { $val= join(" ",@$val); };
-    $val = _luqueryescape($val);
-    $val = "(".$val.")" if ($val =~ /\s/);
+    #$val = _luqueryescape($val);
+    #$val = "(".$val.")" if ($val =~ /\s/);
+    $val = "\"".$val."\"" if ($val =~ /\s/);
+    
     $val = lc($val) if ($LUBINDEBUG);
     if ($self->{is_gff}) {
     $luq .= "+(name:$val alias:$val name:$val synonym:$val id:$val) $qsep";
@@ -356,8 +359,9 @@ sub _luqueryId {
   my $luq="";
   if ($val) {
     if (ref($val) =~ /ARRAY/) { $val= join(" ",@$val); };
-    $val = _luqueryescape($val);
-    $val = "(".$val.")" if ($val =~ /\s/);
+    #$val = _luqueryescape($val);
+    #$val = "(".$val.")" if ($val =~ /\s/);
+    $val = "\"".$val."\"" if ($val =~ /\s/);
     $val = lc($val) if ($LUBINDEBUG);
     if ($self->{is_gff}) {
     $luq .= "+(id:$val) $qsep";
@@ -374,8 +378,10 @@ sub _luqueryNotes {
   my $luq="";
   if ($val) {
     if (ref($val) =~ /ARRAY/) { $val= join(" ",@$val); };
-    $val = _luqueryescape($val);
-    $val = "(".$val.")" if ($val =~ /\s/);
+    #$val = _luqueryescape($val);
+    #$val = "(".$val.")" if ($val =~ /\s/);
+    $val = "\"".$val."\"" if ($val =~ /\s/);
+    
     $val = lc($val) if ($LUBINDEBUG);
     if ($self->{is_gff}) {
     $luq .= "+(text:$val) $qsep";
