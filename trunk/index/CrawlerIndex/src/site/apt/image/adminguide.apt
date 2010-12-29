@@ -4,13 +4,15 @@ SeqCrawler image Administrator guide
 
 ** Introduction
 
- This image is a VMWare image hosting the following software:
+ This image hosts the following software:
 
  * {{{http://gmod.org}Gbrowse2}}
 
  * {{{http://lucene.apache.org/solr/}Solr}}
 
  * {{{https://wiki.basho.com/display/RIAK/Riak}Riak}}
+
+ * {{{http://www.mongodb.org}MongoDB}}
 
  []
 
@@ -37,6 +39,16 @@ SeqCrawler image Administrator guide
 +--
  riak start/stop
 +--
+
+** MongoDB
+
+ Riak is an other NOSQL backend used to store raw data. It also provides a web interface to query data based on their id. MongoDB is a cluster of nodes acting as a ring with data replication to provide data high availability.
+ To start or stop MongoDB use:
+
++--
+ service mongodb start/stop
++--
+
 
 * Installation
 
