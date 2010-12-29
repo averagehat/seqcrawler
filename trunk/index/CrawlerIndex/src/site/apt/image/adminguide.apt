@@ -478,9 +478,9 @@ java -classpath $INDEXHOME/CrawlerIndex-0.1-jar-with-dependencies.jar  org.irisa
 
  To search via a browser, refer to {{{http://wiki.apache.org/solr/CommonQueryParameters}Solr query syntax}}
 
-** Riak query
+** MongoDb query
 
- Access to http//riakhost:8098/riak/web/adminquery.html with parameters:
+ Access to http//host/cgi-bin/mongo/mongo.pl with parameters:
 
  source: orignal source raw data (e.g. nucleic sequence chromosome for example hosting a gene)
 
