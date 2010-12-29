@@ -53,6 +53,35 @@ public class MongoDBManager implements StorageManagerInterface {
     Mongo mongo = null;
     DB db  =null;
 	
+    /**
+     * Initialize object, but no connection done to the server
+     */
+    public MongoDBManager() {
+    }
+    
+    /**
+     * Connect the instance to the remote server
+     */
+    public void connect() {
+		DBAddress addr=null;
+		try {
+			addr = new DBAddress(host,port);
+		} catch (UnknownHostException e) {
+			log.error(e.getMessage());
+			System.exit(0);
+		}
+		mongo = new Mongo(addr);
+		
+		String bucket = System.getProperty("storageBucket");
+		 if(bucket!=null) {
+			 log.debug("Using bucket "+bucket+" as set in system environment");
+		     this.setBucket(bucket); 
+		 }
+		 
+		 db = mongo.getDB(DB);
+		
+		log.debug("New connection: "+db.toString());
+    }
     
 	public MongoDBManager(Map<String, String> args) {
 		if(args==null || args.size()==0) {
