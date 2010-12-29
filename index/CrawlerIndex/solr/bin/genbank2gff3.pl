@@ -195,16 +195,19 @@ use Bio::Location::SplitLocationI;
 use Bio::Location::Simple;
 use Bio::Tools::GFF;
 use Getopt::Long;
+use POSIX;
 
 use vars qw/$split @filter $zip $outdir $help $ethresh
             $file @files $dir $summary $nolump 
-            $source_type %proteinfa %exonpar $didheader $verbose $DEBUG $GFF_VERSION 
+            $source_type %proteinfa %exonpar $didheader $verbose $DEBUG $GFF_VERSION $MAXSIZE
             $gene_id $rna_id $tnum $ncrna_id $rnum %method %id %seen/;
 
 use constant GM_NEW_TOPLEVEL => 2;
 use constant GM_NEW_PART => 1;
 use constant GM_DUP_PART => 0;
 use constant GM_NOT_PART => -1;
+
+$MAXSIZE=3500000;
 
 $GFF_VERSION = 3; # allow v2 ...
 $verbose = 1; # right default? -nov to turn off
@@ -487,7 +490,19 @@ for my $file ( @files ) {
         my ($fa_out,$fa_outfile);
         my $dna = $seq->seq;
         if($dna || %proteinfa) {
-          if($json)  { print $json_fh "{\"_id\" : \"".$seq_name."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($dna)."} , \"content\" : \"".$dna."\"}\n" if ($dna && length($dna)>1); }
+          #if($json)  { print $json_fh "{\"_id\" : \"".$seq_name."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($dna)."} , \"content\" : \"".$dna."\"}\n" if ($dna && length($dna)>1); }
+			if($json && $dna && length($dna)>1)  {
+			               if(length($dna) < $MAXSIZE) {
+			                   print $json_fh "{\"_id\" : \"".$seq_name."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($dna)."} , \"content\" : \"".$dna."\"}\n";
+			               }
+			               else {
+			                   my @shards = getShards($seq_name,$dna);
+			                   my $shard;
+			                   foreach $shard (@shards) {
+			                       print $json_fh $shard;
+			                   }
+			               }
+			  }
           $method{'RESIDUES'} += length($dna);
           $dna    =~ s/(\S{60})/$1\n/g;
           $dna   .= "\n";
@@ -512,11 +527,36 @@ for my $file ( @files ) {
           ## see e.g. Mouse: mm_ref_chr19.gbk has NT_082868 and NT_039687 parts in one .gbk
           ## maybe write this to temp .fa then cat to end of lumped gff $out
               print $lumpfa_fh ">$seq_name\n$dna" if $dna;
-              if($json)  { print $json_fh "{\"_id\" : \"".$seq_name."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($dna)."} , \"content\" : \"".$dna."\"}\n" if ($dna && length($dna)>1); }
+              #if($json)  { print $json_fh "{\"_id\" : \"".$seq_name."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($dna)."} , \"content\" : \"".$dna."\"}\n" if ($dna && length($dna)>1); }
+ 			if($json && $dna && length($dna)>1)  {
+			               if(length($dna) < $MAXSIZE) {
+			                   print $json_fh "{\"_id\" : \"".$seq_name."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($dna)."} , \"content\" : \"".$dna."\"}\n";
+			               }
+			               else {
+			                   my @shards = getShards($seq_name,$dna);
+			                   my $shard;
+			                   foreach $shard (@shards) {
+			                       print $json_fh $shard;
+			                   }
+			               }
+			  }
               foreach my $aid (sort keys %proteinfa) { 
                 my $aa= delete $proteinfa{$aid}; 
                 $method{'RESIDUES(tr)'} += length($aa);
-                if($json) { print $json_fh "{\"_id\" : \"".$seq_name."_".$aid."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($aa)."} , \"content\" : \"".$aa."\"}\n"};
+                #if($json) { print $json_fh "{\"_id\" : \"".$seq_name."_".$aid."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($aa)."} , \"content\" : \"".$aa."\"}\n"};
+               if($json && $aa && length($aa)>1)  {
+               if(length($aa) < $MAXSIZE) {
+                   print $json_fh "{\"_id\" : \"".$seq_name."_".$aid.."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($aa)."} , \"content\" : \"".$aa."\"}\n";
+               }
+               else {
+                   my @shards = getShards($seq_name."_".$aid,$aa);
+                   my $shard;
+                   foreach $shard (@shards) {
+                       print $json_fh $shard;
+                   }
+               }
+               }
+
                 $aa =~ s/(\S{60})/$1\n/g; 
                 #print $lumpfa_fh ">$aid\n$aa\n";
                 #OSALLOU, FIX to make Transcript unique among all sequences
@@ -1024,6 +1064,41 @@ sub convert_to_name {
     }
     return $gene_id;
 }
+
+# For seqname and a dna or protein sequence, cut sequence in shards and add reference to first element
+# Return an array with all json data for the sequence
+sub getShards {
+    my ($seqname,$dna) = @_;
+    my $shardname = $seqname;
+    my $length = length($dna);
+    my @shards = ();    my $nbshards = POSIX::ceil($length/$MAXSIZE);
+    my $start=0;
+    my $size =int($length/$nbshards);
+    my $count = 0;
+    for($count=0;$count<$nbshards;$count++) {
+        my $end = $start+$size;
+        if($end>$length) { $end=$length-1; }
+        my $shardContent = substr($dna,$start,$end);
+        my $shardinfo = "";
+        if($count==0) {
+            $shardinfo = ", \"shards\" : [";
+            my $s=0;
+            for($s=1;$s<$nbshards;$s++) {
+                if($s>1) { $shardinfo .= ","; }
+                $shardinfo .= "\"".$seqname.".shard".$s."\"";
+            }
+            $shardinfo .= "]";
+        }
+        else {
+            $shardname = $seqname.".shard".$count;
+        }
+        push(@shards,"{\"_id\" : \"".$shardname."\", \"metadata\": { \"start\": ".$start." , \"stop\": ".$end."} , \"content\" : \"".$shardContent."\"".$shardinfo."}\n")
+;
+    }
+    return @shards;
+
+}
+
 
 
 sub _add_flattened_SeqFeatures  {
