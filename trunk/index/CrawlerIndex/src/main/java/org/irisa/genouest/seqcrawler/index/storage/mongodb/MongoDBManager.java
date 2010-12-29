@@ -48,7 +48,7 @@ public class MongoDBManager implements StorageManagerInterface {
 	 * Maximum size of shards
 	 * cut object if too large for storage
 	 */
-    private long max = 10000000L;
+    private long max = 3500000L;
     
     Mongo mongo = null;
     DB db  =null;
