@@ -247,8 +247,8 @@ join to ring if necessary (multiple hosts)
  To use the Genbank converter, data must be in gzip format (.gz):
 
 +--
-cd /etc/gbrowse2
-perl utils/bp_genbank2gff3.pl  -d mydirectorywithGenbankfiles -o mygffoutputdir
+cd /opt/solr/apache-solr-1.4.1/seqcrawler/solr/bin/
+perl genbank2gff3.pl  -d mydirectorywithGenbankfiles -o mygffoutputdir
 +--
 
  To index GFF files and make them available both via indexer and gbrowse, the data must be indexed as usual and a Gbrowse configuration file must be created (no order in creation)
