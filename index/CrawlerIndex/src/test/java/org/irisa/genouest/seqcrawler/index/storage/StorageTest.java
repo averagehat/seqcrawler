@@ -111,7 +111,7 @@ public class StorageTest extends TestCase {
 			mongoObject.put("metadata", object.getMetadata());
 			mongoObject.put("shards", object.getShards());			
 			
-			MongoDBManager manager = new MongoDBManager(null);
+			MongoDBManager manager = new MongoDBManager();
 			
 			StorageObject stobj = manager.getStorageObject(mongoObject);
 			assertEquals(object.getContent(),stobj.getContent());
