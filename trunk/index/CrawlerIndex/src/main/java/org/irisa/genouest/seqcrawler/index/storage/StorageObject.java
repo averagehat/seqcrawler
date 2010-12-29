@@ -22,7 +22,7 @@ public class StorageObject {
 	/**
 	 * Unique id of the element
 	 */
-	protected String id = null;
+	String id = null;
 	
 
 	public void setId(String id) {
