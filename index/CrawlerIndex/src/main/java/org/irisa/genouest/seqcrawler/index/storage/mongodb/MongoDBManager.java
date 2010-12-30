@@ -21,6 +21,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
+import com.mongodb.WriteResult;
 
 /**
  * MongoDB manager
@@ -42,7 +43,7 @@ public class MongoDBManager implements StorageManagerInterface {
 	private String host = "localhost";
 	private String port = "27017";
 	
-	private static final String DB =" seqcrawler";
+	private static final String DB ="seqcrawler";
 	
 	/**
 	 * Maximum size of shards
@@ -51,7 +52,7 @@ public class MongoDBManager implements StorageManagerInterface {
     private long max = 3500000L;
     
     Mongo mongo = null;
-    DB db  =null;
+    DB db = null;
 	
     /**
      * Initialize object, but no connection done to the server
@@ -184,16 +185,23 @@ public class MongoDBManager implements StorageManagerInterface {
 	}
 
 	public void store(StorageObject object) throws StorageException {
+			
+		DBCollection coll = db.getCollection(BUCKET);
+		log.error("my collection: "+coll.getFullName());
+		
 		StorageObject[] sobjects = object.split(max);
 		 for(StorageObject sobject : sobjects) {
 			log.debug("Add "+sobject.id()+" , "+sobject.toString());
-			DBCollection coll = db.getCollection(BUCKET);
+			
 			BasicDBObject mongoObject = new BasicDBObject();
 			mongoObject.put(ID, object.id());
 			mongoObject.put(CONTENT, object.getContent());
 			mongoObject.put(METADATA, object.getMetadata());
 			mongoObject.put(SHARDS, object.getShards());
-			coll.insert(mongoObject);
+			WriteResult res = coll.insert(mongoObject);
+			//if(!res.getLastError().ok()) {
+				log.error(res.toString());
+			//}
 		 }
 
 	}
