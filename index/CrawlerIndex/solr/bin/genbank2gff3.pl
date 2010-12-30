@@ -252,7 +252,7 @@ my $ok= GetOptions( 'd|dir|input:s'   => \$dir,
             'GFF_VERSION=s' => \$GFF_VERSION,
             'quiet!'    => \$quiet, # swap quiet to verbose
             'DEBUG!'    => \$DEBUG,
-            'json'       =>\$json,
+            'json (incompatible with split)'       =>\$json,
             'n|nolump'  => \$nolump);
 
 my $lump = 1 unless $nolump || $split;
