@@ -534,7 +534,7 @@ for my $file ( @files ) {
                 #if($json) { print $json_fh "{\"_id\" : \"".$seq_name."_".$aid."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($aa)."} , \"content\" : \"".$aa."\"}\n"};
                if($json && $aa && length($aa)>1)  {
                if(length($aa) < $MAXSIZE) {
-                   print $json_fh "{\"_id\" : \"".$seq_name."_".$aid.."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($aa)."} , \"content\" : \"".$aa."\"}\n";
+                   print $json_fh "{\"_id\" : \"".$seq_name."_".$aid."\", \"metadata\": { \"start\": 0 , \"stop\": ".length($aa)."} , \"content\" : \"".$aa."\"}\n";
                }
                else {
                    my @shards = getShards($seq_name."_".$aid,$aa);
