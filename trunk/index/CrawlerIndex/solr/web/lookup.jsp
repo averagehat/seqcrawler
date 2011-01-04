@@ -40,6 +40,10 @@ if(fileName==null || data.length!=2) {
 String startParam = data[0];
 String sizeParam = data[1];
 
+//Set filename
+File fseq = new File(fileName);
+response.setHeader("Content-Disposition","attachment; filename=" + fseq.getName() );
+
 
 long start =-1;
 if(startParam!=null) { start = Long.parseLong(startParam); }
