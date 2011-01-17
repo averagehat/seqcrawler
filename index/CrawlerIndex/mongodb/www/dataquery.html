@@ -52,9 +52,12 @@
 			          
 			          //var obj = jQuery.parseJSON(data);
 			          var obj = eval('(' + data + ')');
-			          		          
-			          $("#transcriptContent").append(obj.content);
-			          		          
+			          if(obj.error) {
+			              $("#transcriptContent").append(obj.error);
+			          }
+			          else {		          
+			              $("#transcriptContent").append(obj.content);
+			          }          
 			          // Has shards?
 			          shards = data.shards;
 				      if(data.shards && shards!="") {				    

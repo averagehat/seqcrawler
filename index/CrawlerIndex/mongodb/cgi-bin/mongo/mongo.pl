@@ -49,7 +49,11 @@ my $database   = $connection->seqcrawler;
 my $collection = $database->bank;
 my $id = param('id');
 my $data       = $collection->find_one({ _id => $id });
-my $myjson = encode_json $data;
-
-print $myjson;
+if($data) {
+    my $myjson = encode_json $data;
+    print $myjson;
+}
+else {
+    print "{ error : \"No match found\"}";
+}
 }
