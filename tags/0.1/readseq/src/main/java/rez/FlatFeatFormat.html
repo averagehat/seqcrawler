@@ -1,0 +1,188 @@
+<HTML><TITLE>Readseq: FlatFeatFormat</TITLE><BODY> 
+
+------  FFF - FlatFeat - Flattened Feature Format  -----------<P>
+      
+This is essentially the <A HREF="http://www.ncbi.nlm.nih.gov/collab/FT/">
+DDBJ/GenBank/EMBL Feature Table</A> specification
+with newlines and extra space removed, to produce single-line feature
+entries which can more efficiently be indexed and read by software.
+Basic FFF format is a tab-separated-value file, with these columns:
+Key    Location   Qualifiers
+<PRE>
+# flatfeat-version 2
+Key Location  Qualifiers
+source  1..1684   /organism="Drosophila melanogaster" ;/chromosome="3L" ; /map="69C" ; /ACCESSION="U57488" ...
+gene  18..1684  /gene="est-6"
+CDS join(18..1404,1456..&gt;1684)  /gene="est-6" ;...
+exon  18..1404  /gene="est-6"
+intron  1405..1455  /gene="est-6"
+exon  1456..&gt;1684 /gene="est-6"
+</PRE>
+
+Similar to GFF, FFF works better for me as it contains all information
+about a feature in one row.  GFF splits gene, mRNA, other multi-location
+features among several rows, and currently lacks a standard syntax for grouping
+these feature parts.
+<p>
+     
+
+Readseq treats FFF as a general tab-separated-value file with the first non-comment (#)
+line being a field key line.  Columns may be in any order, and new columns may
+be introduced, without hampering ability to read known columns.
+Known column keys are 'key', 'location', 'qualifiers',
+and those given below for the prior variant.  Prior variant keys may be discontinued,
+though 'id', and 'gene'/'symbol' look useful to keep.
+ 
+<p>
+
+The prior version of FFF, gnomap-version 1, is used (as of 2000/2001)
+with <a href="http://iubio.bio.indiana.edu/eugenes/">euGenes</a> genome info service.
+ 
+<p>
+
+The fields now defined are:
+
+<DL COMPACT>
+  <DT>Feature (col1) </DT>
+    <DD>  name of feature, usually GenBank/EMBL compatible but generally 
+    whatever the source data has (w/ some minor changes for consistancy among organisms).
+    Never null.</DD>
+
+  <DT>gene (col2) </DT>
+    <DD>  a name or visible label (should be called 'symbol' instead).  May be null. </DD>
+
+  <DT>map (col3)</DT>
+    <DD>  org. specific map position, cytologic or other.  May be null.</DD>
+
+  <DT>range (col4)</DT>
+    <DD>  phys. map base range for chromosome. 
+    The syntax for this is GenBank/EMBL/DDBJ feature table location. Never null.</DD>
+
+  <DT>ID (col5)</DT>
+    <DD> database id of feature here is MEOW:xxxxx for euGenes database ID. May be null.</DD>
+
+  <DT>db_xref (col6)</DT>
+    <DD>   general collections of database cross-refs.  Minimal set here 
+    as other euGenes data stores these, accessible thru id. May be null.</DD>
+
+  <DT>notes (col7)</DT>
+    <DD>  other info., unstructured. Usually null.</DD>
+</DL>
+
+<H3>Example format:</H3>
+<PRE>
+# fly/features-2L.tsv
+# Features for fly from BDGP/Celera/FlyBase data [ 20-December-2000]
+# gnomap-version 1
+# Feature gene    map     range                         id                db_xref         
+source  fly     Chr 2L  1..22082480     -
+gene    Nhe1    -       complement(98968..101637)       MEOW:FBgn0026787  FlyBase:FBan0012178,GadFly:CT9263       -
+gene    M(2)21AB -      102694..109351                  MEOW:FBgn0005278  FlyBase:FBan0002674,GadFly:CT31903,GadFly:CT31899,GadFly:CT31907,GadFly:CT31901,GadFly:CT31790  -
+gene    CG13694 -       complement(110631..111036)      MEOW:FBgn0031219  FlyBase:FBan0013694,GadFly:CT33151      - 
+gene    CG4822  -       complement(111997..115661)      MEOW:FBgn0031220  FlyBase:FBan0004822,GadFly:CT41972,GadFly:CT41960,GadFly:CT41970,GadFly:CT15205 -
+</PRE>
+
+
+Value '-' or empty field indicates null value. <BR>
+Leading '#' indicate comment, with only '# gnomap-version' a
+special comment, though I parse the '# Features for fly from
+BDGP/Celera/FlyBase data [ 20-December-2000]' comment.<BR>
+The special 'source' feature, always? the first non-comment, with
+gene/symbol = organism (e.g. fly/worm/man/weed/...), the map =
+chromosome, and range = chromosome base range.
+<P>
+
+
+<H3>Next format version:</H3>
+The current gnomap format is similar to GFF but with, to me, more useful
+and efficient combination of fields for maps (among other things
+with GFF one must read a bunch of lines like exons, sort and
+paste together for a single mapped feature).
+
+<p>
+The general idea for this gnomap format is to capture
+all of a DDBJ/EMBL/GenBank feature table statement in one
+efficiently parseable line.   A
+future format might require a 'merge' style tab-separated file where the first line
+is a set of field keys. These keys would be "Feature",
+"location", plus any set of qualifiers defined the same as D/E/G
+qualifier tagset of <A
+href="http://www.ncbi.nlm.nih.gov/collab/FT/">
+http://www.ncbi.nlm.nih.gov/collab/FT/</A>, but with
+some variation to suit the need for fixed columns. A qualifier field could
+be added/removed from table depending on need.  The parser should
+recognize first non-comment as a list of field keys.
+<P>
+Alternately, the qualifiers could be catenated in a single field, with 
+/key="value" ; /key2="value2" structure.
+Your comments are welcome.
+ <p>
+
+
+<H3>Possible version 2a:</H3>
+<PRE>
+# fly/features-2L.tsv
+# Features for fly from BDGP/Celera/FlyBase data [ 20-December-2000]
+# gnomap-version 2a
+Feature location      gene    map                       id               db_xref                     note   
+source  1..22082480   fly     Chr 2L   -
+gene    complement(98968..101637) Nhe1    -             MEOW:FBgn0026787  FlyBase:FBan0012178,GadFly:CT9263       -
+gene    102694..109351   M(2)21AB -                     MEOW:FBgn0005278  FlyBase:FBan0002674,GadFly:CT31903,GadFly:CT31899,GadFly:CT31907,GadFly:CT31901,GadFly:CT31790  -
+gene    complement(110631..111036)  CG13694 -           MEOW:FBgn0031219  FlyBase:FBan0013694,GadFly:CT33151      - 
+gene    complement(111997..115661)  CG4822  -           MEOW:FBgn0031220  FlyBase:FBan0004822,GadFly:CT41972,GadFly:CT41960,GadFly:CT41970,GadFly:CT15205 -
+</PRE>
+
+<H3>Possible version 2b:</H3>
+<PRE>
+##gnomap-version 2b
+# fly/features-2L.fff
+# Features for fly from BDGP/Celera/FlyBase data [ 20-December-2000]
+Key    	Location     	Qualifiers                
+source	1..22082480        	/organism=fly ; /chromosome=2L 
+gene	complement(98968..101637)    /gene=Nhe1 ; id=MEOW:FBgn0026787 ; /db_xref=FlyBase:FBan0012178,GadFly:CT9263   
+gene   	102694..109351     /gene=M(2)21AB ; /id=MEOW:FBgn0005278 ; /db_xref=FlyBase:FBan0002674,GadFly:CT31903,GadFly:CT31899,GadFly:CT31907,GadFly:CT31901,GadFly:CT31790  -
+</PRE>
+
+(? change format name to FFF - Flattened Feature Format 
+as in DDBJ/EMBL/GenBank Feature Table format without newlines and leading spaces :)
+
+<p>
+
+<H3>File sets:</H3>
+Current <B>feature-xxx.tsv</B> tables consist of one chromosome / linkage-unit
+of data (there is no 'chromosome' field, see the 'source' feature).  The
+-xxx part is the chromosome name.  Each set of chromosome
+features and associated <B>dna-xxx.raw</B> or dna-xxx.fasta files are located
+in organism folder.  dna-xxx.raw is just the string of nucleotides 
+that the features index onto. 
+<P>
+
+With each feature-xxx.tsv is an associated feature-xxx.tsv.idx
+and feature-xxx.tsv.ranges.
+The <B>feature-xxx.tsv.ranges</B> consists of lines of 
+<PRE>
+ base-start | file-index 
+OR 
+ class-name | file-index | location 
+</PRE>
+where file-index  indexes the feature-xxx.tsv file. It is used
+for efficient reading of subranges of features by the map display
+program.
+<p>
+
+The <B>idmap.tsv</B> table is a list of
+<PRE>
+  ID | Chromosome | base-start..base-end
+</PRE>
+for all chromosomes.  It can be used to look up location by ID.
+<p>
+
+The <B>feature-xxx.tsv.idx</B> and <B>idmap.tsv.idx</B> files are a byte-index
+into respective files of based on numeric ID (idvalue * 8). The
+value stored there is the record-offset, record-length (two 4
+byte integers) in feature-xxx.tsv or idmap.tsv.
+<p>
+
+
+ 
+ </BODY></HTML>

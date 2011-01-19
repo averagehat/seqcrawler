@@ -1,0 +1,85 @@
+<HTML><TITLE>Readseq: PaupSeqFormat</TITLE><BODY><PRE>
+
+------ PAUP/NEXUS format -----------
+Every block starts with "BEGIN blockname;" and ends with "END;".
+Each block is composed of one or more statements, each
+terminated by a semicolon (;).
+
+Comments may be included in NEXUS files by enclosing them within
+square brackets, as in "[This is a comment]."
+
+NEXUS-conforming files are identified by a "#NEXUS" directive at
+the very beginning of the file (line 1, column 1).  If the
+#NEXUS is omitted PAUP issues a warning but continues
+processing.
+
+NEXUS files are entirely free-format.  Blanks, tabs, and
+newlines may be placed anywhere in the file.  Unless RESPECTCASE
+is requested, commands and data may be entered in upper case,
+lower case, or a mixture of upper and lower case.
+
+The following conventions are used in the syntax descriptions of
+the various blocks.  Upper-case items are entered exactly as
+shown.  Lower-case items inside of angle brackets -- e.g., <x>
+-- represent items to be substituted by the user.  Items inside
+of square brackets -- e.g., [X] -- are optional.  Items inside
+of curly braces and separated by vertical bars -- e.g.,  { X | Y
+| Z } -- are mutually exclusive options.
+
+
+The DATA Block
+
+The DATA block contains the data matrix and other associated
+information.  Its syntax is:
+
+BEGIN DATA;
+DIMENSIONS NTAX=<number of taxa> NCHAR=<number of characters>;
+  [ FORMAT  [ MISSING=<missing-symbol> ]
+        [ LABELPOS={ LEFT | RIGHT } ]
+        [ SYMBOLS="<symbols-list>" ]
+        [ INTERLEAVE ]
+        [ MATCHCHAR=<match-symbol> ]
+        [ EQUATE="<symbol>=<expansion> [<symbol>=<expansion>...]" ]
+        [ TRANSPOSE ]
+        [ RESPECTCASE ]
+        [ DATATYPE = { STANDARD | DNA | RNA | PROTEIN } ]; ]
+        [ OPTIONS [ IGNORE={ INVAR | UNINFORM } ]
+        [ MSTAXA = { UNCERTAIN | POLYMORPH | VARIABLE } ]
+        [ ZAP = "<list of zapped characters>" ] ; ]
+  [ CHARLABELS <label_1> label_2> … <label_NCHAR> ; ]
+  [ TAXLABELS <label1_1> <label1_2> <label1_NTAX> ; ]
+  [ STATELABELS <currently ignored by PAUP> ; ]
+  MATRIX <data-matrix> ;
+  END;
+
+--- example PAUP file
+
+#NEXUS
+
+[!Brown et al. (1982) primate mitochondrial DNA]
+
+begin data;
+  dimensions ntax=5 nchar=896;
+  format datatype=dna matchchar=. interleave missing='-';
+  matrix
+[                              2                    4                    6            8                    ]
+[         1                    1                    1                    1            1                    ]
+human     aagcttcaccggcgcagtca ttctcataatcgcccacggR cttacatcctcattactatt ctgcctagcaaactcaaact acgaacgcactcacagtcgc
+chimp     ................a.t. .c.................a ...............t.... ..................t. .t........c.........
+gorilla   ..................tg ....t.....t........a ........a......t.... .................... .......a..c.....c...
+orang     ................ac.. cc.....g..t.....t..a ..c........cc....g.. .................... .......a..c.....c...
+gibbon    ......t..a..t...ac.g .c.................a ..a..c..t..cc.g..... ......t............. .......a........c...
+
+[         8                    8                    8                    8            8              8     ]
+[         0                    2                    4                    6            8              9     ]
+[         1                    1                    1                    1            1              6     ]
+human     cttccccacaacaatattca tgtgcctagaccaagaagtt attatctcgaactgacactg agccacaacccaaacaaccc agctctccctaagctt
+chimp     t................... .a................c. ........a.....g..... ...a................ ................
+gorilla   ..................tc .a................c. ........a.g......... ...a.............tt. .a..............
+orang     ta....a...........t. .c.......ga......acc ..cg..a.a......tg... .a.a..c.....g...cta. .a.....a........
+gibbon    a..t.......t........ ....ac...........acc .....t..a........... .a.tg..........gctag .a..............
+  ;
+end;
+---------------------------------------------------
+
+</PRE></BODY></HTML>

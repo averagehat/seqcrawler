@@ -1,0 +1,261 @@
+<HTML><TITLE>Readseq: GenbankSeqFormat</TITLE><BODY><PRE>
+
+------ GenBank File Format -----------
+-- summary of key format items 
+
+LOCUS       DMU57488     1684 bp    DNA             INV       11-FEB-1997
+1234567890123
+            ^ -- start of document values
+DEFINITION  Drosophila melanogaster esterase-6 (est-6) gene, partial cds.
+ACCESSION   U57488
+VERSION     U57488.1  GI:1832169
+SOURCE      fruit fly.
+  ORGANISM  Drosophila melanogaster
+            Eukaryota; Metazoa; Arthropoda; Tracheata; Hexapoda; Insecta;
+1234567890123
+  ^ -- subfield key start
+FEATURES             Location/Qualifiers
+     source          1..1684
+123456789012345678901234567890
+     ^ --feature key ^ feature values
+                     /organism="Drosophila melanogaster"
+                     /chromosome="3L"
+                     /map="69C"
+     gene            18..1684
+                     /gene="est-6"
+     CDS             join(18..1404,1456..>1684)
+                     /gene="est-6"
+                     /codon_start=1
+     exon            18..1404
+                     /gene="est-6"  
+BASE COUNT      457 a    357 c    452 g    418 t
+ORIGIN
+        1 ccggagtgag gagcaacatg aactacgtgg gactgggact tatcattgtg ctgagctgcc
+       61 tttggctcgg ttcgaacgcg agtgatacag atgaccctct gttggtgcag ctgccccagg
+      121 gcaagctacg tggtcgcgat aatggaagct actacagcta cgaatcgatt ccctacgccg
+1234567890123
+//         -- end of sequence
+LOCUS       DMU57488     1684 bp    DNA             INV       11-FEB-1997
+...
+ORIGIN
+        1 tttggctcgg ....
+//
+
+------------------------------------
+
+Details at  ftp://ncbi.nlm.nih.gov/, http://www.ncbi.nlm.nih.gov/, 
+          http://www.ncbi.nlm.nih.gov/collab/FT/index.html
+
+-- Extract from GBREL.TXT          Genetic Sequence Data Bank
+                         April 15 2001
+               NCBI-GenBank Flat File Release 123.0
+
+  
+1.4.1 LOCUS line format change : to accomodate longer names and sequences
+
+  When the LOCUS line format for the GenBank flatfile was designed nearly
+two decades ago, sequences over 10 Mbp in length were not anticipated. As
+a result, the maximum length of a LOCUS name is nine characters, and the
+maximum length of a sequence is 9,999,999 bases :
+---------+---------+---------+---------+---------+---------+---------+---------
+1       10        20        30        40        50        60        70       79
+LOCUS       18_Char_LOCUS_Name 99999999999 bp ss-snRNA circular DIV DD-MMM-YYYY
+
+
+3.4.2  Entry Organization
+
+  In the second portion of a sequence entry file (containing the
+sequence entries for that division), each record (line) consists of
+two parts. The first part is found in positions 1 to 10 and may
+contain:
+
+1. A keyword, beginning in column 1 of the record (e.g., REFERENCE is
+a keyword).
+
+2. A subkeyword beginning in column 3, with columns 1 and 2 blank
+(e.g., AUTHORS is a subkeyword of REFERENCE). Or a subkeyword beginning
+in column 4, with columns 1, 2, and 3 blank (e.g., PUBMED is a
+subkeyword of REFERENCE).
+
+3. Blank characters, indicating that this record is a continuation of
+the information under the keyword or subkeyword above it.
+
+4. A code, beginning in column 6, indicating the nature of an entry
+(feature key) in the FEATURES table; these codes are described in
+Section 3.4.12.1 below.
+
+5. A number, ending in column 9 of the record. This number occurs in
+the portion of the entry describing the actual nucleotide sequence and
+designates the numbering of sequence positions.
+
+6. Two slashes (//) in positions 1 and 2, marking the end of an entry.
+
+  The second part of each sequence entry record contains the information
+appropriate to its keyword, in positions 13 to 80 for keywords and
+positions 11 to 80 for the sequence.
+
+  The following is a brief description of each entry field. Detailed
+information about each field may be found in Sections 3.4.4 to 3.4.14.
+
+LOCUS - A short mnemonic name for the entry, chosen to suggest the
+sequence's definition. Mandatory keyword/exactly one record.
+
+DEFINITION  - A concise description of the sequence. Mandatory
+keyword/one or more records.
+
+ACCESSION - The primary accession number is a unique, unchanging
+code assigned to each entry. (Please use this code when citing
+information from GenBank.) Mandatory keyword/one or more records.
+
+VERSION   - A compound identifier consisting of the primary
+accession number and a numeric version number associated with the
+current version of the sequence data in the record. This is followed
+by an integer key (a "GI") assigned to the sequence by NCBI.
+Mandatory keyword/exactly one record.
+
+NID   - An alternative method of presenting the NCBI GI
+identifier (described above). The NID is obsolete and was removed
+from the GenBank flatfile format in December 1999.
+
+KEYWORDS  - Short phrases describing gene products and other
+information about an entry. Mandatory keyword in all annotated
+entries/one or more records.
+
+SEGMENT - Information on the order in which this entry appears in a
+series of discontinuous sequences from the same molecule. Optional
+keyword (only in segmented entries)/exactly one record.
+
+SOURCE  - Common name of the organism or the name most frequently used
+in the literature. Mandatory keyword in all annotated entries/one or
+more records/includes one subkeyword.
+
+   ORGANISM - Formal scientific name of the organism (first line)
+and taxonomic classification levels (second and subsequent lines).
+Mandatory subkeyword in all annotated entries/two or more records.
+
+REFERENCE - Citations for all articles containing data reported
+in this entry. Includes four subkeywords and may repeat. Mandatory
+keyword/one or more records.
+
+   AUTHORS  - Lists the authors of the citation. Mandatory
+subkeyword/one or more records.
+
+   TITLE  - Full title of citation. Optional subkeyword (present
+in all but unpublished citations)/one or more records.
+
+   JOURNAL  - Lists the journal name, volume, year, and page
+numbers of the citation. Mandatory subkeyword/one or more records.
+
+   MEDLINE  - Provides the Medline unique identifier for a
+citation. Optional subkeyword/one record.
+
+    PUBMED  - Provides the PubMed unique identifier for a
+citation. Optional subkeyword/one record.
+
+   REMARK - Specifies the relevance of a citation to an
+entry. Optional subkeyword/one or more records.
+
+COMMENT - Cross-references to other sequence entries, comparisons to
+other collections, notes of changes in LOCUS names, and other remarks.
+Optional keyword/one or more records/may include blank records.
+
+FEATURES  - Table containing information on portions of the
+sequence that code for proteins and RNA molecules and information on
+experimentally determined sites of biological significance. Optional
+keyword/one or more records.
+
+BASE COUNT  - Summary of the number of occurrences of each base
+code in the sequence. Mandatory keyword/exactly one record.
+
+ORIGIN  - Specification of how the first base of the reported sequence
+is operationally located within the genome. Where possible, this
+includes its location within a larger genetic map. Mandatory
+keyword/exactly one record.
+
+  - The ORIGIN line is followed by sequence data (multiple records).
+
+//  - Entry termination symbol. Mandatory at the end of an
+entry/exactly one record.
+
+
+3.4.3 Sample Sequence Data File
+
+  An example of a complete sequence entry file follows. (This example
+has only two entries.) Note that in this example, as throughout the
+data bank, numbers in square brackets indicate items in the REFERENCE
+list. For example, in ACARR58S, [1] refers to the paper by Mackay, et
+al.
+
+1       10        20        30        40        50        60        70       79
+---------+---------+---------+---------+---------+---------+---------+---------
+GBSMP.SEQ          Genetic Sequence Data Bank
+                         15 December 1992
+
+                 GenBank Flat File Release 74.0
+
+                     Structural RNA Sequences
+
+      2 loci,       236 bases, from     2 reported sequences
+
+LOCUS       AAURRA        118 bp ss-rRNA            RNA       16-JUN-1986
+DEFINITION  A.auricula-judae (mushroom) 5S ribosomal RNA.
+ACCESSION   K03160
+VERSION     K03160.1  GI:173593
+KEYWORDS    5S ribosomal RNA; ribosomal RNA.
+SOURCE      A.auricula-judae (mushroom) ribosomal RNA.
+  ORGANISM  Auricularia auricula-judae
+            Eukaryota; Fungi; Eumycota; Basidiomycotina; Phragmobasidiomycetes;
+            Heterobasidiomycetidae; Auriculariales; Auriculariaceae.
+REFERENCE   1  (bases 1 to 118)
+  AUTHORS   Huysmans,E., Dams,E., Vandenberghe,A. and De Wachter,R.
+  TITLE     The nucleotide sequences of the 5S rRNAs of four mushrooms and
+            their use in studying the phylogenetic position of basidiomycetes
+            among the eukaryotes
+  JOURNAL   Nucleic Acids Res. 11, 2871-2880 (1983)
+FEATURES             Location/Qualifiers
+     rRNA            1..118
+                     /note="5S ribosomal RNA"
+BASE COUNT       27 a     34 c     34 g     23 t
+ORIGIN      5' end of mature rRNA.
+        1 atccacggcc ataggactct gaaagcactg catcccgtcc gatctgcaaa gttaaccaga
+       61 gtaccgccca gttagtacca cggtggggga ccacgcggga atcctgggtg ctgtggtt
+//
+LOCUS       ABCRRAA       118 bp ss-rRNA            RNA       15-SEP-1990
+DEFINITION  Acetobacter sp. (strain MB 58) 5S ribosomal RNA, complete sequence.
+ACCESSION   M34766
+VERSION     M34766.1  GI:173603
+KEYWORDS    5S ribosomal RNA.
+SOURCE      Acetobacter sp. (strain MB 58) rRNA.
+  ORGANISM  Acetobacter sp.
+            Prokaryotae; Gracilicutes; Scotobacteria; Aerobic rods and cocci;
+            Azotobacteraceae.
+REFERENCE   1  (bases 1 to 118)
+  AUTHORS   Bulygina,E.S., Galchenko,V.F., Govorukhina,N.I., Netrusov,A.I.,
+            Nikitin,D.I., Trotsenko,Y.A. and Chumakov,K.M.
+  TITLE     Taxonomic studies of methylotrophic bacteria by 5S ribosomal RNA
+            sequencing
+  JOURNAL   J. Gen. Microbiol. 136, 441-446 (1990)
+FEATURES             Location/Qualifiers
+     rRNA            1..118
+                     /note="5S ribosomal RNA"
+BASE COUNT       27 a     40 c     32 g     17 t      2 others
+ORIGIN      
+        1 gatctggtgg ccatggcggg agcaaatcag ccgatcccat cccgaactcg gccgtcaaat
+       61 gccccagcgc ccatgatact ctgcctcaag gcacggaaaa gtcggtcgcc gccagayy
+//
+---------+---------+---------+---------+---------+---------+---------+---------
+1       10        20        30        40        50        60        70       79
+
+
+3.4.12 FEATURES Format
+
+  GenBank releases use a feature table format designed jointly by
+GenBank, the EMBL Nucleotide Sequence Data Library, and the DNA Data
+Bank of Japan. This format is in use by all three databases. The
+most complete and accurate Feature Table documentation can be found
+on the Web at:
+
+  http://www.ncbi.nlm.nih.gov/collab/FT/index.html
+
+---------------------------------------------------
+</PRE></BODY></HTML>
