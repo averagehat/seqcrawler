@@ -55,13 +55,13 @@ SeqCrawler image Administrator guide
 ** Install from a virtual machine template
 
  Install the virtual image on a X86_64 server supporting virtualization with network connection off.
- Connect to the server with a console.
+ Connect to the server with a console. Execute as root /home/crawler/install/install.sh then /home/crawler/install/configure.sh
  
 ** Install from a LiveCD
 
  Boot from the liveCD ISO file. Once logged (crawler/craw!pwd), go in "System->Administration->INSTALL Release" and select "Install" to install the content of the ISO on the hard disk (can be a vmware image). 
  
-** Steps
+*** Steps
 
  Before activating the network, the following may need to be set/modified for your network (if not in dhcp):
 
@@ -104,9 +104,14 @@ sudo /usr/bin/ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N
 
  * /opt/solr/apache-solr-1.4.1/seqcrawler/solr/conf
 
- * /etc/riak/vm.args and app.config (IP interface)
+ * If Riak is used: /etc/riak/vm.args and app.config (IP interface)
+ 
+ * conf files in /etc/gbrowse2/[gbrowse.conf]/*.conf , update STORAGEURL to current hostname
+ 
+ * /var/lib/tomcat6/webapps/solr/index.html , update solrUrl, gburl and storageurl
  
  []
+ 
  
  Web servers are available at:
  
