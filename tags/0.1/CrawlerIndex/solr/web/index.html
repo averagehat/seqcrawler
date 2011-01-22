@@ -13,7 +13,9 @@
    $pageCountResults = 20;
    $solrUrl = "http://seqcrawler.genouest.org/solr/select?rows="+$pageCountResults+"&qt=shard&wt=json&";
    $solrFacet ="facet=on&facet.field=bank&";
-   $storageurl = "http://seqcrawler.genouest.org";
+   // RIAK: $storageurl = "http://seqcrawler.genouest.org/riak/web";
+   // MONGO:
+   $storageurl = "http://seqcrawler.genouest.org/mongo";
    $gburl = "http://seqcrawler.genouest.org";
    $gbbank = "genouest";
    
@@ -247,7 +249,7 @@
 			
 		if(doc["stream_content_type"]=="biosequence/gff") { 
         	// NOSQL source
-        	content+='<a  href="'+$storageurl+'/riak/web/dataquery.html?id='+doc['id']+'&source='+doc['chr']+'&start='+doc['start']+'&stop='+doc['end']+'" target="_blank"><img class="icon" title="Get source/transcript data" alt="Get raw data" src="images/iDocument.png"/></a>';
+        	content+='<a  href="'+$storageurl+'/dataquery.html?id='+doc['id']+'&source='+doc['chr']+'&start='+doc['start']+'&stop='+doc['end']+'" target="_blank"><img class="icon" title="Get source/transcript data" alt="Get raw data" src="images/iDocument.png"/></a>';
 	    	// GBrowse
         	content+='<a href="'+$gburl+'/gb2/gbrowse/'+$gbbank+'?name='+doc['chr']+':'+doc['start']+'..'+doc['end']+'" target="_blank"><img class="icon" alt="Browse genome" title="Browse genome" src="images/ibrowse.png"/></a>'  
 		 }
