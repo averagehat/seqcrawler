@@ -400,12 +400,24 @@ sub get_abscoords {
   } else {
     warn "get_abscoords2 missed: feature=$class; name=$name;\n" if $debug;
     if($class=='Sequence') {
+    	 $segfeat= $self->_luabscoords($name,'chromosome',$refseq);
+         if (@$segfeat > 0) {
+               my @segcols= @{$segfeat->[0]}; # clone data ?
+               $self->{lastseg}= \@segcols if @segcols; #$segfeat->[0] ;
+               warn "get_abscoords2 found: ".join(",", @{$segfeat->[0]})."\n" if $debug; # refseq=$refseq
+  		 }	
+    	 else {
+    	 warn "get_abscoords2 missed: feature=chromosome; name=$name;\n" if $debug;
          $segfeat= $self->_luabscoords($name,'Region',$refseq);
          if (@$segfeat > 0) {
                my @segcols= @{$segfeat->[0]}; # clone data ?
                $self->{lastseg}= \@segcols if @segcols; #$segfeat->[0] ;
                warn "get_abscoords2 found: ".join(",", @{$segfeat->[0]})."\n" if $debug; # refseq=$refseq
-  } 
+  		 }
+  		 else {
+  		 	warn "get_abscoords2 missed: feature=Region; name=$name;\n" if $debug;
+  		 }
+  		 }
     }
   }
   return $segfeat; 
