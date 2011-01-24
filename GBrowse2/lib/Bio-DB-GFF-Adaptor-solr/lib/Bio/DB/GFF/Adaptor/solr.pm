@@ -41,6 +41,7 @@ See L<Bio::DB::GFF> for inherited methods.
 
 =head1 BUGS
 
+#24/01/11 O.SALLOU #3164609
 
 =head1 SEE ALSO
 
