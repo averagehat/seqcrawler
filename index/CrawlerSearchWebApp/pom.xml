@@ -4,7 +4,7 @@
   <groupId>org.irisa.genouest.seqcrawler</groupId>
   <artifactId>CrawlerSearchWebApp</artifactId>
   <packaging>war</packaging>
-  <version>0.1</version>
+  <version>0.2-SNAPSHOT</version>
   <name>CrawlerSearchWebApp Maven Webapp</name>
   <description>Simple webapp above CrawlerSearch to provide a web export function</description>
   <url>http://maven.apache.org</url>
@@ -14,13 +14,6 @@
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-    	<groupId>org.irisa.genouest.seqcrawler</groupId>
-    	<artifactId>CrawlerSearch</artifactId>
-    	<version>0.1</version>
-    	<type>jar</type>
-    	<scope>runtime</scope>
     </dependency>
     <dependency>
     	<groupId>javax.servlet</groupId>
@@ -40,6 +33,13 @@
     	<groupId>ch.qos.logback</groupId>
     	<artifactId>logback-classic</artifactId>
     	<version>0.9.24</version>
+    	<type>jar</type>
+    	<scope>runtime</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.irisa.genouest.seqcrawler</groupId>
+    	<artifactId>CrawlerSearch</artifactId>
+    	<version>0.2-SNAPSHOT</version>
     	<type>jar</type>
     	<scope>runtime</scope>
     </dependency>
