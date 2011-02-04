@@ -18,11 +18,11 @@
 	</ciManagement>
 	<licenses>
 		<license>
-			<name>Cecill-C</name>
-			<url>http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html</url>
+			<name>Cecill v2</name>
+			<url>http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html</url>
 			<distribution>repo</distribution>
-			<comments>Cecill-C license (http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html)
- which is an equivalent of LGPL license in France.</comments>
+			<comments>Cecill v2 license (http://www.cecill.info/licences/Licence_CeCILL_V2-en.html)
+ which is an equivalent of the GNU GPL license in France.</comments>
 		</license>
 	</licenses>
 	<developers>
