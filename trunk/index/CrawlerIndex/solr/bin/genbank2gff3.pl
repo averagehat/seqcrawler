@@ -173,6 +173,9 @@ Copyright (c) 2004 Cold Spring Harbor Laboratory.
 
 Don Gilbert (gilbertd@indiana.edu)
 
+=head2 AUTHOR of bug fixes, and json export for fasta
+
+Olivier Sallou (olivier.sallou@irisa.fr)
 
 =cut
 
