@@ -400,6 +400,7 @@ sub get_abscoords {
   } else {
     warn "get_abscoords2 missed: feature=$class; name=$name;\n" if $debug;
     if($class=='Sequence') {
+    	# Fix bug 3164609
     	 $segfeat= $self->_luabscoords($name,'chromosome',$refseq);
          if (@$segfeat > 0) {
                my @segcols= @{$segfeat->[0]}; # clone data ?
