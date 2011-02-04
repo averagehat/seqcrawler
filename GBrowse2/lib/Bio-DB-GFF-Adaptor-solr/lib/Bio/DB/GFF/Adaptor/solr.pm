@@ -53,8 +53,7 @@ L<Bio::DB::GFF>, L<bioperl>
 Olivier Sallou<lt>olivier.sallou@irisa.fr<gt>.
 as modified from Bio::DB::GFF::Adaptor::lucegene.
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+This library is licensed under CECILL v2, equivalent of GNU GPL.
 
 =cut
 
