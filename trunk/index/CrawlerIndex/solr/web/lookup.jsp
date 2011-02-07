@@ -2,6 +2,9 @@
 <%@ page import="java.io.*" %>
 
 <%
+
+// Fix 3175150 : accept multiple AUTHDIR
+
 if(request.getParameter("content-type")!=null)  { 
 	response.setContentType(request.getParameter("content-type")); 
 	String[] type = request.getParameter("content-type").split("/");
@@ -14,7 +17,7 @@ else {
 	response.setContentType("text/plain"); 
 } 
 
-String AUTHDIR ="/";
+String[] AUTHDIR = { "/" };
 int buffSize = 100;
 
 String fileName = request.getParameter("file");
@@ -51,13 +54,23 @@ long size =-1;
 if(sizeParam!=null) { size = Long.parseLong(sizeParam); }
 
 
-if(fileName.startsWith(AUTHDIR)) {
 File f = new File(fileName);
 RandomAccessFile raf = new RandomAccessFile(f,"r");
+boolean match=false;
+
+for(int i=0;i<AUTHDIR.length;i++) {
+if(fileName.startsWith(AUTHDIR[i])) {
 if(start>-1) {
-	raf.seek(start);
+        raf.seek(start);
+}
+match=true;
+break;
 }
 
+}
+
+
+if(match) {
 byte[] buffer = new byte[(int)size];
 int nbbytes = raf.read(buffer);
 response.getOutputStream().write(buffer);
