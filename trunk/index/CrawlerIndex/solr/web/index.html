@@ -9,6 +9,7 @@
  <!--
  History:
  Bug #3163366 21/01/11 - Olivier Sallou
+ Bug #3175185 04/02/11 - Olivier Sallou
  
  -->      
  <script type="text/javascript">                                         
@@ -148,12 +149,8 @@
 		if(file) {
 		  fileurl += "&position="+file;
 		}
-		$.get(fileurl,
-				   function(data){
-				   $("#documentDetails" ).html(data);
-				   $("#documentDetails" ).dialog({ title: 'Document' , width : '600px'  });
-				   
-		});
+		window.open( fileurl );
+        $("#documentDetails" ).dialog( "close" );
 		
 		}
 		
