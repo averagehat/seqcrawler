@@ -30,7 +30,7 @@
 }
 
 .doclinks {
-	float: right;	
+		text-align: right;	
 }
 
 ul
@@ -73,7 +73,7 @@ a:active {
 .field {
 	padding-left: 10px;
 	padding-top: 5px;
-    clear:left;
+    <!-- float:left; -->
 }
 
 .fieldDetail {
@@ -275,4 +275,18 @@ body {
 
 li.show {
   list-style: disc;
+}
+
+.gff_main_fields {
+	clear:left;
+}
+
+.gff_attr_fields {
+	font-size: 1em;
+	margin: 10px;
+	background-color: lightgrey;
+	border: 0.2px black solid;
+}
+
+.attributesDetail {
 }
