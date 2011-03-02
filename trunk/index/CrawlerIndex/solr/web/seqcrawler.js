@@ -33,7 +33,9 @@ function testShowGffDoc() {
 	 content+= detailsLink(doc);
 	 content+='<a  href="'+$storageurl+'/dataquery.html?id='+doc['id']+'&source='+doc['chr']+'&start='+doc['start']+'&stop='+doc['end']+'" target="_blank"><img class="icon" title="Get source/transcript data" alt="Get raw data" src="images/iDocument.png"/></a>';
 	 // GBrowse
+	 if(doc['feature']!="est") {
 	 content+='<a href="'+$gburl+'/gb2/gbrowse/'+$gbbank+'?name='+doc['chr']+':'+doc['start']+'..'+doc['end']+'" target="_blank"><img class="icon" alt="Browse genome" title="Browse genome" src="images/ibrowse.png"/></a>'   
+	 }
 	 content+='</div>';
 	 
 	 content+='</div>';
