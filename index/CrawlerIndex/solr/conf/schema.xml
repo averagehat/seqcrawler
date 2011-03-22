@@ -487,8 +487,8 @@
     <!-- End of readseq fields -->
 
 	<!-- PDB fields -->
-	<field name="expdta" type="lowercase" indexed="true" stored="true"/>
-	<field name="title" type="lowercase" indexed="true" stored="true"/>
+	<field name="expdta" type="text" indexed="true" stored="true"/>
+	<field name="title" type="text" indexed="true" stored="true"/>
 	<!-- end of PDB specifics -->
 
    <!-- catchall field, containing all other searchable text fields (implemented

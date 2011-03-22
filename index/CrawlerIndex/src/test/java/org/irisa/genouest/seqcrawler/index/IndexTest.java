@@ -439,7 +439,9 @@ public class IndexTest
 		// Look for chr NC_002745
 		SolrDocumentList docs = execQuery("id:1ZZ0");
         assertTrue( docs.size()>0 );
-		docs = execQuery("expdta:diffraction");
+		docs = execQuery("expdta:(+diffraction)");
         assertTrue( docs.size()>0 );
+        docs = execQuery("title:(+crystal)");
+        assertTrue( docs.size()>0 );       
     }
 }
