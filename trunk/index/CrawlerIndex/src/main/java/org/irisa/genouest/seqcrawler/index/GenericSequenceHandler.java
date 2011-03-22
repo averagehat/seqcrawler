@@ -3,6 +3,7 @@ package org.irisa.genouest.seqcrawler.index;
 import org.irisa.genouest.seqcrawler.index.handlers.EMBLHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.FastaHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.GFFHandler;
+import org.irisa.genouest.seqcrawler.index.handlers.PDBHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.RawFileHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.ReadSeqFileHandler;
 
@@ -46,6 +47,11 @@ public class GenericSequenceHandler {
 		case EMBL:
 		{
 			handler = new EMBLHandler(bank);
+			break;
+		}
+		case PDB:
+		{
+			handler = new PDBHandler(bank);
 			break;
 		}
 		default:

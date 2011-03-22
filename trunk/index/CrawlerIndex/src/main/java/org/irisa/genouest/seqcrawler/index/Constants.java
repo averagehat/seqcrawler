@@ -17,7 +17,8 @@ public class Constants {
 		GENBANK,
 		RAW,
 		READSEQ,
-		EMBL
+		EMBL,
+		PDB
 	}
 	
 	/**
