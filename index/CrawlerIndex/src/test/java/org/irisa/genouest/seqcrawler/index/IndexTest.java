@@ -413,4 +413,33 @@ public class IndexTest
 		SolrDocumentList docs = execQuery("sampletest:sampletest");
         assertTrue( docs.size()>0 );
     }
+    
+    
+    public void testIndexPDB()
+    {
+    	try {
+    	    Index index = new Index();
+			index.index(new String[] {"-f","./solr/dataset/datatest/test.pdb","-b","PDB","-C","-sh","./solr/","-sd","./solr/data/","-t","pdb"});
+		} catch (IOException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParserConfigurationException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SAXException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SolrServerException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParseException e) {
+			log.error(e.getMessage());
+			fail();
+		}
+		// Look for chr NC_002745
+		SolrDocumentList docs = execQuery("id:1ZZ0");
+        assertTrue( docs.size()>0 );
+		docs = execQuery("expdta:diffraction");
+        assertTrue( docs.size()>0 );
+    }
 }

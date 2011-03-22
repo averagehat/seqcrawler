@@ -486,6 +486,11 @@
     <field name="stream_content_type" type="lowercase" indexed="false" stored="true"/>
     <!-- End of readseq fields -->
 
+	<!-- PDB fields -->
+	<field name="expdta" type="lowercase" indexed="true" stored="true"/>
+	<field name="title" type="lowercase" indexed="true" stored="true"/>
+	<!-- end of PDB specifics -->
+
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
    <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>

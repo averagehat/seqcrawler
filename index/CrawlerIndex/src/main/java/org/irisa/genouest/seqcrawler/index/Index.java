@@ -112,7 +112,7 @@ public class Index
         options.addOption("url", true, "url of Solr server");
 
         options.addOption("store", false, "Use database storage for raw data (Fasta in GFF file for example)");
-        options.addOption("storage", true, "Storage implementation: riak(default), mongodb, cassandra, mock(test)");
+        options.addOption("storage", true, "Storage implementation: riak(default), mongodb, mock(test)");
         
         options.addOption("stHost", true, "If store,Host for storage backend, default is localhost");
         options.addOption("stPort", true, "If store,Port for storage backend, default is 8098");
@@ -247,6 +247,9 @@ public class Index
         	}
         	else if(t.equalsIgnoreCase("embl")) {
         		format = Constants.FORMATS.EMBL;
+        	}
+        	else if(t.equalsIgnoreCase("pdb")) {
+        		format = Constants.FORMATS.PDB;
         	}
         }
         log.info("Input file format is "+format.toString());
