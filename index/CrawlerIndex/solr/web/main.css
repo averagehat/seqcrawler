@@ -87,6 +87,10 @@ a:active {
 	padding-top: 5px;
 }
 
+#export_form {
+	margin: 20px;	
+}
+
 #header {
 	width: 80%;
 	min-width: 600px;
@@ -129,31 +133,26 @@ a:active {
 }
 
 #facets {
-	border-style: solid;
-	border-color: black;
-	border-width: 1px;
-	background: none repeat scroll 0 0 #4B8A08;
-        font-family: Comic Sans MS;
-        font-size: 12px;
+	font: 13px/1.22 arial,helvetica,clean,sans-serif;
+	color: #ABC4E1;
+	font-weight: bold;
+	font-style: normal;
+	padding: 10px;
+	font-size: 130%;
 }
 
+.facet {
+	list-style: none;
+	}
+
 .document {
-	border-style: solid;
-	border-color: black;
-	border-width: 1px;
 }	
 
 .documentOdd {
-        border-style: solid;
-        border-color: black;
-        border-width: 1px;
 }
 
 .documentEven {
-        border-style: solid;
-        border-color: black;
-        border-width: 1px;
-        background-color: #EDF6F5;
+        background-color: #ABC4E1;
 }
 
 .fieldName {
@@ -284,8 +283,8 @@ li.show {
 .gff_attr_fields {
 	font-size: 1em;
 	margin: 10px;
-	background-color: lightgrey;
-	border: 0.2px black solid;
+	background-color: #AFC4A1;
+
 }
 
 .attributesDetail {
