@@ -1,0 +1,122 @@
+<html>
+<head>
+ <title>Seqcrawler PDB view</title>
+
+<!-- <script type="text/javascript" src="chemdoodle/ChemDoodleWeb-libs.js"></script>-->
+
+ <script type="text/javascript" src="chemdoodle/jquery-1.5.1.min.js"></script> 
+ <script type="text/javascript" src="jquery-ui-1.8.2.custom.min.js"></script>
+ <script type="text/javascript" src="chemdoodle/jquery.mousewheel.min.js"></script>  
+ <script type="text/javascript" src="chemdoodle/jquery-query-2.1.7.js"></script>
+ <script type="text/javascript" src="urlEncode.js"></script>
+ <script type="text/javascript" src="chemdoodle/glMatrix-0.9.5.min.js"></script>
+ <script type="text/javascript" src="chemdoodle/CustomChemDoodleWeb.js"></script>
+ <link rel="stylesheet" type="text/css" href="jquery-ui-1.8.2.custom.css"/>
+ <link rel="stylesheet" type="text/css" href="chemdoodle/ChemDoodleWeb.css"/>
+ <link rel="stylesheet" type="text/css" href="main.css"/>
+
+<script type="text/javascript">
+var name = $.query.get('name');
+var file = $.query.get('file');
+var type = $.query.get('type');
+
+var pdb;
+
+$(document).ready(function() {
+
+if(!type) type=1;
+
+var fileurl = "lookup.jsp?file="+name+"&content-type=biosequence/pdb";
+if(file) {
+    fileurl += "&position="+file;
+}
+
+$.get(fileurl,
+             function(data){
+                showstructure(data,type);
+});
+
+$("#loading").html('<p class="wait"><img title="loading" alt="loading" src="images/waiting.gif"/></p>');
+$("#loading" ).dialog({ title: 'Loading, please wait' , width : '300px' });
+
+});
+
+</script>
+</head>
+<body>
+<h1>MOL*it! The molecular visualization</h1>
+<div id="loading"></div>
+<div>
+<table class="molit">
+<tr height="20%"><td width="20%">
+</td><td>Protein vizualisation - 3D manipulation requires WebGL support in your browser</td><tr>
+<tr><td width="20%">
+<ul>
+<li>Double click to start/stop animation</li>
+<li>Alt+Mouse drag to move the element</li>
+<li>Mouse drag to rotate the element</li>
+<li>Mouse wheel to zoom in/out</li>
+</ul>
+</td><td>
+<script type="text/javascript">
+
+function showstructure(molFile,type) {
+
+if(type==1) {
+ pdb = new ChemDoodle.TransformCanvas3D('pdbcanvas', 600, 600);
+ if(!pdb.gl){
+  pdb.emptyMessage = 'Your browser does not support WebGL';
+  pdb.displayMessage();
+  return;
+ }
+  pdb.specs.set3DRepresentation('Wireframe');
+  pdb.specs.atoms_display = false;
+  pdb.specs.bonds_display = false;
+  pdb.specs.ribbons_cartoonize = true;
+
+pdb.startAnimation = ChemDoodle._AnimatorCanvas.prototype.startAnimation;
+pdb.stopAnimation = ChemDoodle._AnimatorCanvas.prototype.stopAnimation;
+pdb.isRunning = ChemDoodle._AnimatorCanvas.prototype.isRunning;
+pdb.dblclick = ChemDoodle.RotatorCanvas.prototype.dblclick;
+pdb.nextFrame = function(delta){
+        var matrix = [];
+        mat4.identity(matrix);
+        var change = delta/1000;
+        var increment = Math.PI/15;
+        mat4.rotate(matrix, increment*change, [ 1, 0, 0 ]);
+        mat4.rotate(matrix, increment*change, [ 0, 1, 0 ]);
+        mat4.rotate(matrix, increment*change, [ 0, 0, 1 ]);
+        mat4.multiply(this.rotationMatrix, matrix);
+}
+
+}
+else {
+  pdb = new ChemDoodle.TransformCanvas('pdbcanvas', 600, 600,true);
+  pdb.specs.bonds_width_2D = .6;
+  pdb.specs.bonds_saturationWidth_2D = .18;
+  pdb.specs.bonds_hashSpacing_2D = 2.5;
+  pdb.specs.atoms_font_size_2D = 10;
+  pdb.specs.atoms_font_families_2D = ["Helvetica", "Arial", "sans-serif"];
+  pdb.specs.atoms_displayTerminalCarbonLabels_2D = true;
+  pdb.specs.atoms_useJMOLColors = true;
+  pdb.specs.atoms_displayTerminalCarbonLabels_2D = true;
+}
+
+pdb.handle = null;
+
+
+  var molecule = ChemDoodle.readPDB(molFile, 1);
+  if(type==2) { molecule.scaleToAverageBondLength(14.4); }
+  pdb.loadMolecule(molecule);
+  if(type==1) { pdb.startAnimation(); }
+  $("#loading" ).dialog("close");
+}
+
+</script>
+<div id="canvasdiv" class="ChemDoodleWebComponent"></div>
+</td></tr>
+<tr height="20%"><td width="20%"><a href="http://web.chemdoodle.com" title="Open Source HTML5 Chemistry - ChemDoodle Web Components"><img src="http://web.chemdoodle.com/resources/images/badges/badge120x60.png" /></a></td><td></td></tr>
+</table>
+</div>
+</body>
+</html>

@@ -95,6 +95,25 @@ function testShowGffDoc() {
 	 
  }
  
+ 
+ function showPdbDoc(doc,subclass) {
+     content='<div id="pdb_'+doc['id']+'" class="document'+subclass+'">';
+     content+='<div class="pdb_main_fields">';
+     for(var key in doc) {
+                    if(key.indexOf('stream_')==-1 && key.indexOf('seqid')==-1 && key.indexOf('file')==-1) {
+                    content+='<div class="field">'+key+': '+$.URLDecode(doc[key])+'</div>';
+                    }
+      }
+     content+='</div>';
+     content+='<div class="doclinks">';
+     content+= detailsLink(doc);
+     content+='<a target="_blank" href="pdb.html?name='+$.URLEncode(doc["stream_name"])+'&file='+doc['file']+'"><img class="icon" title="View in 3D" alt="Show 3D structure" src="images/pdb.png"/></a>';
+     content+='</div>';
+     content+='</div>';
+     $("#documents").append(content);
+
+}
+ 
  function detailsLink(doc) {
 	content='<img  onclick="showDetails(\''+doc["seqid"]+'\',\''+ doc["stream_content_type"] +'\',\''+ doc["stream_name"]  +'\',\''+ doc["file"]  +'\')" title="Show details" alt="Show details" src="images/ihelp.png" class="icon"/>';
 	return content;
@@ -286,13 +305,19 @@ function testShowGffDoc() {
 			else if(doc["stream_content_type"]=="biosequence/embl") {
 				showEmblDoc(doc,subclass);
 			}
+			else if(doc["stream_content_type"]=="biosequence/pdb") {
+				showPdbDoc(doc,subclass);
+			}
 			else {
 				var content='<div class="document'+subclass+'">';
 				for(var key in doc) {
-					if(key.indexOf('stream_')==-1 && key.indexOf('seqid')==-1 && key.indexOf('id')==-1) {
+					if(key.indexOf('stream_')==-1 && key.indexOf('seqid')==-1 && key.indexOf('file')==-1) {
 					content+='<div class="field">'+key+': '+$.URLDecode(doc[key])+'</div>';		
 					}
 				}
+				 content+='<div class="doclinks">';
+				 content+= detailsLink(doc);
+				 content+='</div>';
 				content+='</div>\n';
 				$("#documents").append(content);
 			}
