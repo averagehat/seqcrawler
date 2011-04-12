@@ -41,6 +41,17 @@ $("#loading" ).dialog({ title: 'Loading, please wait' , width : '300px' });
 
 });
 
+$(function() {
+
+$('#snapshot').click(function() {
+    var canvas = document.getElementById("pdbcanvas");
+    var context = canvas.getContext("2d");
+    var snapwin = window.open(canvas.toDataURL("image/png"),"_blank","toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=yes, width=300, height=300");
+});
+
+});
+
+
 </script>
 </head>
 <body>
@@ -57,6 +68,9 @@ $("#loading" ).dialog({ title: 'Loading, please wait' , width : '300px' });
 <li>Mouse drag to rotate the element</li>
 <li>Mouse wheel to zoom in/out</li>
 </ul>
+<div id="snapshot">
+<img src="images/pdb.png" title="Take a snapshot" alt="take a snapshot"  width="50" height="50"/>
+</div>
 </td><td>
 <script type="text/javascript">
 
