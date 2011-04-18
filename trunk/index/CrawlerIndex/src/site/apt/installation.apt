@@ -161,6 +161,8 @@ $gbbank = "genouest"; // Update to GBrowse configuration name.
  To enable the <itas> request handler, e.g. the default web interface, the lib directory content must be copied to the web application in WEB-INF/lib directory and an <itas> directory must be created in the webapp directory.
  Copy in this new directory the seqcrawler.js,jquery and main.css files.
  
+ Warning: <<itas>> interface for seqcrawler is not maintained, it can be used as a base interface for further developments.
+ 
  That's it, Solr instance is ready. Now we can to configure it.
 
 ===
@@ -189,7 +191,7 @@ $gbbank = "genouest"; // Update to GBrowse configuration name.
   </requestHandler> 
 +--   
 
-   Do the same for <<itas>>,<<mobile>>,<<mobiledetails>> handlers. In this same handlers, update the gbHost and stHost to the GBrowse and storage backend host names (could be localhost, but Riak for example will listen on a specific network interface).
+   If <<itas>> interface is used, Do the same for <<itas>>,<<mobile>>,<<mobiledetails>> handlers. In this same handlers, update the gbHost and stHost to the GBrowse and storage backend host names (could be localhost, but Riak for example will listen on a specific network interface).
    
    The <shards> parameter tells the system to query all those index server (current host must be specified too) to get the matches. If not set, only current host is queried.
   
