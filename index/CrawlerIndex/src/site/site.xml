@@ -3,7 +3,7 @@
   <bannerLeft>
     <name>SeqCrawler</name>
     <src>images/seqCrawler.png</src>
-    <href>http://seqcrawler.genouest.org/</href>
+    <href>http://seqcrawler.genouest.org/solr</href>
   </bannerLeft>
   <bannerRight>
     <src>images/seqCrawler_icon.png</src>
