@@ -1,3 +1,6 @@
+// Prevent browser cache
+$.ajaxSetup({cache: false});
+
 // Max number of fields to display on Hover
 $MAXFIELDS = 3;
 
