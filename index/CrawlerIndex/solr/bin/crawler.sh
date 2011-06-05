@@ -1,6 +1,7 @@
 #!/bin/bash
 
-. env.sh
+BASEDIR=$(dirname $0)
+. $BASEDIR/env.sh
 
 echo "Calling CrawlerIndex"
 
