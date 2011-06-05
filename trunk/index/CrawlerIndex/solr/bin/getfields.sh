@@ -1,6 +1,7 @@
 #!/bin/bash
 
-. env.sh
+BASEDIR=$(dirname $0)
+. $BASEDIR/env.sh
 
 echo "List fields operation"
 echo "Usage: listfields.sh -file outputfilename"
