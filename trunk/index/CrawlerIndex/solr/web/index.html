@@ -3,7 +3,8 @@
  <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
  <script type="text/javascript" src="jquery-ui-1.8.2.custom.min.js"></script>    
  <script type="text/javascript" src="jquery.url.packed.js"></script>  
- <script type="text/javascript" src="urlEncode.js"></script> 
+ <script type="text/javascript" src="urlEncode.js"></script>
+ <script type="text/javascript" src="seqcrawler-conf.js"></script> 
  <script type="text/javascript" src="seqcrawler.js"></script> 
  <link rel="stylesheet" type="text/css" href="jquery-ui-1.8.2.custom.css"/>
  <link rel="stylesheet" type="text/css" href="main.css"/>
@@ -16,14 +17,6 @@
  <script type="text/javascript">                                         
    // we will add our javascript code here
    $(document).ready(function() {
-   $pageCountResults = 20;
-   $solrUrl = "http://seqcrawler.genouest.org/solr/select?rows="+$pageCountResults+"&qt=shard&wt=json&";
-   $solrFacet ="facet=on&facet.field=bank&";
-   // RIAK: $storageurl = "http://seqcrawler.genouest.org/riak/web";
-   // MONGO:
-   $storageurl = "http://seqcrawler.genouest.org/mongo";
-   $gburl = "http://seqcrawler.genouest.org";
-   $gbbank = "genouest";
    
    $pageCount=1;
    

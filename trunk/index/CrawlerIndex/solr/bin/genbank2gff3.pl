@@ -255,7 +255,7 @@ my $ok= GetOptions( 'd|dir|input:s'   => \$dir,
             'GFF_VERSION=s' => \$GFF_VERSION,
             'quiet!'    => \$quiet, # swap quiet to verbose
             'DEBUG!'    => \$DEBUG,
-            'json (incompatible with split)'       =>\$json,
+            'json'       =>\$json,
             'n|nolump'  => \$nolump);
 
 my $lump = 1 unless $nolump || $split;
@@ -593,7 +593,7 @@ for my $file ( @files ) {
     
      ## FIXME for piped output w/ split FA files ...
     close($lumpfa_fh);
-    close($json_fh);
+    if($json) { close($json_fh); }
     if (!$split && $outfa && $lump_fh) {     
       print $lump_fh "##FASTA\n"; # GFF3 spec
       open $lumpfa_fh, $outfa or warn "reading FA $outfa: $!";

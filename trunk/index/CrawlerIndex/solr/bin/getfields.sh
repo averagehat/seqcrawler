@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export INDEXHOME=/opt/solr/apache-solr-1.4.1/seqcrawler/solr/bin
+. env.sh
 
 echo "List fields operation"
 echo "Usage: listfields.sh -file outputfilename"
