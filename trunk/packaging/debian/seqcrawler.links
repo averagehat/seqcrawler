@@ -1,0 +1,4 @@
+etc/seqcrawler/seqcrawler.conf etc/gbrowse/seqcrawler.conf
+etc/seqcrawler/seqcrawler-conf.js usr/share/java/webapps/solr/seqcrawler-conf.js
+etc/seqcrawler/crawlersearch.xml usr/share/java/webapps/CrawlerSearchWebApp/WEB-INF/web.xml
+usr/share/seqcrawler/solr/apache-solr-1.4.1/seqcrawler/solr/bin  usr/share/seqcrawler/bin
