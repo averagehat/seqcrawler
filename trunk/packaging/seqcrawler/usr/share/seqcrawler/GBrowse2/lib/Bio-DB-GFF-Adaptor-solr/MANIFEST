@@ -1,0 +1,7 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Bio-DB-GFF-Adaptor-solr.t
+lib/Bio/DB/GFF/Adaptor/solr.pm
+lib/Bio/DB/GFF/Adaptor/SolrDBI.pm
