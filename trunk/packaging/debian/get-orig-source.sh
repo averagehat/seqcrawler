@@ -5,6 +5,9 @@ set -e
 
 export VERSION="1.1"
 
+export INDEXVERSION="0.2"
+export SEARCHVERSION="0.1"
+
 export PKG="seqcrawler-"$VERSION
 mkdir $PKG
 
@@ -73,8 +76,8 @@ svn export https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/trunk/GBrow
 mv GBrowse2 $PKG/usr/share/seqcrawler/
 
 # Solr indexer
-wget http://test.genouest.org/artifactory/libs-releases-local/org/irisa/genouest/seqcrawler/CrawlerIndex/0.1/CrawlerIndex-0.1-jar-with-dependencies.jar
-mv CrawlerIndex-0.1-jar-with-dependencies.jar $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/
+wget http://test.genouest.org/artifactory/libs-releases-local/org/irisa/genouest/seqcrawler/CrawlerIndex/$INDEXVERSION/CrawlerIndex-$INDEXVERSION-jar-with-dependencies.jar
+mv CrawlerIndex-$INDEXVERSION-jar-with-dependencies.jar $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/
 
 #sed -i 's/\/opt\/solr\/apache-solr-1.4.1\/seqcrawler\/solr\/bin/\/usr\/share\/seqcrawler\/solr\/apache-solr-1.4.1\/seqcrawler\/solr\/bin/g' $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/*.sh
 
@@ -84,6 +87,9 @@ echo "Installing scripts"
 rm $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/index.jsp
 rm $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/seqcrawler.js
 rm $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/env.sh
+echo "export INDEXHOME=/usr/share/seqcrawler/solr/apache-solr-1.4.1/seqcrawler/solr/bin" > $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/env.sh
+echo "export INDEXVERSION="$INDEXVERSION >> $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/env.sh
+
 #cp solrbin/* $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/
 chmod 755 $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/*.sh
 #rm -rf solrbin
@@ -96,7 +102,7 @@ rm -f $PKG/usr/share/seqcrawler/solr/apache-solr-1.4.1/seqcrawler/solr/bin/seqcr
 
 # Export webapp
 echo "Installing export web app"
-wget http://test.genouest.org/artifactory/libs-releases-local/org/irisa/genouest/seqcrawler/CrawlerSearchWebApp/0.1/CrawlerSearchWebApp-0.1.war
+wget http://test.genouest.org/artifactory/libs-releases-local/org/irisa/genouest/seqcrawler/CrawlerSearchWebApp/$SEARCHVERSION/CrawlerSearchWebApp-$SEARCHVERSION.war
 
 mv CrawlerSearchWebApp-0.1.war $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war
 unzip $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war -d $PKG/usr/share/java/webapps/CrawlerSearchWebApp
