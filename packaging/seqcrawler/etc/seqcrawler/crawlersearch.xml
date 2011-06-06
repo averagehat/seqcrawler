@@ -1,0 +1,29 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>SeqCrawler Export Servlet</display-name>
+  
+   <servlet>
+    <servlet-name>export</servlet-name>
+    <servlet-class>org.irisa.genouest.seqcrawler.webapp.ExportServlet</servlet-class>
+		<init-param>
+			<param-name>downloadUrl</param-name>
+			<param-value>http://localhost/seqcrawler-downloads</param-value>
+		</init-param>
+		<init-param>
+			<param-name>downloadDir</param-name>
+			<param-value>/var/lib/seqcrawler/downloads</param-value>
+		</init-param>
+		<init-param>
+			<param-name>solrUrl</param-name>
+			<param-value>http://localhost/solr/select</param-value>
+		</init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>export</servlet-name>
+    <url-pattern>/export</url-pattern>
+  </servlet-mapping>
+  
+</web-app>

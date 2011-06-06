@@ -1,0 +1,31 @@
+<div class="result-document">
+  #foreach($fieldname in $doc.fieldNames)
+     #if($fieldname!="seqid")
+     <p>
+       <span class="field-name">$fieldname :</span>
+       <span>
+       #foreach($value in $doc.getFieldValues($fieldname))
+         $value
+       #end
+       </span>
+     </p>
+     #end
+  #end
+  #if($doc.getFieldValues("stream_content_type").get(0)=="biosequence/gff" && $doc.containsKey('id'))
+   <p>
+      <!-- HOST defined in solrConfig-->
+      <a href="http://#param('stHost'):#param('stPort')/riak/web/dataquery.html?id=$doc.getFieldValues('id').get(0)&source=$doc.getFieldValues('chr').get(0)&start=$doc.getFieldValues('start').get(0)&stop=$doc.getFieldValues('end').get(0)" target="_blank">Get raw data</a>
+   </p>
+   <p>
+      <!-- HOST defined in solrConfig-->
+      <a href="http://#param('gbHost'):#param('gbPort')/gb2/gbrowse/#param('gbBank')?name=$doc.getFieldValues('chr').get(0):$doc.getFieldValues('start').get(0)..$doc.getFieldValues('end').get(0)" target="_blank">Browse data</a>
+   </p>
+  #elseif($doc.getFieldValues("stream_content_type").get(0).startsWith("biosequence") && $doc.containsKey('id'))
+    <p>      <a href="lookup.jsp?file=$doc.getFieldValues('stream_name').get(0)&position=$doc.getFieldValues("file").get(0)&content-type=$doc.getFieldValues("stream_content_type").get(0)"  target="_blank">Get raw data</a>
+   </p>   
+  #end
+  #if($params.getBool("debugQuery",false))
+    <a href="#" onclick='jQuery(this).siblings("pre").toggle(); return false;'>toggle explain</a>
+    <pre style="display:none">$response.getExplainMap().get($doc.getFirstValue('id'))</pre>
+  #end
+</div>

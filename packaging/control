@@ -1,0 +1,21 @@
+Source: seqcrawler
+Section: science
+Priority: extra
+Maintainer: Olivier Sallou <olivier.sallou@irisa.fr>
+Build-Depends: debhelper (>= 7.0.50~),perl,gbrowse,libio-all-lwp-perl,liburi-perl
+Standards-Version: 3.9.1
+Homepage: http://seqcrawler.sourceforge.net
+#Vcs-Git: git://git.debian.org/collab-maint/seqcrawler.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/seqcrawler.git;a=summary
+
+Package: seqcrawler
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},tomcat6,openjdk-6-jdk,gbrowse, mongodb,libmongodb-perl,libio-all-lwp-perl,liburi-perl
+Description: index, browse and retrieve biological data
+ blablabla
+
+Package: seqcrawler-example
+Architecture: any
+Depends: seqcrawler
+Description: Yeast example
+ Loads yeast data in index and mongodb

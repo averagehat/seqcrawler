@@ -1,0 +1,12 @@
+Package: seqcrawler-example
+Source: seqcrawler
+Version: 1.1-1
+Architecture: amd64
+Maintainer: Olivier Sallou <olivier.sallou@irisa.fr>
+Installed-Size: 7484
+Depends: seqcrawler
+Section: science
+Priority: extra
+Homepage: http://seqcrawler.sourceforge.net
+Description: Yeast example
+ Loads yeast data in index and mongodb
