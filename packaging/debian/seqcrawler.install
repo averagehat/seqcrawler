@@ -4,7 +4,6 @@ debian/seqcrawler.conf etc/seqcrawler/
 debian/crawlersearch.xml etc/seqcrawler/
 debian/CrawlerSearchWebApp.xml var/lib/tomcat6/conf/Catalina/localhost/
 debian/seqcrawler.properties usr/share/seqcrawler/solr/apache-solr-1.4.1/seqcrawler/solr/bin/
-debian/env.sh usr/share/seqcrawler/solr/apache-solr-1.4.1/seqcrawler/solr/bin/
 usr/*  usr/
 etc/* etc/
 var/* var/
