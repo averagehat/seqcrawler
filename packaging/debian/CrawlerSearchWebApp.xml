@@ -1,0 +1,6 @@
+<Context path="/CrawlerSearchWebApp" docBase="/usr/share/java/webapps/CrawlerSearchWebApp" allowLinking="true">
+   <Parameter name="downloadUrl"  value="http://localhost/seqcrawler-downloads" />
+  <Parameter name="downloadDir" value="/var/lib/seqcrawler/downloads"/>
+  <Parameter name="solrUrl" value="http://localhost/solr/"/>
+  <Parameter name="queryType" value="shard"/>
+</Context>
