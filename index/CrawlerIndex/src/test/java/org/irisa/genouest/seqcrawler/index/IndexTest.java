@@ -444,4 +444,57 @@ public class IndexTest
         docs = execQuery("title:(+crystal)");
         assertTrue( docs.size()>0 );       
     }
+    
+    
+    
+    public void testIndexJS() throws StorageException
+    {
+    	String host = System.getProperty("storageHost");
+    	 
+    	try {
+    	    Index index = new Index();
+    	   
+    	    // If not set, do not run the test
+    	    if(host==null) return;
+    	    log.info("Using host: "+host);
+			index.index(new String[] {"-f","./solr/dataset/datatest/test.fasta","-b","Scripting","-C","-sh","./solr/","-sd","./solr/data/","-t","test","-store","-stHost",host,"-storage","mock"});
+
+			SolrDocumentList docs = execQuery("key1:test1");
+			for(int i=0;i<docs.size();i++) {
+				log.info("RES: "+docs.get(i).toString());
+			}
+			assertTrue(docs.size()==1);
+			
+			StorageManager storageMngr = new StorageManager();
+
+			 HashMap<String,String> map = new HashMap<String,String>();
+			 map.put("host", host);
+			 map.put("max", "10");
+			 storageMngr.setArgs(map);
+			 log.info("Using host "+host);
+		 
+			 StorageManagerInterface storage = storageMngr.get(STORAGEIMPL.MOCK);
+			 StorageObject storedObject = storage.get("1");
+			 log.info(storedObject.getContent());
+			 assertTrue(storedObject.getContent().startsWith("acgt"));
+    	
+    	} catch (IOException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParserConfigurationException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SAXException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (SolrServerException e) {
+			log.error(e.getMessage());
+			fail();
+		} catch (ParseException e) {
+			log.error(e.getMessage());
+			fail();
+		}
+		
+    }
+    
 }
