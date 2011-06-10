@@ -81,6 +81,46 @@ Usage
 
 +--
 
+* Custom indexation
+
+ It is possible to write its own file analyser to index a document. To do so, javascript scripting capability has been added.
+ To use custom indexation, 2 things need to be done:
+ 
+ * create a javascript file with ".js" extension in solrhome/plugin directory.
+ 
+ * as for any indexation, define if required the new tags to be indexed in conf/schema.xml (see installation page)
+
+ In the script file (an example is provided, named test.js), 2 objects are available:
+
+ * filePath:  Path to the input file
+ 
+ * doc: object used in the script to index some data
+ 
+ [] 
+
+ To use the script <<mycustomscript>>, one should use the format option:  <<-t mycustomscript>>
+
++--
+
+% The method addField add a new tag with string key "key3" and string value "test3"
+% the method can be called as many times as required
+doc.addField("key3","test3");
+
+% The method addDoc sends the document to the indexer
+% addDoc(id,start_position, number_of_characters)
+% id: unique id for the document
+% start_position: position of the element in the input file (optional)
+% number_of_characters: number of characters read to get the document in input file (optional)
+% start_position and number_of_characters are used to retrieve the document from the original file
+doc.addDoc("1",0,0);
+
+% Adds a string to the raw data backend (optional).
+% addRaw(id,content)
+
+doc.addRaw("1","acgt");
+
++--
+
 * Posting document
 
  Help with Solr and Tika, it is possible to post via HTTP a document and to index it automatically.
