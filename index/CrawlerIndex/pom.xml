@@ -174,7 +174,7 @@
 	<distributionManagement>
 		<site>
 			<id>seqcrawler.sf.net</id>
-			<url>scp://shell.sourceforge.net/home/groups/s/se/seqcrawler/htdocs</url>
+			<url>scp://web.sourceforge.net/home/project-web/seqcrawler/htdocs</url>
 		</site>
 	</distributionManagement>
 	<build>
