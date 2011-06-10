@@ -4,7 +4,18 @@ Release notes
   
   Author: Olivier Sallou, olivier.sallou@irisa.fr
   
-  Version: 1.0
+  Version: 0.3
+  Add custom indexation
+  Add pdb 3D vizualisation
+  Fix: 3308312, 3164609, 3189984,3175185, 3288857, 3314744
+  
   
  Many icons, images comes from http://www.openclipart.org. Thanks to their respective authors.
+ 
+ 
+ History:
+ 
+ V0.1: First release
+ V0.2: Add debian packaging, fix some bugs 
+ 
   
