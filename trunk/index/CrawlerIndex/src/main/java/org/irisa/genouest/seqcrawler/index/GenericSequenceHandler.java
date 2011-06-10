@@ -1,8 +1,14 @@
 package org.irisa.genouest.seqcrawler.index;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 import org.irisa.genouest.seqcrawler.index.handlers.EMBLHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.FastaHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.GFFHandler;
+import org.irisa.genouest.seqcrawler.index.handlers.JSHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.PDBHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.RawFileHandler;
 import org.irisa.genouest.seqcrawler.index.handlers.ReadSeqFileHandler;
@@ -56,7 +62,7 @@ public class GenericSequenceHandler {
 		}
 		default:
 		{
-			handler = new GFFHandler(bank);
+			handler = new GFFHandler(bank);				
 			break;
 		}
 		}
@@ -67,6 +73,20 @@ public class GenericSequenceHandler {
 	
 	public static SequenceHandler getHandler(Constants.FORMATS format) {
 		return getHandler(format,null);
+	}
+	
+	
+	public static SequenceHandler getCustomHandler(String format, String bank) {
+		SequenceHandler handler = null;
+		JSHandler jshandler = new JSHandler(bank);
+		jshandler.setScriptFile(System.getProperty("solr.solr.home")+"/plugin/"+format+".js");
+		handler = jshandler;
+		
+		return handler;
+	}
+	
+	public static SequenceHandler getCustomHandler(String format) {
+		return getCustomHandler(format,null);
 	}
 
 }

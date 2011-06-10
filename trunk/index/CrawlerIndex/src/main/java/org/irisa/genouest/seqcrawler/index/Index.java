@@ -41,7 +41,7 @@ public class Index
 	String bank=Constants.BANK_DEFAULT;
 	String inputFile=null;
 	
-	Constants.FORMATS format = Constants.FORMATS.GFF;
+	Constants.FORMATS format = null;
 	
 	static boolean DEBUG=false;
 	
@@ -252,7 +252,11 @@ public class Index
         		format = Constants.FORMATS.PDB;
         	}
         }
-        log.info("Input file format is "+format.toString());
+        else {
+        	// DEFAULT
+        	format = Constants.FORMATS.GFF;
+        }
+        
         
         File in = null;
         File[] files=null;
@@ -300,7 +304,18 @@ public class Index
         		shardId++;        		
         		newShard = false;
             }	
-        SequenceHandler handler = GenericSequenceHandler.getHandler(format,bank);
+        SequenceHandler handler = null;
+        
+        // If format is not a specified one, then use custom handler to load external script
+        if(format==null && cmd.hasOption("t")) {
+        	 log.info("Custom Input file format is "+cmd.getOptionValue("t"));
+        	handler = GenericSequenceHandler.getCustomHandler(cmd.getOptionValue("t"),bank);
+        }
+        else {
+        	log.info("Input file format is "+format.toString());
+        	handler = GenericSequenceHandler.getHandler(format,bank);
+        }
+        
         handler.setIndexManager(indexMngr);
         try {
 			handler.parse(file);

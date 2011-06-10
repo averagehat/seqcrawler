@@ -109,21 +109,21 @@
 		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-solrj</artifactId>
-			<version>3.1.0</version>
+			<version>1.4.1</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-core</artifactId>
-			<version>3.1.0</version>
+			<version>1.4.1</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-cell</artifactId>
-			<version>3.1.0</version>
+			<version>1.4.1</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -138,7 +138,13 @@
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
 			<version>1.7.5</version>
-			<scope>runtime</scope>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+    		<groupId>rhino</groupId>
+    		<artifactId>js</artifactId>
+    		<version>1.7R2</version>
+    		<scope>compile</scope>
 		</dependency>
 	</dependencies>
 	<reporting>
@@ -186,8 +192,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 
@@ -205,7 +211,7 @@
 						<manifestEntries>
 							<mode>development</mode>
 							<Main-Class>${maven.jar.mainclass}</Main-Class>
-							<Implementation-Build>${buildNumber}</Implementation-Build>
+							<Implementation-Build>1</Implementation-Build>
 							<Implementation-Version>${project.version}</Implementation-Version>
 						</manifestEntries>
 					</archive>
@@ -226,26 +232,6 @@
 				</executions>
 			</plugin>
 
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>buildnumber-maven-plugin</artifactId>
-				<version>1.0-beta-4</version>
-				<executions>
-					<execution>
-						<phase>validate</phase>
-						<goals>
-							<goal>create</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<doCheck>false</doCheck>
-					<doUpdate>false</doUpdate>
-				</configuration>
-			</plugin>
-
-
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.2-beta-5</version>
@@ -257,7 +243,7 @@
 						<manifestEntries>
 							<mode>development</mode>
 							<Main-Class>${maven.jar.mainclass}</Main-Class>
-							<Implementation-Build>${buildNumber}</Implementation-Build>
+							<Implementation-Build>1</Implementation-Build>
 							<Implementation-Version>${project.version}</Implementation-Version>
 						</manifestEntries>
 					</archive>
@@ -287,6 +273,15 @@
 			</plugin>
 
 		</plugins>
+		    <extensions> 
+
+      <extension> 
+	        <groupId>org.apache.maven.wagon</groupId> 
+	        <artifactId>wagon-ssh</artifactId> 
+	        <version>1.0-beta-6</version> 
+	  </extension> 
+
+    </extensions>
 		<finalName>${project.artifactId}-${project.version}</finalName>
 	</build>
 	
