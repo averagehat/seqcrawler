@@ -39,6 +39,8 @@ public class JSHandler implements SequenceHandler {
     
     private String scriptFile = null;
     
+    private String format=null;
+    
 	public String getScriptFile() {
 		return scriptFile;
 	}
@@ -47,6 +49,13 @@ public class JSHandler implements SequenceHandler {
 		this.scriptFile = scriptFile;
 	}
 
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
+	}
 	
 	
     public JSHandler() {
@@ -79,7 +88,7 @@ public class JSHandler implements SequenceHandler {
 		FileReader fr = new FileReader(scriptFile);
 		
 		
-		DocumentHandler doc = new DocumentHandler(indexManager);
+		DocumentHandler doc = new DocumentHandler(indexManager,format);
 		doc.setBank(bank);
 		doc.setSourceFile(sourceFile);
 		Context cx = Context.enter();

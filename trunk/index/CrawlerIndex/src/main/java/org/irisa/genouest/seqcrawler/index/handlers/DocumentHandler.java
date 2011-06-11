@@ -22,13 +22,21 @@ public class DocumentHandler {
     private String bank=Constants.BANK_DEFAULT;
     
     public String sourceFile = null;
+    
+    String format=null;
 
 	private Logger log = LoggerFactory.getLogger(DocumentHandler.class);
 	
 	private HashMap<String,String> values = new HashMap<String,String>();
 	
-	public DocumentHandler(IndexManager manager) {
+	/**
+	 * Custom document handler
+	 * @param manager Index manager to use
+	 * @param customformat Format of the input sequence (example: biosequence/fasta)
+	 */
+	public DocumentHandler(IndexManager manager,String customformat) {
 	 indexManager = manager;
+	 format = customformat;
 	 String doStore = indexManager.getArgs().get(Constants.STORE);
 	 if(doStore!=null && !doStore.equalsIgnoreCase("false")) {
 			StorageManager storageManager = new StorageManager();
@@ -37,6 +45,12 @@ public class DocumentHandler {
 	 }
 	}
 	
+	/**
+	 * Stores some content to the Storage backend
+	 * @param key Id of the element
+	 * @param value Content to store
+	 * @return 0 if ok, else 1
+	 */
 	public int addRaw(String key, String value) {
 		StorageObject object = new StorageObject();
 		object.setId(key);
@@ -51,7 +65,11 @@ public class DocumentHandler {
 		return 0;
 	}
 	
-	
+	/**
+	 * Adds a key/value parameter to the document. Key is unique.
+	 * @param key Id of the parameter
+	 * @param value Value of the parameter
+	 */
 	public void addField(String key,String value) {
 		values.put(key, value);
 	}
@@ -72,7 +90,9 @@ public class DocumentHandler {
 		doc.addField("stream_name", sourceFile);
 		doc.addField("file", start+"-"+size);
 		}
-		doc.addField("stream_content_type", "biosequence/fasta");
+		if(format!=null) {
+		doc.addField("stream_content_type", format);
+		}
 		for(String keyval : values.keySet()) {
 			doc.addField(keyval, values.get(keyval));
 		}
