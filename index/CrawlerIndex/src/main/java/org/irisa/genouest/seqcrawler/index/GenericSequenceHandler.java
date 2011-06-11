@@ -80,6 +80,7 @@ public class GenericSequenceHandler {
 		SequenceHandler handler = null;
 		JSHandler jshandler = new JSHandler(bank);
 		jshandler.setScriptFile(System.getProperty("solr.solr.home")+"/plugin/"+format+".js");
+		jshandler.setFormat(format);
 		handler = jshandler;
 		
 		return handler;
