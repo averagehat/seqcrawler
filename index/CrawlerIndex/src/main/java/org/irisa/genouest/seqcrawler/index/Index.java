@@ -78,7 +78,6 @@ public class Index
     public static void main( String[] args ) throws IOException, ParserConfigurationException, SAXException, SolrServerException, ParseException
     {
     	Index application = new Index();
-    	application.init();
     	application.index(args);
     }
     
@@ -96,6 +95,7 @@ public class Index
     public void index(String[] args) throws SolrServerException, IOException, ParseException, ParserConfigurationException, SAXException {
     	    
         Options options = new Options();
+        options.addOption("props", true, "properties file location");
         options.addOption("c", false, "Clean index before with bank name");
         options.addOption("C", false, "Clean all index");
         options.addOption("b", true, "bank name");
@@ -142,6 +142,11 @@ public class Index
         	showUsage(options);
         	System.exit(0);
         }
+        if(cmd.hasOption("props")) {
+        	PROPFILE = cmd.getOptionValue("props");
+        }
+        
+        init();
         
         if(cmd.hasOption("max")) {
         	Constants.MAXCOMMITS = Long.parseLong(cmd.getOptionValue("max"));

@@ -81,7 +81,9 @@ Usage
 
 +--
 
- It is possible to create a file name seqcrawler.properties in current dir to define recoders (see Installation), or to specify which field names should be included/excluded.
+ It is possible to create a file name seqcrawler.properties to define recoders (see Installation), or to specify which field names should be included/excluded.
+ Property file can be either put in current dir or specified with the "-props myfilepath" command-line option.
+ 
  To specify that only field with name X should be included add in properties file:
  
 +--
@@ -108,6 +110,14 @@ myfieldname.add = myfieldvalue
 
 +--
 
+It is also possible to define global env properties: (see installation)
+
++--
+
+solr.solr.home =
+solr.data.dir =
+
++--
 
 
 * Custom indexation
