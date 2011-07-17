@@ -81,6 +81,25 @@ Usage
 
 +--
 
+ It is possible to create a file name seqcrawler.properties in current dir to define recoders (see Installation), or to specify which field names should be included/excluded.
+ To specify that only field with name X should be included add in properties file:
+ 
++--
+ 
+  fields.include = fieldnameA, fieldnameB,...
+ 
++--
+
+ To specify that fields with name X should be excluded add in properties file:
+ 
++--
+ 
+  fields.exclude = fieldnameA, fieldnameB,...
+ 
++--
+
+Include and exclude properties are exclusive.
+
 * Custom indexation
 
  It is possible to write its own file analyser to index a document. To do so, javascript scripting capability has been added.

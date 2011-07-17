@@ -97,6 +97,7 @@ public class DocumentHandler {
 			doc.addField(keyval, values.get(keyval));
 		}
 		try {
+			indexManager.filterDoc(doc);
 			indexManager.getServer().add(doc);
 			values.clear();
 		} catch (SolrServerException e) {

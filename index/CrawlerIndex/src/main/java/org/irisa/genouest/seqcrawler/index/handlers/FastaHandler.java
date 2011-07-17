@@ -309,7 +309,7 @@ public class FastaHandler implements SequenceHandler {
 				doc.addField("id", curID);
 				}
 		
-		if(!storeOnly) { indexManager.getServer().add(doc); }
+		if(!storeOnly) { indexManager.filterDoc(doc); indexManager.getServer().add(doc); }
 		
 		if(doStore!=null && doStore.equals("true") && curID!=null) {
 			

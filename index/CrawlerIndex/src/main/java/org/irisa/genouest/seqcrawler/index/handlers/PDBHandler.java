@@ -94,6 +94,7 @@ public class PDBHandler implements SequenceHandler {
 					nbytesread = 0;
 					docStartbyte = lineStartbyte;
 					try {
+						indexManager.filterDoc(doc);
 						indexManager.getServer().add(doc);
 					} catch (SolrServerException e) {
 						nberrors++;
@@ -130,6 +131,7 @@ public class PDBHandler implements SequenceHandler {
 			nbytesread = 0;
 			docStartbyte = lineStartbyte;
 			try {
+				indexManager.filterDoc(doc);
 				indexManager.getServer().add(doc);
 			} catch (SolrServerException e) {
 				nberrors++;

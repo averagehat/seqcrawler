@@ -358,6 +358,12 @@ public class Index
 					log.debug("loading recoder "+key);
 					indexMngr.getArgs().put(key, value);
 				}
+				if(key.equals("fields.include")) {
+					IndexManager.setIncludeFilter(value);
+				}
+				if(key.equals("fields.exclude")) {
+					IndexManager.setExcludeFilter(value);
+				}
 			}
 		}
 		catch (IOException e) { 

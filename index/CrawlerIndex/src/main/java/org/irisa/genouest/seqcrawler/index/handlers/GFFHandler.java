@@ -151,6 +151,7 @@ public class GFFHandler implements SequenceHandler {
     			    
                     try {
             			this.log.debug("Index new GFF record "+doc.toString());
+            			indexManager.filterDoc(doc);
             			indexManager.getServer().add(doc);			
             		} catch (SolrServerException e) {
             			this.log.error(e.getMessage());

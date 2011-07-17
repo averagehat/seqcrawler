@@ -120,6 +120,7 @@ public class ReadSeqFileHandler implements SequenceHandler {
 			    	doc.addField(keyval[0], value);
 			    	}
 			    }
+			    indexManager.filterDoc(doc);
 			    indexManager.getServer().add(doc);
 			    nbDocs++;
 			    indexManager.getServer().commit(false,false);
