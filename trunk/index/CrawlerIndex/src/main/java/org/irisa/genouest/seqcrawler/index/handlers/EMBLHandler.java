@@ -305,6 +305,7 @@ public class EMBLHandler implements SequenceHandler {
 		finishfield("file", new StringBuffer(docStartbyte+"-"+nbytesread));
 		nbDocs++;
 		nbDocstoCommit++;
+		indexMngr.filterDoc(doc);
 		indexMngr.getServer().add(doc);
 		if(nbDocstoCommit>=Constants.MAXCOMMITS) {
 			indexMngr.getServer().commit();

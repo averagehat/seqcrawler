@@ -1,6 +1,9 @@
 package org.irisa.genouest.seqcrawler.index;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +15,7 @@ import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.core.CoreContainer;
 import org.irisa.genouest.seqcrawler.index.Constants.STORAGEIMPL;
 import org.irisa.genouest.seqcrawler.index.storage.StorageManager;
@@ -29,6 +33,8 @@ public class IndexManager {
 	
 	private Logger log = LoggerFactory.getLogger(IndexManager.class);
 
+	private static ArrayList<String> includeFilter = null;
+	private static ArrayList excludeFilter = null;
 	
 	//private static SolrServer server = null;
 	private SolrServer server = null;
@@ -150,5 +156,42 @@ public class IndexManager {
         QueryResponse rsp = server.query(solrQuery);
         SolrDocumentList docs = rsp.getResults();
         return docs;
+	}
+
+	public static void setIncludeFilter(String fields) {
+		if (fields!=null && !fields.equals("")) {
+			String[] fieldList = fields.split(",");
+			includeFilter = new ArrayList<String>((ArrayList<String>) Arrays.asList(fieldList));
+		}
+	}
+	
+	public static void setExcludeFilter(String fields) {
+		if (fields!=null && !fields.equals("")) {
+			String[] fieldList = fields.split(",");
+			excludeFilter = new ArrayList<String>((ArrayList<String>) Arrays.asList(fieldList));
+			}
+	}
+	
+	/**
+	 * Filter fields of a document
+	 * @param doc
+	 */
+	public void filterDoc(SolrInputDocument doc) {
+		if(includeFilter!=null) {
+			Collection<String> names = doc.getFieldNames();
+			for(String name : names) {
+				if(!includeFilter.contains(name)) {
+					doc.removeField(name);
+				}
+			}
+		}
+		else if(excludeFilter!=null) {
+			Collection<String> names = doc.getFieldNames();
+			for(String name : names) {
+				if(excludeFilter.contains(name)) {
+					doc.removeField(name);
+				}
+			}
+		}	
 	}
 }
