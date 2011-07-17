@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -34,7 +35,11 @@ public class IndexManager {
 	private Logger log = LoggerFactory.getLogger(IndexManager.class);
 
 	private static ArrayList<String> includeFilter = null;
-	private static ArrayList excludeFilter = null;
+	private static ArrayList<String> excludeFilter = null;
+	private static String[] privateFieldNames = new String[] { "stream_content_type" , "stream_name", "file" , "bank", "id" };
+	private static List<String> privateFields = Arrays.asList(privateFieldNames);
+	
+	public static HashMap<String,String> additionalFields = new HashMap();
 	
 	//private static SolrServer server = null;
 	private SolrServer server = null;
@@ -180,7 +185,7 @@ public class IndexManager {
 		if(includeFilter!=null) {
 			Collection<String> names = doc.getFieldNames();
 			for(String name : names) {
-				if(!includeFilter.contains(name)) {
+				if(!includeFilter.contains(name) && !privateFields.contains(name)) {
 					doc.removeField(name);
 				}
 			}
@@ -192,6 +197,12 @@ public class IndexManager {
 					doc.removeField(name);
 				}
 			}
-		}	
+		}
+		// Append "constant" fields
+		if(!additionalFields.isEmpty()) {
+			for(Map.Entry<String,String> addField : additionalFields.entrySet()) {
+				doc.addField(addField.getKey(), addField.getValue());
+			}
+		}
 	}
 }

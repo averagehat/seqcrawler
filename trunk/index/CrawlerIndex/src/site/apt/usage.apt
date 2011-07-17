@@ -100,6 +100,16 @@ Usage
 
 Include and exclude properties are exclusive.
 
+It is also possible to add "constant" fields (applied to all indexed documents) to the indexed data by adding in the properties file:
+
++--
+
+myfieldname.add = myfieldvalue
+
++--
+
+
+
 * Custom indexation
 
  It is possible to write its own file analyser to index a document. To do so, javascript scripting capability has been added.

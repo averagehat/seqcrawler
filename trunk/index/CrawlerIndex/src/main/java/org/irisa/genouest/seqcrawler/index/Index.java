@@ -201,7 +201,7 @@ public class Index
         }
         
         //has field recoders ?
-        setRecoders(indexMngr);
+        setModifiers(indexMngr);
         
         // Now init the server (embedded or remote connection)
         if(useEmbeddedServer) {
@@ -341,10 +341,10 @@ public class Index
     }
 
     /**
-     * Adds recorders defined in properties file to the config
+     * Adds recorders defined in properties file to the config, setup filters etc...
      * @param indexMngr Index Manager instance
      */
-    private void setRecoders(IndexManager indexMngr) {
+    private void setModifiers(IndexManager indexMngr) {
     	Properties properties = new Properties();
 		try {
 			File props = new File(PROPFILE);
@@ -363,6 +363,10 @@ public class Index
 				}
 				if(key.equals("fields.exclude")) {
 					IndexManager.setExcludeFilter(value);
+				}
+				if(key.endsWith(".add")) {
+					String fieldname = key.replace(".add", "");
+					IndexManager.additionalFields.put(fieldname, value);
 				}
 			}
 		}
