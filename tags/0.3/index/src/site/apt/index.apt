@@ -1,0 +1,9 @@
+Introduction
+
+  CrawlerIndex is in charge of indexing biological data files in a Solr index server.
+  It supports several types of input data (gff, genbank, uniprot ...) and can submit data to the specified server.
+  
+  Its inspiration comes from Lucegene project and its integration with GBrowse. Current project tries to use cutting edge technology products for better performances and scalability.
+  Part of the code comes from, or is inspired by, Lucegene open source project (but not maintained anymore), more specifically on BioIndexers and GBrowse integration.
+  Back end product for indexation is the well known Solr indexer (based on Lucene).
+  
