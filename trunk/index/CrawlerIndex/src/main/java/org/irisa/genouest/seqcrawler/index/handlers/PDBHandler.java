@@ -101,7 +101,8 @@ public class PDBHandler implements SequenceHandler {
 						log.error(e.getMessage());
 					}
 				}
-				id = line.substring(ID_START-1, ID_END);
+				int end = Math.min(line.length(), ID_END);
+				id = line.substring(ID_START-1, end);
 				
 				doc = new SolrInputDocument();
 				doc.addField("stream_content_type", "biosequence/pdb");
@@ -112,10 +113,12 @@ public class PDBHandler implements SequenceHandler {
 				log.debug("Found new doc with id "+id);
 			}
 			if(line.startsWith(TITLE)) {
-				title += " "+line.substring(TITLE_START-1, TITLE_END);
+				int end = Math.min(line.length(), TITLE_END);
+				title += " "+line.substring(TITLE_START-1, end);
 			}
 			if(line.startsWith(EXPDTA)) {
-				exp += " "+line.subSequence(EXPDTA_START-1, EXPDTA_END);
+				int end = Math.min(line.length(), EXPDTA_END);
+				exp += " "+line.subSequence(EXPDTA_START-1, end);
 			}
 			nbytesread += line.length() + lineendsize;
 			lineStartbyte += line.length() + lineendsize;
