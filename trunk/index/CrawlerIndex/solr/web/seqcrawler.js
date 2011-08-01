@@ -293,6 +293,26 @@ function testShowGffDoc() {
 		$("#facets").html(content);
 	  }
 	  
+	  // Rewrite a field value if defined in config, replace #VAR# in config data with field value.
+	  // Can be used to create some links to external data sources
+	  // Ex.: rewrite genbank id to NCBI web site
+	  function linkfield(bank,fieldname,fieldvalue) {
+		 var value = fieldvalue;  
+		 var rewrite = false;
+		 var rewritevalue = fieldvalue;
+		 if($links[bank+"."+fieldname]!=null) {
+			 rewrite = true;
+			 rewritevalue = $links[bank+"."+fieldname];
+		 } else if ($links["all."+fieldname]) {
+			 rewrite = true;
+			 rewritevalue = $links["all."+fieldname];
+		 }
+		 if(rewrite) {
+			 value = rewritevalue.replace(/#VAR#/g,fieldvalue);
+		 }
+ 		 return value;
+	  }
+	  
 	  function showResults(docs) {
 		$("#documents").html("");
 	  	size = docs.length;
