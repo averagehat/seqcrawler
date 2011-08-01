@@ -8,3 +8,9 @@
    $storageurl = "http://seqcrawler.genouest.org/mongo";
    $gburl = "http://seqcrawler.genouest.org";
    $gbbank = "genouest";
+   
+   
+   // Rewrite fields
+   $links = [];
+   $links['test.id'] = '<a href="test.html?id=#VAR#>#VAR#</a>';
+   $links['all.test'] = "Sample test for #VAR#";
