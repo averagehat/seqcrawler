@@ -93,16 +93,16 @@ Usage
 +--
 
  To specify that fields with name X should be excluded add in properties file:
- 
+
 +--
  
   fields.exclude = fieldnameA, fieldnameB,...
  
 +--
 
-Include and exclude properties are exclusive.
+ Include and exclude properties are exclusive.
 
-It is also possible to add "constant" fields (applied to all indexed documents) to the indexed data by adding in the properties file:
+ It is also possible to add "constant" fields (applied to all indexed documents) to the indexed data by adding in the properties file:
 
 +--
 
@@ -110,7 +110,7 @@ myfieldname.add = myfieldvalue
 
 +--
 
-It is also possible to define global env properties: (see installation)
+ It is also possible to define global env properties: (see installation)
 
 +--
 
@@ -119,6 +119,22 @@ solr.data.dir =
 
 +--
 
+* Custom result display
+
+ Custom display offer the possibility to rewrite a field value to link the result to an external web sote for example.
+ If custom display is required for a field, the html result can be modified in seqcralwer-conf.js
+ 
++--
+    // Rewrite fields
+   $links = [];
+   $links['test.id'] = '<a href="test.html?id=#VAR#>#VAR#</a>';
+   $links['all.test'] = "Sample test for #VAR#";
+ 
++--
+
+ The links array should contain an entry for the required field.
+ Either $links['MYBANK.MYFIELD'] or $links['all.MYFIELD']. The first entry is specific to a bank, the second one
+ will apply for all banks. The #VAR# pattern will be replaced by the content of the field (accession number for example).
 
 * Custom indexation
 

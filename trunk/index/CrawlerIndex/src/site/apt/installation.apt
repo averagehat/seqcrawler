@@ -142,7 +142,7 @@ allow from 192.168.1.*  // to allow from internal network only
  Copy the solr/web content to the deployed webapp. Lookup.jsp is a web application to return a document from a file and index.html provides direct access to the query interface.
  In lookup.jsp, update <String AUTHDIR ="/";>. <<AUTHDIR>> is a directory filter to restrict file access to a defined sub directory structure (to restrict file access)
 
- In index.html, the following lines must be configured:
+ In seqcrawler-conf.js, the following lines must be configured:
  
 +--
  
