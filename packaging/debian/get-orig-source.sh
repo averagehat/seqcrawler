@@ -3,7 +3,7 @@
 set -e
 
 
-export VERSION="1.1"
+export VERSION="0.3"
 
 export INDEXVERSION="0.3"
 export SEARCHVERSION="0.1"
@@ -47,7 +47,7 @@ echo
 
 #Get Solr
 echo "Deploying solr"
-wget http://maven.irisa.fr/artifactory/genouest-public-snapshot/apache-solr/apache-solr/$SOLRVERSION/apache-solr-$SOLRVERSION.zip
+wget http://maven.irisa.fr/artifactory/genouest-public-release/apache-solr/apache-solr/$SOLRVERSION/apache-solr-$SOLRVERSION.zip
 
 mv apache-solr-$SOLRVERSION.zip $PKG/usr/share/seqcrawler/solr/
 unzip $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION.zip -d $PKG/usr/share/seqcrawler/solr/
@@ -76,7 +76,7 @@ svn export https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/trunk/GBrow
 mv GBrowse2 $PKG/usr/share/seqcrawler/
 
 # Solr indexer
-wget http://maven.irisa.fr/artifactory/genouest-public-snapshot/org/irisa/genouest/seqcrawler/CrawlerIndex/$INDEXVERSION/CrawlerIndex-$INDEXVERSION-jar-with-dependencies.jar
+wget http://maven.irisa.fr/artifactory/genouest-public-release/org/irisa/genouest/seqcrawler/CrawlerIndex/$INDEXVERSION/CrawlerIndex-$INDEXVERSION-jar-with-dependencies.jar
 mv CrawlerIndex-$INDEXVERSION-jar-with-dependencies.jar $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/
 
 #sed -i 's/\/opt\/solr\/apache-solr-1.4.1\/seqcrawler\/solr\/bin/\/usr\/share\/seqcrawler\/solr\/apache-solr-1.4.1\/seqcrawler\/solr\/bin/g' $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/*.sh
@@ -102,7 +102,7 @@ rm -f $PKG/usr/share/seqcrawler/solr/apache-solr-1.4.1/seqcrawler/solr/bin/seqcr
 
 # Export webapp
 echo "Installing export web app"
-wget http://maven.irisa.fr/artifactory/genouest-public-snapshot/org/irisa/genouest/seqcrawler/CrawlerIndex/$SEARCHVERSION/CrawlerSearchWebApp-$SEARCHVERSION.war
+wget http://maven.irisa.fr/artifactory/genouest-public-release/org/irisa/genouest/seqcrawler/CrawlerSearchWebApp/$SEARCHVERSION/CrawlerSearchWebApp-$SEARCHVERSION.war
 
 mv CrawlerSearchWebApp-0.1.war $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war
 unzip $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war -d $PKG/usr/share/java/webapps/CrawlerSearchWebApp
