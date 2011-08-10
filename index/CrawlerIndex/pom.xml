@@ -4,7 +4,7 @@
 	<groupId>org.irisa.genouest.seqcrawler</groupId>
 	<artifactId>CrawlerIndex</artifactId>
 	<packaging>jar</packaging>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.3</version>
 	<name>CrawlerIndex</name>
 	<description>seqCrawler indexer for BioInformatics data</description>
 	<url>http://sourceforge.net/projects/seqcrawler/</url>
