@@ -23,7 +23,7 @@ case "$1" in
 	export MONGO_USER="mongodb"
 	export TOMCAT_USER="tomcat6"
 	export GROUP="seqcrawler"
-        /usr/share/seqcrawler/solr/apache-solr-1.4.1/seqcrawler/solr/bin/crawler.sh  -b test -c -f /var/lib/seqcrawler/example/yeast.gff -storage mongodb -store -stHost 127.0.0.1 -url http://localhost/solr
+        /usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/crawler.sh  -b test -c -f /var/lib/seqcrawler/example/yeast.gff -storage mongodb -store -stHost 127.0.0.1 -url http://localhost/solr
 	service tomcat6 restart
 
     ;;
