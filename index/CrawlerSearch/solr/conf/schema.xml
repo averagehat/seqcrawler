@@ -441,7 +441,7 @@
        when adding a document.
    -->
    <!-- GFF fields -->
-   <field name="bank" type="lowercase" indexed="true" stored="true" default="genouest"/>
+   <field name="bank" type="lowercase" indexed="true" stored="true" default="seqcrawler"/>
    <field name="seqid" type="uuid" indexed="true" stored="true" default="NEW"/>
    <field name="chr" type="lowercase" indexed="true" stored="true"/>
    <field name="feature" type="lowercase" indexed="true" stored="true"/>
