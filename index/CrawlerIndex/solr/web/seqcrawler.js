@@ -192,7 +192,7 @@ function testShowGffDoc() {
 									if(file) {
 			  							fileurl += "&position="+file;
 									}
-									fileurl += '">Genbank sheet</a>';
+									fileurl += '">Original sheet</a>';
 									details+='<div class="fieldDetail">'+fileurl+'</div>';
 							}
 				   			$("#documentDetails" ).html(details);

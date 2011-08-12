@@ -32,19 +32,32 @@ if(position==null) {
 	 response.sendError(500);
 	 return; 
 }
+
 String[] data = position.split("-");
 
-if(fileName==null || data.length!=2) {
+if(fileName==null  || (data.length!=2 && !position.equals("undefined"))) {
 	 response.sendError(500);
 	 return; 
 }
-
-
-String startParam = data[0];
-String sizeParam = data[1];
-
 //Set filename
 File fseq = new File(fileName);
+if(!fseq.exists()) {
+	 response.sendError(404);
+	 return; 
+}
+
+String startParam = "0";
+String sizeParam = "0";
+if(position.equals("undefined")) {
+	// Take whole file
+	sizeParam = Long.toString(fseq.length());
+}
+else {
+	startParam = data[0];
+	sizeParam = data[1];
+}
+
+
 response.setHeader("Content-Disposition","attachment; filename=" + fseq.getName() );
 
 
