@@ -1,0 +1,37 @@
+CrawlerIndex
+
+* Index process overview
+
+ CrawlerIndex jar file is in charge of indexing the biological format documents. Many formats are accepted as input, but behaviour won't be the same.
+
+ It is based on ReadSeq for many formats, but it implements specific parsers for GFF, EMBL and Fasta formats.
+
+ Here is a basic view of the index process:
+ 
+[images/indexationProcess.png] Index process
+
+* Components
+
+ The jar can be executed with: java -jar CrawlerIndex-0.1-jar-with-dependencies.jar
+ The CrawlerIndex contains 3 entry class:
+ 
+ * org.irisa.genouest.seqcrawler.index.Index (default): This class is in charge of the indexation based on input file(s) and format. It can index a file locally
+  help with an embedded server, or submit documents to a running index web application. It is advised to index with embedded server then to merge indexes for better performances and easier management.
+  
+ * org.irisa.genouest.seqcrawler.index.Merge: This class can merge 2 or more directories containing existing indexes. It can be used as a post-process to create a larger index.
+ 
+ * org.irisa.genouest.seqcrawler.query.Query: this is a simple tool to query the index. Only first results will be sent back to logger.
+ 
+ * org.irisa.genouest.seqcrawler.index.utils.Utils: useful functions to analyse the index. Used to get the list of available fields (option listfields). Result (in JSON), should be placed in solr webapp dir and named fields.txt.
+
+ The indexer works with file format handlers. There is a specific handler for several formats (Embl, Fasta, GFF), while the ReadSeq utility is used to handle the other biosequence formats (though readseq handler needs to be specified at command-line).
+ 
+ Storage handlers are handled the same way. Handlers for different backends hide the complexity and dialog with the remote storage. Existing implementations are Riak and MongoDB. A Mock handler is present to simulate a backend for tests, it keeps data in memory.
+ Backends are optional, and only FASTA content is managed with backends in this program.
+ 
+ 
+* Logs
+
+ Logs are managed by the Logback tool, over SLF4J. A basic logger reports to the console with the INFO or above logs. To modify the logger, a logback.groovy can be created in classpath.
+ To do so, refer to the {{{http://logback.qos.ch/translator/asGroovy.html}logback tutorial}}.
+  

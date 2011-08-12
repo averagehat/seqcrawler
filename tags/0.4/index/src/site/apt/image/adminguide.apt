@@ -1,0 +1,495 @@
+SeqCrawler image Administrator guide
+
+* Starting up
+
+** Introduction
+
+ This image hosts the following software:
+
+ * {{{http://gmod.org}Gbrowse2}}
+
+ * {{{http://lucene.apache.org/solr/}Solr}}
+
+ * {{{https://wiki.basho.com/display/RIAK/Riak}Riak}}
+
+ * {{{http://www.mongodb.org}MongoDB}}
+
+ []
+
+ Those softwares are pre-configured and ready to run or to add new data to index. 
+
+ 
+ All required packages are preinstalled.
+
+ The goal here is not to get an administration guide of solr or gbrowse with all there configuration stuff, but only to server as a guide on how to use it in this image as well as some tips to use it.
+ For further information on each software configuration, please refer to their respective documentation.
+ 
+** Solr
+
+ Solr is an indexing platform based on Lucene. It provides API to index/query as well as a basic web interface. 
+ The Solr query syntax is available at http://wiki.apache.org/solr/SolrQuerySyntax
+ Queries can be made against whole indexed text or against specific fields (id, accession... fields depends on indexed documents). Query ranges are also supported for a few parameters (start and end for gff documents for example).
+ Solr can be queried vie basic HTTP requests and can return results in Xml or JSON format. Solr is installed under /opt but also as a web application in Tomcat.
+ 
+** Riak
+
+ Riak is a NOSQL backend used to store raw data. It also provides a web interface to query data based on their id. Riak is a cluster of nodes acting as a ring with data replication to provide data high availability.
+ To start or stop riak use:
+
++--
+ riak start/stop
++--
+
+** MongoDB
+
+ Riak is an other NOSQL backend used to store raw data. It also provides a web interface to query data based on their id. MongoDB is a cluster of nodes acting as a ring with data replication to provide data high availability.
+ To start or stop MongoDB use:
+
++--
+ service mongodb start/stop
++--
+
+
+* Installation
+
+** Install from a virtual machine template
+
+ Install the virtual image on a X86_64 server supporting virtualization with network connection off.
+ Connect to the server with a console. Execute as root /home/crawler/install/install.sh then /home/crawler/install/configure.sh
+ 
+** Install from a LiveCD
+
+ Boot from the liveCD ISO file. Once logged (crawler/craw!pwd), go in "System->Administration->INSTALL Release" and select "Install" to install the content of the ISO on the hard disk (can be a vmware image). 
+ 
+*** Steps
+
+ Before activating the network, the following may need to be set/modified for your network (if not in dhcp):
+
+ * domain name: /etc/network/interfaces
+
+ * gateway: /etc/network/interfaces
+
+ * ip address: /etc/network/interfaces, /etc/hosts
+
+ * hostname (if required): /etc/hosts , /etc/hostname
+
+ * name server (dns): /etc/resolv.conf
+
+ []
+ 
+ To activate ssh, generate ssh keys:
+ 
++--
+sudo /usr/bin/ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key -N 
+sudo /usr/bin/ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N
++--
+
+ Do not put passphrase at key generation.
+
+ The server is not configured for LDAP support. Only one user is created: seqcrawler. “sudo” is required for root commands.
+ 
+ <<WARNING: PASSWORDS OF DEFAULT ACCOUNTS MUST BE MODIFIED AFTER INSTALL>>.
+ 
+ Accounts access are:
+
++-- 
+ System login: crawler, Password: craw!pwd
+ Mysql DB login: root, Password: dbcrawler
+ Sun Grid Engine login: sgeadmin, Password: Sgeadm!n
++--
+
+ The following can be set up later on:
+
+ * /etc/gbrowse2/GBrowse.conf: webmaster support
+
+ * /opt/solr/apache-solr-1.4.1/seqcrawler/solr/conf
+
+ * If Riak is used: /etc/riak/vm.args and app.config (IP interface)
+ 
+ * conf files in /etc/gbrowse2/[gbrowse.conf]/*.conf , update STORAGEURL to current hostname
+ 
+ * /var/lib/tomcat6/webapps/solr/index.html , update solrUrl, gburl and storageurl
+ 
+ []
+ 
+ 
+ Web servers are available at:
+ 
+  http://myhostname:8080/solr/ 
+  
+  http://myhostname:8098/riak/ 
+  
+  http://myhostname/gb2/gbrowse
+
+ If Riak is used, a network configuration operation is required:
+
++--
+#riak stop
+update riak ip and innodb store in app.config and vm.config
+#riak-admin repi riak@192.168.1.238 riak@newip
+#rm /var/lib/riak/*
+join to ring if necessary (multiple hosts)
+#riak start
++--
+
+* Architecture
+
+** Image
+
+ The server image is a KVM image with an Ubuntu Server distribution 10.04.
+ 
+** Directories
+
+ The software is installed in the following directories:
+
+ * Mysql 5.1: /usr/bin/mysql
+
+ * Apache 2: /etc/apache2
+
+ * Tomcat 6: /var/lib/tomcat6
+
+ * BioPerl: /usr/local/share/perl/5.10.0
+
+ * Solr: /opt/solr/apache-solr-1.4.1/
+ 
+ * Solr-Seqcrawler config: /opt/solr/apache-solr-1.4.1/seqcrawler
+
+ * Riak configuration: /etc/riak
+ 
+ []
+
+ Web documents for gbrowse (images, css..): /var/www/gbrowse2
+
+ Cgi-bin for gbrowse: /usr/lib/cgi-bin/gb2
+
+ Gbrowse plugins location: /etc/gbrowse2/gbrowse.conf/plugins
+
+ Indexes: /index/data
+
+ Data: /index/riak (if using Riak backend)
+
+ Grid engine: /var/lib/gridengine and /var/spool/gridengine
+ 
+ ** Users
+ 
+ Apache: www-data
+
+ Tomcat: tomcat6
+
+ Mysql: root
+
+ Sun Grid Engine: sgeadmin
+
+ Riak: riak
+
+** Security
+
+ Access to admin section (/admin) is restricted to crawleradmin role, defined in tomcat user configuration.
+
+ Image is configured with SSH access only, Telnet and FTP are disabled.
+
+ Access to port 8080 and 8098 (respectivelly Tomcat and Riak) should not be allowed to unauthenticated users, as HTTP PUT and DELETE operations can be used to operate on index and raw data backend. Users should access via the port 80 with a web proxy defined in Apache configuration towards those ports.
+ 
+** Grid engine
+ 
+ The image implements Sun Grid Engine as a DRM manager and exec host. Default crawler user is admin of grid engine.
+
+ The installation can be used to submit multiple jobs to the current image to parallelize some treatments. Once image is installed on server, if SGE is to be used, the configuration should be modified to take into account new host names in Admin Host, SubmitHost and ExecutionHost sections in Host configuration section.
+ Update also file: /var/lib/gridengine/default/common/act-qmaster with new hostname. For further info, refer to the Sun Grid Engine documentation. 
+ 
+* Software
+
+ By default, a default index is available with the Yeast genome. The data comes from Genbank.
+ Some scripts are available to add new data but new scripts may be required depending on the format of the input data.
+ Two cases are possible:
+ 
+ * index and query only
+ 
+ * index and query + display with gbrowse
+ 
+ []
+ 
+** Index
+
+ To index some data, a schema file describing the index must be updated first 
+
+ For indexing usage:
+
++--
+ bin/crawler.sh  -h
++--
+ 
+ Main options are:
+
+ -t : to define the type of data to index according to known types (Fasta, Embl, GFF, Readseq for others)
+
+ -b: bank name (defaults to GenOuest).
+
+ -C: to clear the index before inserting new data
+
+ -c: to clear data for input bank
+
+ <<TIPS>>:
+
+ Indexing large data can be time consuming. In such a case, it is advised to index small parts of data then, and only then, to merge the indexes.
+
+ It is not possible to run at the same time multiple index operations on the same index directory.
+
+ To merge some indexes, use the script merge.sh. For usage:
+
++--
+ bin/merge.sh  -h
++--
+
+** Index + GBrowse
+
+ Using GBrowse makes sense of course only if data represent position on a sequence, and that several data elements are positioned on the same sequence.
+
+ To use both tools, data must be in GFF3 format. Some tools and APIs are available to convert to this format (BioJava,BioPerl, readseq).
+
+ A Genbank to GFF conversion tool is available on the image, else readseq is installed on the image.
+
+ To use the Genbank converter, data must be in gzip format (.gz):
+
++--
+cd /opt/solr/apache-solr-1.4.1/seqcrawler/solr/bin/
+perl genbank2gff3.pl  -d mydirectorywithGenbankfiles -o mygffoutputdir
++--
+
+ To index GFF files and make them available both via indexer and gbrowse, the data must be indexed as usual and a Gbrowse configuration file must be created (no order in creation)
+
+ It is possible to have a single configuration file for all banks, or one per bank.
+
+ A sample configuration file is available at /etc/gbrowse2/gbrowse.conf/sample_banks.conf.
+
+ Customization concerns:
+ 
+ db_args       = -adaptor    solr
+ 
+    -FORMAT     gff
+    
+    -STORAGEURL http://myexternalhostname/riak
+    
+ #    -BANK       GenBank
+
+ STORAGEURL parameter should be updated to local host (external interface name)
+
+ The BANK parameter is optional, and can be used to limit displays to a single bank.
+
+ For Gbrowse customization (header footer etc...), please refer to the Gbrowse documention at Gmod.
+
+ Once created, Gbrowse is accessible via URL:
+ 
+  http://hostname/gb2/gbrowse/nameofmyconffile/
+  
+** Post-operations
+
+ After the addition of a new index, or the modification of an index property file, the new data must be (re)loaded.
+ 
+ To do so, either restart tomcat or reload web application in Tomcat Manager.  
+ 
+* GBrowse
+
+** Configuration files
+
+*** GBrowse.conf
+
+ This is main Gbrowse configuration file.
+
+ \[General section\] specifies the path to main directories used by the software.
+
+ Render_farm parameter is activated by default in this configuration to enhance performances.
+
+ Custom HTML elements can be set here according to desired look of the browser. CSS elements are in the web directory.
+
+ User account support is not activated.
+
+ To manually add a new bank, a specific bank section must be added like:
+
++--
+[mybank]
+description = my test bank
+path = /etc/gbrowse2/gbrowse.conf/mybank.conf
++--
+
+*** Specific configuration file
+
+ All features are not represented in provided configuration file.  If some features are missing based on new indexing data, those can be added at any time like the following:
+
++--
+[transposable_element_gene]
+feature  = transposable_element_gene
+glyph    = segments
+bgcolor  = lightslategrayfgcolor  = black
+key      = transposable_element_gene
+citation = transposable_element_gene
+category = Analysis
+das category = experimental
++--
+
+ Simply update  title, feature, key, citation to have a new graphical representation of the feature.
+Glyph and gbcolor can be updated to change the color and way of display. Refer to other examples and Gbrowse documentation for additional details.
+
+* Indexer
+
+** Understanding the indexing process
+
+ Before going in configuration details, here is a short introduction on how on index is created.
+ 
+[../images/indexation_schema.png] Indexation schema
+
+** Indexer configuration file
+
+ To index some files a schema configuration file is used..
+
+ Configuration files are located in /opt/solr/apache-solr-1.4.1/seqcrawler/conf
+
+ The global property file is solrconfig.xml. It holds configuration for the indexation platform such as index root directory. Many properties are available, one gonna describe only major configuration data required for directories or server cusotmization. For other properties (may impact performances), please refer to solr documentation.
+ 
+*** General properties file solrconfig.xml
+
+ Main properties:
+ 
++--
+<dataDir>${solr.data.dir:/index/data}</dataDir>
+
+ <requestHandler name="shard" class="solr.SearchHandler">
+    <!-- default values for query parameters -->
+     <lst name="defaults">
+       <str name="echoParams">explicit</str>
+       <!-- <str name="shards">shardserver1/solr/,shardserver2/solr/,...</str> -->
+     </lst>^M
+  </requestHandler>
+
+<!-- Following request handlers can define shard indexes if multiple indexes are used. Those provide a web interface for the index and will connect to  the standard requestHandler for  each shard. -->
+<requestHandler name="/itas" class="solr.SearchHandler">
+	…
+      	<str name="stHost">seqcrawler.genouest.org</str>
+       	<str name="stPort">8098</str>
+       	<str name="gbHost">seqcrawler.genouest.org</str>
+          	<str name="gbPort">80</str>
+          	<str name="gbBank">all</str>
+ 	<!-- <str name="shards">shardserver1/solr/,shardserver2/solr/,...</str> -->
+      	 <str name="facet">on</str>
+      	 <str name="facet.method">enum</str>
+       	<str name="facet.field">organism</str>
+     	  <str name="facet.mincount">1</str>
+      	 <str name="facet.limit">10</str>
+       	<str name="facet.field">bank</str>
+
+</requestHandler>
+<requestHandler name="/mobile" class="solr.SearchHandler">
+      	<str name="stHost">seqcrawler.genouest.org</str>
+       	<str name="stPort">8098</str>
+       	<str name="gbHost">seqcrawler.genouest.org</str>
+          	<str name="gbPort">80</str>
+          	<str name="gbBank">all</str>
+ 	<!-- <str name="shards">shardserver1/solr/,shardserver2/solr/,...</str> -->
+	…
+</requestHandler>
+<requestHandler name="/mobiledetails" class="solr.SearchHandler">
+      	<str name="stHost">seqcrawler.genouest.org</str>
+       	<str name="stPort">8098</str>
+       	<str name="gbHost">seqcrawler.genouest.org</str>
+          	<str name="gbPort">80</str>
+          	<str name="gbBank">all</str>
+ 	<!-- <str name="shards">shardserver1/solr/,shardserver2/solr/,...</str> -->
+	…
+</requestHandler>
++--
+
+ In specified request handlers, uncomment the shards field is index shards is required. Specify the hostname or ip address of the servers handling the shards separated by a comma.
+
+ * shHost,stPort: storage hostname and port (Riak by default). Port 80 with apache proxy method is prefered.
+
+ * gbHost,gbPort: Gbrowse hostname and port.
+
+ * gbBank (optional): bank to query, all by default.
+
+ []
+
+ Facet fields provide an additional result field with the count of terms for the query.”facet.field” specify which field index to facet. There can be multiple facet.field, but this method is RAM consuming depending on index size and  terms count. In this example, for the total of matches, it will count the bank field terms and the organism field terms. Facteted fields are automatically written in Solritas  web interface with given templates.
+ 
+*** Specific index property file: schema.xml
+
+ The schema file must be the same for all the shards. They can differ for different indexes. It specifies how to index and analyse the data in the index.
+
+ FieldTypes are predefined Types with Tokenizer etc... It is possible to create new FieldTypes based on existing ones or with new Java classes.
+
+ Then fields are defined based on those FieldTypes. Many examples are provided in the schema to help at customization.
+
+ Depending on new indexes, additional values may be required in this schema if default dehaviour (see dynamic field) is not appropriate.
+ 
++--
+#Fields for GFF indexing:
+   <field name="bank" type="lowercase" indexed="true" stored="true" default="genouest"/>
+   <field name="seqid" type="uuid" indexed="true" stored="true" default="NEW"/>
+   <field name="id" type="lowercase" indexed="true" stored="true"/>
+   <field name="chr" type="lowercase" indexed="true" stored="true"/>
+   <field name="feature" type="lowercase" indexed="true" stored="true"/>
+   <field name="start" type="int" indexed="true" stored="true" multiValued="true"/>
+   <field name="end" type="int" indexed="true" stored="true" multiValued="true"/>
+   <field name="strand" type="lowercase" indexed="true" stored="true"/>
+
+….
+  <field name="stream_name" type="lowercase" indexed="false" stored="true"/>
+  <field name="stream_size" type="lowercase" indexed="false" stored="true"/>
+  <field name="stream_content_type" type="lowercase" indexed="false" stored="true"/>
+…
+  <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
+…
+   <dynamicField name="*" type="text"    indexed="true"  stored="false"/>
+…
+   <copyField source="*" dest="text"/>
++-- 
+
+ * type field refers to an existing fieldType in the schema.xml
+
+ * indexed: is field is indexed e.g. can be queried by: “myfieldname:myvalue”.
+
+ * Stored: if value is stored, value can be displayed in results, else it can only be queried as a filter.
+
+ * MultiValued: depending on indexer, can a field be recorded multiple times for the same document. If not multivalued and multiple values occurs, index raises an error.
+
+ * seqid is a unique id automatically generated.
+
+ * id is the main identifier of the sequence/protein etc...
+
+ * Start and end field are int fields that can be queried by range
+
+ * stream_name: name and path of original file
+
+ * stream_size: size of the original data
+
+ * stream_content_type: content type of the data (biosequence/gff, pdf...)
+
+ * file: start position and size of document in original file  (start-size)
+
+ * text: default field where all received fields are copied to  to create a full text search (default search field). This is made via the copyField operation.
+
+ * DynamicFieldName * : all fields received and not declared will be managed by this declaration e.g. indexed but not stored.
+ 
+* Annex A
+
+** Index search
+
+ It is possible to search an index with a query without the web interface. To do so, the java class org.irisa.genouest.seqcrawler.query.Query is available. See usage: 
+
++--
+java -classpath $INDEXHOME/CrawlerIndex-0.1-jar-with-dependencies.jar  org.irisa.genouest.seqcrawler.query.Query -h
++--
+
+ This very simple query interface will log to console the first results of query.
+
+ To search via a browser, refer to {{{http://wiki.apache.org/solr/CommonQueryParameters}Solr query syntax}}
+
+** MongoDb query
+
+ Access to http//host/cgi-bin/mongo/mongo.pl with parameters:
+
+ source: orignal source raw data (e.g. nucleic sequence chromosome for example hosting a gene)
+
+ id: additional raw data for the element id (transcript for example).
+
+ start,stop: optional start and stop position of the sequence to extract in source
+ 
