@@ -1,7 +1,7 @@
 package org.irisa.genouest.seqcrawler.index;
 
 public class Constants {
-	public static final String BANK_DEFAULT = "GenOuest";
+	public static final String BANK_DEFAULT = "seqcrawler";
 	
 	public static final String SOLRHOME = "/opt/solr/apache-solr-1.4.1/seqcrawler/solr";
 	public static final String SOLRDATA = "/opt/solr/apache-solr-1.4.1/seqcrawler/solr/data/";
