@@ -137,7 +137,7 @@ allow from 192.168.1.*  // to allow from internal network only
 
 +--
 
- In Tomcat instance (or other Servlet container), deploy the apache-solr-1.4.1.war. For Tomcat, copy it to the webapps directory.
+ In Tomcat instance (or other Servlet container), deploy the apache-solr-1.4.1.war (in dist directory of apache-solr). For Tomcat, copy it to the webapps directory.
  
  Copy the solr/web content to the deployed webapp. Lookup.jsp is a web application to return a document from a file and index.html provides direct access to the query interface.
  In lookup.jsp, update <String AUTHDIR ="/";>. <<AUTHDIR>> is a directory filter to restrict file access to a defined sub directory structure (to restrict file access)
