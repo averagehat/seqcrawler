@@ -25,9 +25,9 @@ case "$1" in
 	export GROUP="seqcrawler"
         a2enmod proxy
         a2enmod proxy_http
-        chown -R $MONGO_USER:$GROUP /var/lib/seqcrawler/index/mongo
-        chown -R $TOMCAT_USER:$GROUP /var/lib/seqcrawler/index/solr
-        chown -R $TOMCAT_USER:$GROUP /var/lib/seqcrawler/downloads
+        chown -R $MONGO_USER /var/lib/seqcrawler/index/mongo
+        chown -R $TOMCAT_USER /var/lib/seqcrawler/index/solr
+        chown -R $TOMCAT_USER /var/lib/seqcrawler/downloads
 	chmod -R 775 /var/lib/seqcrawler/index/mongo
 	echo "[seqcrawler]" >> /etc/gbrowse/GBrowse.conf
 	echo "description = seqcrawler banks" >> /etc/gbrowse/GBrowse.conf

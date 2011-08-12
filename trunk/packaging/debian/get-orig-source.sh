@@ -23,6 +23,7 @@ mkdir -p $PKG/usr/share/java/webapps/solr
 mkdir -p $PKG/usr/share/java/webapps/CrawlerSearchWebApp
 mkdir -p $PKG/var/log/seqcrawler
 mkdir -p $PKG/usr/share/seqcrawler/solr
+mkdir -p $PKG/etc/seqcrawler/solr
 
 
 mkdir -p $PKG/etc/apache2/conf.d/
@@ -53,20 +54,21 @@ mv apache-solr-$SOLRVERSION.zip $PKG/usr/share/seqcrawler/solr/
 unzip $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION.zip -d $PKG/usr/share/seqcrawler/solr/
 rm $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION.zip
 mv $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/dist/apache-solr-$SOLRVERSION.war $PKG/usr/share/java/webapps/solr.war
+mv $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION $PKG/usr/share/seqcrawler/solr/apache-solr
 unzip $PKG/usr/share/java/webapps/solr.war -d $PKG/usr/share/java/webapps/solr/
 rm $PKG/usr/share/java/webapps/solr.war
 
-mkdir -p $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/
+mkdir -p $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/
 
 svn export https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/trunk/index/CrawlerIndex/solr  solr
-mv solr  $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/
-rm -rf $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/dataset
-rm -rf $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/data
-rm -rf $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/web
-rm -f  $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/apache-solr*.war
+mv solr  $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/
+rm -rf $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/dataset
+rm -rf $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/data
+rm -rf $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/web
+rm -f  $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/apache-solr*.war
 
 
-sed -i 's/<web-app>/<web-app>\n<env-entry><env-entry-name>solr\/home<\/env-entry-name><env-entry-value>\/usr\/share\/seqcrawler\/solr\/apache-solr-1.4.1\/seqcrawler\/solr<\/env-entry-value><env-entry-type>java.lang.String<\/env-entry-type><\/env-entry>/' $PKG/usr/share/java/webapps/solr/WEB-INF/web.xml
+sed -i 's/<web-app>/<web-app>\n<env-entry><env-entry-name>solr\/home<\/env-entry-name><env-entry-value>\/usr\/share\/seqcrawler\/solr\/apache-solr\/seqcrawler\/solr<\/env-entry-value><env-entry-type>java.lang.String<\/env-entry-type><\/env-entry>/' $PKG/usr/share/java/webapps/solr/WEB-INF/web.xml
 
 
 #Perl module
@@ -77,27 +79,27 @@ mv GBrowse2 $PKG/usr/share/seqcrawler/
 
 # Solr indexer
 wget http://maven.irisa.fr/artifactory/genouest-public-release/org/irisa/genouest/seqcrawler/CrawlerIndex/$INDEXVERSION/CrawlerIndex-$INDEXVERSION-jar-with-dependencies.jar
-mv CrawlerIndex-$INDEXVERSION-jar-with-dependencies.jar $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/
+mv CrawlerIndex-$INDEXVERSION-jar-with-dependencies.jar $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/
 
-#sed -i 's/\/opt\/solr\/apache-solr-1.4.1\/seqcrawler\/solr\/bin/\/usr\/share\/seqcrawler\/solr\/apache-solr-1.4.1\/seqcrawler\/solr\/bin/g' $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/*.sh
 
 # scripts
 echo "Installing scripts"
 #svn export https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/trunk/index/CrawlerIndex/solr/bin solrbin --force
-rm $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/index.jsp
-rm $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/seqcrawler.js
-rm $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/env.sh
-echo "export INDEXHOME=/usr/share/seqcrawler/solr/apache-solr-1.4.1/seqcrawler/solr/bin" > $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/env.sh
-echo "export INDEXVERSION="$INDEXVERSION >> $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/env.sh
+rm $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/index.jsp
+rm $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/seqcrawler.js
+rm $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/env.sh
+echo "export INDEXHOME=/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin" > $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/env.sh
+echo "export INDEXVERSION="$INDEXVERSION >> $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/env.sh
 
-#cp solrbin/* $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/
-chmod 755 $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/bin/*.sh
+chmod 755 $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/*.sh
 #rm -rf solrbin
 
 #svn export https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/trunk/index/CrawlerIndex/solr/conf solrconf --force
-#cp solrconf/schema.xml $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/conf/
-sed -i 's/<dataDir>${solr.data.dir:.\/solr\/data}<\/dataDir>/<dataDir>${solr.data.dir:\/var\/lib\/seqcrawler\/index\/solr}<\/dataDir>/g' $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/seqcrawler/solr/conf/solrconfig.xml
-rm -f $PKG/usr/share/seqcrawler/solr/apache-solr-1.4.1/seqcrawler/solr/bin/seqcrawler.properties
+#cp solrconf/schema.xml $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/conf/
+sed -i 's/<dataDir>${solr.data.dir:.\/solr\/data}<\/dataDir>/<dataDir>${solr.data.dir:\/var\/lib\/seqcrawler\/index\/solr}<\/dataDir>/g' $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/conf/solrconfig.xml
+mv $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/conf/solrconfig.xml $PKG/etc/seqcrawler/solr/
+mv $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/conf/schema.xml $PKG/etc/seqcrawler/solr/
+rm -f $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/seqcrawler.properties
 #rm -rf solrconf
 
 # Export webapp
