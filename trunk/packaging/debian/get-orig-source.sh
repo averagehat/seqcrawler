@@ -5,7 +5,7 @@ set -e
 
 export VERSION="0.3"
 
-export INDEXVERSION="0.3"
+export INDEXVERSION="0.4"
 export SEARCHVERSION="0.1"
 
 export PKG="seqcrawler-"$VERSION
