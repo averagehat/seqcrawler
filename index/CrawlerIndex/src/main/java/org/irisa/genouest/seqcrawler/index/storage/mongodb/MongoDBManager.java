@@ -205,7 +205,7 @@ public class MongoDBManager implements StorageManagerInterface {
 			DBObject res = coll.findAndModify(oldObject, null, null, false, mongoObject, false, true);
 			//if(!res.getLastError().ok()) {
 			if(res!= null) {
-				log.warn("Replace old object "+res.toString());
+				log.warn("Replace old object "+object.id());
 			}
 			//}
 		 }
