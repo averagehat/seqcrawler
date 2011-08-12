@@ -198,9 +198,15 @@ public class MongoDBManager implements StorageManagerInterface {
 			mongoObject.put(CONTENT, object.getContent());
 			mongoObject.put(METADATA, object.getMetadata());
 			mongoObject.put(SHARDS, object.getShards());
-			WriteResult res = coll.insert(mongoObject);
+			//WriteResult res = coll.insert(mongoObject);
+			//log.error(res.toString());
+			BasicDBObject oldObject = new BasicDBObject();
+			oldObject.put(ID, object.id());
+			DBObject res = coll.findAndModify(oldObject, null, null, false, mongoObject, false, true);
 			//if(!res.getLastError().ok()) {
-				log.error(res.toString());
+			if(res!= null) {
+				log.warn("Replace old object "+res.toString());
+			}
 			//}
 		 }
 
