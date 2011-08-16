@@ -11,7 +11,8 @@ export SEARCHVERSION="0.1"
 export PKG="seqcrawler-"$VERSION
 mkdir $PKG
 
-export SOLRVERSION="1.4.1"
+#export SOLRVERSION="1.4.1"
+export SOLRVERSION="3.3.0"
 
 mkdir -p $PKG/usr/share/seqcrawler/mongo
 mkdir -p $PKG/usr/lib/cgi-bin/mongo
@@ -48,10 +49,11 @@ echo
 
 #Get Solr
 echo "Deploying solr"
-wget http://maven.irisa.fr/artifactory/genouest-public-release/apache-solr/apache-solr/$SOLRVERSION/apache-solr-$SOLRVERSION.zip
+wget http://maven.irisa.fr/artifactory/genouest-public-release/apache-solr/apache-solr/$SOLRVERSION/apache-solr-$SOLRVERSION.tgz
 
 mv apache-solr-$SOLRVERSION.zip $PKG/usr/share/seqcrawler/solr/
-unzip $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION.zip -d $PKG/usr/share/seqcrawler/solr/
+#unzip $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION.zip -d $PKG/usr/share/seqcrawler/solr/
+tar xvfz $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION.tgz -C $PKG/usr/share/seqcrawler/solr/
 rm $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION.zip
 mv $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/dist/apache-solr-$SOLRVERSION.war $PKG/usr/share/java/webapps/solr.war
 mv $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION $PKG/usr/share/seqcrawler/solr/apache-solr
