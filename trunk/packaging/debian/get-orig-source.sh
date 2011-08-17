@@ -3,7 +3,8 @@
 set -e
 
 
-export VERSION="0.4"
+#export VERSION="0.4"
+VERSION=`dpkg-parsechangelog | awk '/^Version/ { print $2 }' | cut -f1 -d'-'`
 
 export INDEXVERSION="0.4"
 export SEARCHVERSION="0.1"
@@ -54,6 +55,9 @@ wget http://maven.irisa.fr/artifactory/genouest-public-release/apache-solr/apach
 mv apache-solr-$SOLRVERSION.tgz $PKG/usr/share/seqcrawler/solr/
 #unzip $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION.zip -d $PKG/usr/share/seqcrawler/solr/
 tar xvfz $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION.tgz -C $PKG/usr/share/seqcrawler/solr/
+rm -rf $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/example
+rm -rf $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/client
+rm -rf $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/docs
 rm $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION.tgz
 mv $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/dist/apache-solr-$SOLRVERSION.war $PKG/usr/share/java/webapps/solr.war
 mv $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION $PKG/usr/share/seqcrawler/solr/apache-solr

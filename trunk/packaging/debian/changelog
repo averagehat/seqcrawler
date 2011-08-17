@@ -1,3 +1,9 @@
+seqcrawler (0.5-1) unstable; urgency=low
+
+  * Repackaged source
+
+ -- Olivier Sallou <olivier.sallou@irsa.fr>  Mon, 17 Aug 2011 12:40:24 +0200
+
 seqcrawler (0.4-1) unstable; urgency=low
 
   * Upstream tag 0.4 (new features)
