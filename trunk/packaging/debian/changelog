@@ -1,6 +1,6 @@
-seqcrawler (0.3-1) unstable; urgency=low
+seqcrawler (0.4-1) unstable; urgency=low
 
-  * Upstream tag 0.3 (new features)
+  * Upstream tag 0.4 (new features)
 
  -- Olivier Sallou <olivier.sallou@irsa.fr>  Mon, 18 Jul 2011 12:40:24 +0200
  

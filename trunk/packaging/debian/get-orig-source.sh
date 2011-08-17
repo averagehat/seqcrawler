@@ -3,7 +3,7 @@
 set -e
 
 
-export VERSION="0.3"
+export VERSION="0.4"
 
 export INDEXVERSION="0.4"
 export SEARCHVERSION="0.1"
@@ -51,10 +51,10 @@ echo
 echo "Deploying solr"
 wget http://maven.irisa.fr/artifactory/genouest-public-release/apache-solr/apache-solr/$SOLRVERSION/apache-solr-$SOLRVERSION.tgz
 
-mv apache-solr-$SOLRVERSION.zip $PKG/usr/share/seqcrawler/solr/
+mv apache-solr-$SOLRVERSION.tgz $PKG/usr/share/seqcrawler/solr/
 #unzip $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION.zip -d $PKG/usr/share/seqcrawler/solr/
 tar xvfz $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION.tgz -C $PKG/usr/share/seqcrawler/solr/
-rm $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION.zip
+rm $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION.tgz
 mv $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION/dist/apache-solr-$SOLRVERSION.war $PKG/usr/share/java/webapps/solr.war
 mv $PKG/usr/share/seqcrawler/solr/apache-solr-$SOLRVERSION $PKG/usr/share/seqcrawler/solr/apache-solr
 unzip $PKG/usr/share/java/webapps/solr.war -d $PKG/usr/share/java/webapps/solr/
