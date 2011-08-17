@@ -135,6 +135,7 @@ rm -rf mongocgi
 #Extract files for packaging
 echo "Getting extra files for packaging"
 svn export https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/trunk/packaging/extra-files  extra-files --force
+mv extra-files $PKG/
 
 tar cvfz seqcrawler_$VERSION.orig.tar.gz $PKG
 rm -rf $PKG
