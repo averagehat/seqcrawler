@@ -1,0 +1,7 @@
+##gff-version 3
+# sequence-region NC_002745 1 2814816
+# conversion-by bp_genbank2gff3.pl
+# organism Staphylococcus aureus subsp. aureus N315
+# date 30-MAR-2010
+# Note Staphylococcus aureus subsp. aureus N315, complete genome.
+NC_002745	GenBank	region	1	2814816	.	+	.	ID=NC_002745;Dbxref=taxon:158879;Note=Staphylococcus aureus subsp. aureus N315%2C complete genome.;comment1=PROVISIONAL REFSEQ: This record has not yet been subject to final NCBI review. The reference sequence was derived from BA000018. On Mar 24%2C 2003 this sequence version replaced gi:15925705. COMPLETENESS: full length. ;date=30-MAR-2010;mol_type=genomic DNA;organism=Staphylococcus aureus subsp. aureus N315;strain=N315;test=test

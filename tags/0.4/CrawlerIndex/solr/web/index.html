@@ -1,0 +1,107 @@
+ <html>                                                                  
+ <head>                                                                  
+ <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+ <script type="text/javascript" src="jquery-ui-1.8.2.custom.min.js"></script>    
+ <script type="text/javascript" src="jquery.url.packed.js"></script>  
+ <script type="text/javascript" src="urlEncode.js"></script>
+ <script type="text/javascript" src="seqcrawler-conf.js"></script> 
+ <script type="text/javascript" src="seqcrawler.js"></script> 
+ <link rel="stylesheet" type="text/css" href="jquery-ui-1.8.2.custom.css"/>
+ <link rel="stylesheet" type="text/css" href="main.css"/>
+ <!--
+ History:
+ Bug #3163366 21/01/11 - Olivier Sallou
+ Bug #3175185 04/02/11 - Olivier Sallou
+ 
+ -->      
+ <script type="text/javascript">                                         
+   // we will add our javascript code here
+   $(document).ready(function() {
+   
+   $pageCount=1;
+   
+   $("#metadata").ajaxError(function(event, request, settings){
+   $("#documentDetails" ).dialog( "close" );
+   $(this).html("<b><li>Error requesting page " + settings.url + "</li></b>");
+   });  
+   });
+   
+   
+    $(function() { 
+    $("#documentDetails").hide();
+    $('.error').hide(); 
+    
+     
+    $("#submit_export").click(function() { 
+     $('.error').hide();
+     if($("#export_query").val()=="") { return false;}
+     // Call export, show link                     
+     $.get("/CrawlerSearchWebApp/export?query="+$("#export_query").val()+"&ranges="+$("#ranges").val(),
+     	function(data){
+        	var result = jQuery.parseJSON(data);
+            var resultUrl = result["url"];
+            $("#export_link" ).html("<a target=\"_blank\" href=\""+resultUrl+"\">Download export results</a>");
+        });
+     return false;
+   });  
+         
+    $("#submit_button").click(function() { 
+     $('.error').hide();
+     var queryField = $("input#query").val();  
+     if (queryField == "") {  
+       $("label#query_error").show();  
+       $("input#query").focus();  
+       return false;  
+     }
+     $("input#export_query").val(queryField);   
+
+     doQuery(queryField,0);
+     return false;
+   });  
+   }); 
+   
+ </script>
+ <title>SeqCrawler query</title>                                                               
+ </head>                                                                 
+ <body>
+   <div id="header" class="query-box">
+   <img src="images/crawlit_banner.png"/>
+   <div id="query">
+   <form id="queryForm" name="queryForm" action="">
+   
+   <label for="query" id="query_label">Query</label>
+   <img  onclick="showFields()" title="List of fields" alt="List of fields" src="images/ihelp.png" class="icon"/>
+   
+   <input type="text" name="query" id="query" size="100" value="" class="text-input"/>
+   <label class="error" for="query" id="query_error">This field is required.</label> 
+   <input type="submit" name="submit" class="button" id="submit_button" value="Submit"/>
+   </form>
+   </div>
+   </div>
+   <div id="metadata"/>
+   <p>This is the web interface to the data banks index.</p><p>Enter a compliant query to get results filtered by banks</p>
+   <p>Example: "bank:genbank AND feature:rna" or "yeast" </p>
+   </div>                                                                  
+   <div id="content">
+   <div id="results"><div id="documents"></div><div id="navigation"/></div></div>
+   <div id="facets"></div>
+   
+   <div id="export_form">
+    <form name="export" action="/CrawlerSearchWebApp">
+    	<fieldset>
+        	<input type="hidden" name="query" id="export_query" size="30" value="" class="text-input" />        <label for="ranges" id="ranges_label">Ranges</label>
+        	<input type="text" name="ranges" id="ranges" size="30" value="" class="text-input" />
+       		<label class="error" for="ranges" id="ranges_error">This field is required.</label>
+       		<br />
+       		<input type="submit" name="submit" class="button" id="submit_export" value="Export" />
+     </fieldset>
+   </form>
+   <div id="export_link"/>
+</div>
+   
+   
+   </div>
+   <div id="footer"><hr width="70%"/>Powered by the GenOuest BioInformatics Plaform (http://www.genouest.org)</div>                                        
+   <div id="documentDetails"/>
+ </body>                                                                 
+ </html>
