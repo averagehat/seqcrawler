@@ -132,5 +132,9 @@ cp -R mongocgi/mongo/* $PKG/usr/lib/cgi-bin/mongo/
 chmod 755 $PKG/usr/lib/cgi-bin/mongo/*.pl
 rm -rf mongocgi
 
+#Extract files for packaging
+echo "Getting extra files for packaging"
+svn export https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/trunk/packaging/extra-files  extra-files --force
+
 tar cvfz seqcrawler_$VERSION.orig.tar.gz $PKG
 rm -rf $PKG
