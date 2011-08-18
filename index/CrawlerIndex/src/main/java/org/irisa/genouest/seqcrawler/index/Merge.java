@@ -50,6 +50,13 @@ public class Merge {
 		this.indexes = indexes;
 	}
 
+	public IndexWriterConfig getIndexConfig() {
+		if(conf == null) {
+			setIndexConf();
+		}
+		return conf;
+	}
+	
 	private void setIndexConf() {
 		conf = new IndexWriterConfig(Version.LUCENE_33,new StandardAnalyzer(Version.LUCENE_33));
 		conf.setRAMBufferSizeMB(50);
@@ -67,7 +74,6 @@ public class Merge {
 	 */
 	public static void main(String[] args) throws ParseException {
 		Merge mergeApp = new Merge();	
-		mergeApp.setIndexConf();
 		
         Options options = new Options();
         options.addOption("h", false, "Show usage.");
@@ -132,7 +138,7 @@ public class Merge {
 		Date start = new Date();
 
 		try {
-			IndexWriter writer = new IndexWriter(FSDirectory.open(INDEX_DIR),conf);
+			IndexWriter writer = new IndexWriter(FSDirectory.open(INDEX_DIR),getIndexConfig() );
 
 			log.info("Optimizing index...");
 			writer.optimize();
@@ -171,7 +177,7 @@ public class Merge {
 			writer.setRAMBufferSizeMB(50);*/
 			
 
-			IndexWriter writer = new IndexWriter(FSDirectory.open(INDEX_DIR),conf);
+			IndexWriter writer = new IndexWriter(FSDirectory.open(INDEX_DIR),getIndexConfig() );
 
 
 			for (int i = 0; i < INDEXES_DIR.list().length; i++) {
