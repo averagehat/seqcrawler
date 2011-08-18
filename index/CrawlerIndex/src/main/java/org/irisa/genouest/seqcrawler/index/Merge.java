@@ -99,7 +99,7 @@ public class Merge {
         if(cmd.hasOption("out")) {
         	mergeApp.finalDir = cmd.getOptionValue("out");
         }
-        else {
+        else if(!cmd.hasOption("O")){
         	showUsage(options);
         	System.exit(1);
         }
