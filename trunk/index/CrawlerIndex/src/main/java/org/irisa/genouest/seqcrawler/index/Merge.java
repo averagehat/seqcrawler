@@ -40,7 +40,7 @@ public class Merge {
 	
 	private Directory indexes[];
 	
-	private IndexWriterConfig conf = null;
+
 	
 	public Directory[] getIndexes() {
 		return indexes;
@@ -51,19 +51,15 @@ public class Merge {
 	}
 
 	public IndexWriterConfig getIndexConfig() {
-		if(conf == null) {
-			setIndexConf();
-		}
-		return conf;
-	}
-	
-	private void setIndexConf() {
-		conf = new IndexWriterConfig(Version.LUCENE_33,new StandardAnalyzer(Version.LUCENE_33));
+		IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_33,new StandardAnalyzer(Version.LUCENE_33));
 		conf.setRAMBufferSizeMB(50);
 		LogByteSizeMergePolicy policy = new LogByteSizeMergePolicy();
 		policy.setMaxMergeDocs(10);
 		conf.setMergePolicy(policy);
+		return conf;
 	}
+	
+
 	private boolean DEBUG = false;
 	
 	/**
