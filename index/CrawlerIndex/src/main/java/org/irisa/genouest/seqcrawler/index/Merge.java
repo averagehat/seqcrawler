@@ -16,6 +16,8 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.LogByteSizeMergePolicy;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -38,6 +40,8 @@ public class Merge {
 	
 	private Directory indexes[];
 	
+	private IndexWriterConfig conf = null;
+	
 	public Directory[] getIndexes() {
 		return indexes;
 	}
@@ -46,6 +50,13 @@ public class Merge {
 		this.indexes = indexes;
 	}
 
+	private void setIndexConf() {
+		conf = new IndexWriterConfig(Version.LUCENE_33,new StandardAnalyzer(Version.LUCENE_33));
+		conf.setRAMBufferSizeMB(50);
+		LogByteSizeMergePolicy policy = new LogByteSizeMergePolicy();
+		policy.setMaxMergeDocs(10);
+		conf.setMergePolicy(policy);
+	}
 	private boolean DEBUG = false;
 	
 	/**
@@ -55,7 +66,8 @@ public class Merge {
 	 * @throws ParseException 
 	 */
 	public static void main(String[] args) throws ParseException {
-		Merge mergeApp = new Merge();		
+		Merge mergeApp = new Merge();	
+		mergeApp.setIndexConf();
 		
         Options options = new Options();
         options.addOption("h", false, "Show usage.");
@@ -122,11 +134,9 @@ public class Merge {
 		Date start = new Date();
 
 		try {
-			IndexWriter writer = new IndexWriter(FSDirectory.open(INDEX_DIR),
-												new StandardAnalyzer(Version.LUCENE_CURRENT),
-												true, IndexWriter.MaxFieldLength.UNLIMITED);
-			writer.setMergeFactor(10);
-			writer.setRAMBufferSizeMB(50);
+			IndexWriter writer = new IndexWriter(FSDirectory.open(INDEX_DIR),conf);
+			//writer.setMergeFactor(10);
+			//writer.setRAMBufferSizeMB(50);
 
 
 			log.info("Optimizing index...");
@@ -159,11 +169,14 @@ public class Merge {
 		Date start = new Date();
 
 		try {
-			IndexWriter writer = new IndexWriter(FSDirectory.open(INDEX_DIR),
+			/*IndexWriter writer = new IndexWriter(FSDirectory.open(INDEX_DIR),
 												new StandardAnalyzer(Version.LUCENE_CURRENT),
 												true, IndexWriter.MaxFieldLength.UNLIMITED);
 			writer.setMergeFactor(10);
-			writer.setRAMBufferSizeMB(50);
+			writer.setRAMBufferSizeMB(50);*/
+			
+
+			IndexWriter writer = new IndexWriter(FSDirectory.open(INDEX_DIR),conf);
 
 
 			for (int i = 0; i < INDEXES_DIR.list().length; i++) {
@@ -218,7 +231,8 @@ public class Merge {
 				i++;
 			}
 			if(!DEBUG) {
-			writer.addIndexesNoOptimize(indexes);
+				writer.addIndexes(indexes);
+			//writer.addIndexesNoOptimize(indexes);
 			log.info("done");
 			}
 

@@ -39,7 +39,7 @@ public class IndexManager {
 	private static String[] privateFieldNames = new String[] { "stream_content_type" , "stream_name", "file" , "bank", "id" };
 	private static List<String> privateFields = Arrays.asList(privateFieldNames);
 	
-	public static HashMap<String,String> additionalFields = new HashMap();
+	public static HashMap<String,String> additionalFields = new HashMap<String,String>();
 	
 	//private static SolrServer server = null;
 	private SolrServer server = null;
