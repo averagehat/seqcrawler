@@ -129,15 +129,10 @@ public class Merge {
 	private void optimize(String dir) {
 		File INDEX_DIR    = new File(dir);
 
-		INDEX_DIR.mkdir();
-
 		Date start = new Date();
 
 		try {
 			IndexWriter writer = new IndexWriter(FSDirectory.open(INDEX_DIR),conf);
-			//writer.setMergeFactor(10);
-			//writer.setRAMBufferSizeMB(50);
-
 
 			log.info("Optimizing index...");
 			writer.optimize();
