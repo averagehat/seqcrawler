@@ -54,7 +54,7 @@ public class Merge {
 		IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_33,new StandardAnalyzer(Version.LUCENE_33));
 		conf.setRAMBufferSizeMB(50);
 		LogByteSizeMergePolicy policy = new LogByteSizeMergePolicy();
-		policy.setMaxMergeDocs(100000);
+		//policy.setMaxMergeDocs(100000);
 		conf.setMergePolicy(policy);
 		return conf;
 	}
