@@ -18,6 +18,8 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.LogByteSizeMergePolicy;
+import org.apache.lucene.index.MergePolicy;
+import org.apache.lucene.index.TieredMergePolicy;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -52,9 +54,12 @@ public class Merge {
 
 	public IndexWriterConfig getIndexConfig() {
 		IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_33,new StandardAnalyzer(Version.LUCENE_33));
-		conf.setRAMBufferSizeMB(50);
+		conf.setRAMBufferSizeMB(256);
 		LogByteSizeMergePolicy policy = new LogByteSizeMergePolicy();
-		//policy.setMaxMergeDocs(100000);
+		//MergePolicy policy = new TieredMergePolicy();
+		// Default :
+		//policy.setMaxMergeMB(2048)
+		//policy.setMaxMergeDocs(2147483647);
 		conf.setMergePolicy(policy);
 		return conf;
 	}
