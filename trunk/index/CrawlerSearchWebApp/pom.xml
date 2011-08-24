@@ -39,9 +39,9 @@
     <dependency>
     	<groupId>org.irisa.genouest.seqcrawler</groupId>
     	<artifactId>CrawlerSearch</artifactId>
-    	<version>0.2-SNAPSHOT</version>
+    	<version>0.2</version>
     	<type>jar</type>
-    	<scope>runtime</scope>
+    	<scope>compile</scope>
     </dependency>
   </dependencies>
   <build>
