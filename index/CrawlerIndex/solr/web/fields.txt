@@ -1,1 +1,0 @@
-{"fields":["ac","accession","bank","chr","date","dbxref","de","end","feature","gn","id","name","note","organism","os","seqid","start","strand","text"]}
