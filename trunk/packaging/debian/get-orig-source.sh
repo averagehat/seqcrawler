@@ -7,7 +7,7 @@ set -e
 VERSION=`dpkg-parsechangelog | awk '/^Version/ { print $2 }' | cut -f1 -d'-'`
 
 export INDEXVERSION="0.4"
-export SEARCHVERSION="0.1"
+export SEARCHVERSION="0.2"
 
 export PKG="seqcrawler-"$VERSION
 mkdir $PKG
