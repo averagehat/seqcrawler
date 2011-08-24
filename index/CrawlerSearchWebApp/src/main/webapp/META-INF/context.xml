@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/seqcrawler" docBase="/usr/share/java/webapps/seqcrawler" allowLinking="true">
-  <Parameter name="downloadUrl"  value="http://localhost/seqcrawler-downloads" />
+  <Parameter name="downloadUrl"  value="http://localhost/downloads" />
   <Parameter name="downloadDir" value="/var/lib/seqcrawler/downloads"/>
   <Parameter name="solrUrl" value="http://localhost/solr/"/>
   <Parameter name="queryType" value="shard"/>
