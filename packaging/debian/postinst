@@ -33,9 +33,6 @@ case "$1" in
 	echo "description = seqcrawler banks" >> /etc/gbrowse/GBrowse.conf
 	echo "path = seqcrawler.conf" >> /etc/gbrowse/GBrowse.conf
 
-	#sed -i 's/default source = yeast/default source = seqcrawler/' /etc/gbrowse/GBrowse.conf
-        #sed -i 's/localhost/$HOSTNAME/g' /usr/share/java/webapps/CrawlerSearchWebApp/WEB-INF/web.xml
-
         cd /usr/share/seqcrawler/GBrowse2/lib/Bio-DB-GFF-Adaptor-solr/
         perl  Makefile.PL
         make 

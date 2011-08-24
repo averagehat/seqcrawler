@@ -32,8 +32,8 @@ mkdir -p $PKG/etc/apache2/conf.d/
 echo "ProxyPass           /solr  http://localhost:8080/solr" > $PKG/etc/apache2/conf.d/seqcrawler.conf
 echo "ProxyPassReverse /solr  http://localhost:8080/solr" >> $PKG/etc/apache2/conf.d/seqcrawler.conf
 
-echo "ProxyPass      /CrawlerSearchWebApp  http://localhost:8080/CrawlerSearchWebApp" >> $PKG/etc/apache2/conf.d/seqcrawler.conf
-echo "ProxyPassReverse /CrawlerSearchWebApp  http://localhost:8080/CrawlerSearchWebApp" >> $PKG/etc/apache2/conf.d/seqcrawler.conf
+echo "ProxyPass      /seqcrawler  http://localhost:8080/seqcrawler" >> $PKG/etc/apache2/conf.d/seqcrawler.conf
+echo "ProxyPassReverse /seqcrawler  http://localhost:8080/seqcrawler" >> $PKG/etc/apache2/conf.d/seqcrawler.conf
 
 echo "Alias        \"/mongo\"    \"/usr/share/seqcrawler/mongo\"" >> $PKG/etc/apache2/conf.d/seqcrawler.conf
 
@@ -110,7 +110,7 @@ rm -f $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/seqcrawler.
 #rm -rf solrconf
 
 # Export webapp
-echo "Installing export web app"
+echo "Installing search/export web app"
 wget http://maven.irisa.fr/artifactory/genouest-public-release/org/irisa/genouest/seqcrawler/CrawlerSearchWebApp/$SEARCHVERSION/CrawlerSearchWebApp-$SEARCHVERSION.war
 
 mv CrawlerSearchWebApp-0.1.war $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war
@@ -118,13 +118,13 @@ unzip $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war -d $PKG/usr/share/java
 rm $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war
 rm -f $PKG/usr/share/java/webapps/CrawlerSearchWebApp/WEB-INF/web.xml
 rm -f $PKG/usr/share/java/webapps/CrawlerSearchWebApp/WEB-INF/lib/servlet-api-2.5.jar
-rm -f $PKG/usr/share/java/webapps/solr/seqcrawler-conf.js
+rm -f $PKG/usr/share/java/webapps/CrawlerSearchWebApp/seqcrawler-conf.js
 
 # Solr Web data
-echo "Installing Solr web data"
-svn export https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/trunk/index/CrawlerIndex/solr/web/ solrweb  --force
-cp -R solrweb/* $PKG/usr/share/java/webapps/solr
-rm -rf solrweb
+#echo "Installing Solr web data"
+#svn export https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/trunk/index/CrawlerIndex/solr/web/ solrweb  --force
+#cp -R solrweb/* $PKG/usr/share/java/webapps/solr
+#rm -rf solrweb
 
 #MongoDB web
 echo "Installing MongoDb web pages"
