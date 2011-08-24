@@ -117,7 +117,7 @@ wget http://maven.irisa.fr/artifactory/genouest-public-release/org/irisa/genoues
 mv CrawlerSearchWebApp-$SEARCHVERSION.war $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war
 unzip $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war -d $PKG/usr/share/java/webapps/CrawlerSearchWebApp
 rm $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war
-rm -f $PKG/usr/share/java/webapps/CrawlerSearchWebApp/WEB-INF/web.xml
+#rm -f $PKG/usr/share/java/webapps/CrawlerSearchWebApp/WEB-INF/web.xml
 rm -f $PKG/usr/share/java/webapps/CrawlerSearchWebApp/WEB-INF/lib/servlet-api-2.5.jar
 rm -f $PKG/usr/share/java/webapps/CrawlerSearchWebApp/seqcrawler-conf.js
 
