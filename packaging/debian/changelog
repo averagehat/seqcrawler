@@ -1,3 +1,15 @@
+seqcrawler (0.5.2-1) unstable; urgency=low
+
+  * Move web data to crawlersearchwebapp
+
+ -- Olivier Sallou <olivier.sallou@irsa.fr>  Mon, 24 Aug 2011 12:40:24 +0200
+
+seqcrawler (0.5.1-1) unstable; urgency=low
+
+  * Move to solr 3.3, fix merge/optimize issues
+
+ -- Olivier Sallou <olivier.sallou@irsa.fr>  Mon, 18 Aug 2011 12:40:24 +0200
+
 seqcrawler (0.5-1) unstable; urgency=low
 
   * Repackaged source
