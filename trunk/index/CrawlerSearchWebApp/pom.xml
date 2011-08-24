@@ -6,7 +6,7 @@
   <packaging>war</packaging>
   <version>0.2</version>
   <name>CrawlerSearchWebApp Maven Webapp</name>
-  <description>Simple webapp above CrawlerSearch to provide a web export function</description>
+  <description>Web app for index search and export</description>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
