@@ -4,7 +4,7 @@
   <groupId>org.irisa.genouest.seqcrawler</groupId>
   <artifactId>CrawlerSearchWebApp</artifactId>
   <packaging>war</packaging>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.2</version>
   <name>CrawlerSearchWebApp Maven Webapp</name>
   <description>Simple webapp above CrawlerSearch to provide a web export function</description>
   <url>http://maven.apache.org</url>
