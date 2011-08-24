@@ -68,7 +68,7 @@ SeqCrawler image Administrator guide
  
  Web servers are available at:
  
-  http://myhostname:8080/solr/ 
+  http://myhostname:8080/seqcrawler/ 
   
   http://myhostname/mongo/ 
   
