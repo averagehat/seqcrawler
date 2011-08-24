@@ -113,7 +113,7 @@ rm -f $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/seqcrawler.
 echo "Installing search/export web app"
 wget http://maven.irisa.fr/artifactory/genouest-public-release/org/irisa/genouest/seqcrawler/CrawlerSearchWebApp/$SEARCHVERSION/CrawlerSearchWebApp-$SEARCHVERSION.war
 
-mv CrawlerSearchWebApp-0.1.war $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war
+mv CrawlerSearchWebApp-$SEARCHVERSION.war $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war
 unzip $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war -d $PKG/usr/share/java/webapps/CrawlerSearchWebApp
 rm $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war
 rm -f $PKG/usr/share/java/webapps/CrawlerSearchWebApp/WEB-INF/web.xml
