@@ -1,5 +1,5 @@
 etc/seqcrawler/seqcrawler.conf etc/gbrowse/seqcrawler.conf
-etc/seqcrawler/seqcrawler-conf.js usr/share/java/webapps/solr/seqcrawler-conf.js
+etc/seqcrawler/seqcrawler-conf.js usr/share/java/webapps/CrawlerSearchWebApp/seqcrawler-conf.js
 etc/seqcrawler/CrawlerSearchWebApp.xml var/lib/tomcat6/conf/Catalina/localhost/seqcrawler.xml
 etc/seqcrawler/solr/schema.xml usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/conf/schema.xml
 etc/seqcrawler/solr/solrconfig.xml usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/conf/solrconfig.xml
