@@ -34,6 +34,10 @@ Architecture of the solution for high availability
     ProxyPass           /solr  http://192.168.1.237:8080/solr
     ProxyPassReverse /solr  http://192.168.1.237:8080/solr
 
+    ProxyPass           /seqcrawler  http://192.168.1.237:8080/seqcrawler
+    ProxyPassReverse /seqcrawler  http://192.168.1.237:8080/seqcrawler
+
+	# IF riak is used
     ProxyPass           /riak  http://192.168.1.237:8098/riak
     ProxyPassReverse /riak  http://192.168.1.237:8098/riak
 

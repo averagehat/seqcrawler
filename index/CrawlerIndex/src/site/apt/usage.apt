@@ -47,13 +47,13 @@ Usage
  Example query for search for <protein> in all indexes with a JSON output format (xml is default):
 
 +-- 
- http://localhost:8983/solr/select/?q=protein&qt=shard&wt=json
+ http://localhost:8080/solr/select/?q=protein&qt=shard&wt=json
 +--
 
  To query only the index shard of the queried host, remove the query type parameter (qt):
 
 +-- 
- http://localhost:8983/solr/select/?q=protein&wt=json
+ http://localhost:8080/solr/select/?q=protein&wt=json
 +--
  
 
@@ -70,14 +70,14 @@ Usage
 
 +--
 
- For usage: java -jar CrawlerIndex-0.1-jar-with-dependencies.jar -h
+ For usage: java -jar CrawlerIndex-X.Y-jar-with-dependencies.jar -h
  
  Example:
  Index with no storage
- java -jar CrawlerIndex-0.1-jar-with-dependencies.jar -b uniprot -f /tmp/uniprot.dat -t embl 
+ java -jar CrawlerIndex-X.Y-jar-with-dependencies.jar -b uniprot -f /tmp/uniprot.dat -t embl 
 
  Index with storage, clean index for specified bank before
- java -jar CrawlerIndex-0.1-jar-with-dependencies.jar -c -b mypersonalbank -f /tmp/my.gff -t gff -store -stHost http://myhost
+ java -jar CrawlerIndex-X.Y-jar-with-dependencies.jar -c -b mypersonalbank -f /tmp/my.gff -t gff -store -stHost http://myhost
 
 +--
 
