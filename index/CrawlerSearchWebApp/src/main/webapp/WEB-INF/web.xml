@@ -10,15 +10,15 @@
     <servlet-class>org.irisa.genouest.seqcrawler.webapp.ExportServlet</servlet-class>
 		<init-param>
 			<param-name>downloadUrl</param-name>
-			<param-value>http://seqcrawler.genouest.org/downloads</param-value>
+			<param-value>http://localhost/downloads</param-value>
 		</init-param>
 		<init-param>
 			<param-name>downloadDir</param-name>
-			<param-value>/var/www/downloads</param-value>
+			<param-value>/var/lib/seqcrawler/downloads</param-value>
 		</init-param>
 		<init-param>
 			<param-name>solrUrl</param-name>
-			<param-value>http://seqcrawler.genouest.org/solr/select</param-value>
+			<param-value>http://localhost/solr/select</param-value>
 		</init-param>
   </servlet>
   <servlet-mapping>

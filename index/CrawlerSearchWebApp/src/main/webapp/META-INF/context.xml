@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context reloadable="false">
-<Parameter name="downloadUrl" value="http://seqcrawler.genouest.org/downloads" override="false"/>
-<Parameter name="downloadDir" value="/var/www/downoads" override="false"/>
-<Parameter name="solrUrl" value="http://seqcrawler.genouest.org/solr/select" override="false"/>
-</Context> 
+<Context path="/seqcrawler" docBase="/usr/share/java/webapps/seqcrawler" allowLinking="true">
+  <Parameter name="downloadUrl"  value="http://localhost/seqcrawler-downloads" />
+  <Parameter name="downloadDir" value="/var/lib/seqcrawler/downloads"/>
+  <Parameter name="solrUrl" value="http://localhost/solr/"/>
+  <Parameter name="queryType" value="shard"/>
+</Context>
