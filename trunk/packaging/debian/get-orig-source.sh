@@ -94,6 +94,7 @@ echo "Installing scripts"
 rm $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/index.jsp
 rm $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/seqcrawler.js
 rm $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/env.sh
+rm $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/seqcrawler.properties
 echo "#!/bin/bash" > $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/env.sh
 echo "export INDEXHOME=/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin" >> $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/env.sh
 echo "export INDEXVERSION="$INDEXVERSION >> $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/env.sh
