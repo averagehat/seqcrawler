@@ -118,6 +118,7 @@ mv CrawlerSearchWebApp-$SEARCHVERSION.war $PKG/usr/share/java/webapps/CrawlerSea
 unzip $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war -d $PKG/usr/share/java/webapps/CrawlerSearchWebApp
 rm $PKG/usr/share/java/webapps/CrawlerSearchWebApp.war
 #rm -f $PKG/usr/share/java/webapps/CrawlerSearchWebApp/WEB-INF/web.xml
+rm -f $PKG/usr/share/java/webapps/CrawlerSearchWebApp/META-INF/context.xml
 rm -f $PKG/usr/share/java/webapps/CrawlerSearchWebApp/WEB-INF/lib/servlet-api-2.5.jar
 rm -f $PKG/usr/share/java/webapps/CrawlerSearchWebApp/seqcrawler-conf.js
 
