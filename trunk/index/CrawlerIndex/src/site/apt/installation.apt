@@ -1,13 +1,12 @@
 Installation
 
-* Ready to use ISO image
+* Debian package
 
- An Ubuntu ISO image is available with all software installed and ready to run. Only a few network 
+ A debian packagee is available with all software dependencies and ready to run. Only a few network 
 parameters needs customization (hostname, shards...) after installation.
 
- The image can be used as a live CD for quick lookup and can be installed at anytime on a server or on a virtual image.
 
- For multiple shards, install an image on multiple servers then update configuration for sharding (see {{Solr_configuration}}).
+ For multiple shards, install the package on multiple servers then update configuration for sharding (see {{Solr_configuration}}).
 
  An administrator guide is available in the documentation section with installation steps and usage on Desktop.
 
@@ -25,7 +24,7 @@ parameters needs customization (hostname, shards...) after installation.
  
  * Apache2
  
- * Riak or MongoDB for backend storage
+ * Riak or MongoDB (default) for backend storage
  
 ** Optional
 
@@ -91,7 +90,7 @@ perl -MCPAN -e 'install Bio::Graphics::Browser2'
 
  * {{{crawlerindex.html}CrawlerIndex}}: package to index some biological data locally with an embedded server or remotly to an index server with a configured schema.
 
- * {{{crawlersearchwebapp.html}CrawlerSearchWebApp}}: provide an export function to the search engine
+ * {{{crawlersearchwebapp.html}CrawlerSearchWebApp}}: provide a search interface and an export function to the search engine
 
  * {{{gbrowse2.html}GBrowse2 library}}: DBI interface between the GBrowse2 application and the search engine
 
@@ -122,13 +121,13 @@ allow from 192.168.1.*  // to allow from internal network only
  
  <<Solr install>>:
 
- Download and unzip {{{http://apache.cict.fr/lucene/solr/1.4.1/apache-solr-1.4.1.zip}apache-solr-1.4.1.zip}} in a directory (let's say /opt)
+ Download and unzip {{{http://apache.cict.fr/lucene/solr/3.3.0/apache-solr-3.3.0.zip}apache-solr-3.3.0.zip}} in a directory (let's say /opt)
  
  In newly created directory, create a new directory "seqcrawler" and copy the solr directory in this one. You will have for example:
  
 +-- 
 
-/opt/apache-solr-1.4.1/seqcrawler/solr
+/opt/apache-solr-3.3.0/seqcrawler/solr
                                       - /bin
                                       - /conf
                                       - /data
@@ -137,7 +136,7 @@ allow from 192.168.1.*  // to allow from internal network only
 
 +--
 
- In Tomcat instance (or other Servlet container), deploy the apache-solr-1.4.1.war (in dist directory of apache-solr). For Tomcat, copy it to the webapps directory.
+ In Tomcat instance (or other Servlet container), deploy the apache-solr-3.3.0.war (in dist directory of apache-solr). For Tomcat, copy it to the webapps directory.
  
  Copy the solr/web content to the deployed webapp. Lookup.jsp is a web application to return a document from a file and index.html provides direct access to the query interface.
  In lookup.jsp, update <String AUTHDIR ="/";>. <<AUTHDIR>> is a directory filter to restrict file access to a defined sub directory structure (to restrict file access)
@@ -147,21 +146,15 @@ allow from 192.168.1.*  // to allow from internal network only
 +--
  
 $pageCountResults = 20;  // Number fo results per page
-$solrUrl = "http://seqcrawler.genouest.org/solr/select?rows="+$pageCountResults+"&qt=shard&wt=json&";  // Update host name
+$solrUrl = "http://localhost/solr/select?rows="+$pageCountResults+"&qt=shard&wt=json&";  // Update host name
 $solrFacet ="facet=on&facet.field=bank&";  // Update to add fields to facet (one facet.field per field)
-$storageurl = "http://seqcrawler.genouest.org"; // Update host
-$gburl = "http://seqcrawler.genouest.org"; // Update host
-$gbbank = "genouest"; // Update to GBrowse configuration name.
+$storageurl = "http://localhost"; // Update host
+$gburl = "http://localhost"; // Update host
+$gbbank = "seqcrawler"; // Update to GBrowse configuration name.
  
 +--
  
  Copy the readseq.jar to the WEB-INF/lib to support Apache Tika indexation.
- 
- An other web interface can be used (itas) in place of the dynamic web interface in index.html.
- To enable the <itas> request handler, e.g. the default web interface, the lib directory content must be copied to the web application in WEB-INF/lib directory and an <itas> directory must be created in the webapp directory.
- Copy in this new directory the seqcrawler.js,jquery and main.css files.
- 
- Warning: <<itas>> interface for seqcrawler is not maintained, it can be used as a base interface for further developments.
  
  That's it, Solr instance is ready. Now we can to configure it.
 

@@ -4,10 +4,7 @@ Release notes
   
   Author: Olivier Sallou, olivier.sallou@irisa.fr
   
-  Version: 0.3
-  Add custom indexation
-  Add pdb 3D vizualisation
-  Fix: 3308312, 3164609, 3189984,3175185, 3314744
+V0.5: use Solr 3, reorganize the files location
   
   
  Many icons, images comes from http://www.openclipart.org. Thanks to their respective authors.
@@ -17,5 +14,8 @@ Release notes
  
  V0.1: First release
  V0.2: Add debian packaging, fix some bugs 
- 
+ Version: 0.3
+  Add custom indexation
+  Add pdb 3D vizualisation
+  Fix: 3308312, 3164609, 3189984,3175185, 3314744
   
