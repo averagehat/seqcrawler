@@ -52,162 +52,41 @@ SeqCrawler image Administrator guide
 
 * Installation
 
-** Install from a virtual machine template
+** Install from a debian package on a Debian testing/sid:
 
- Install the virtual image on a X86_64 server supporting virtualization with network connection off.
- Connect to the server with a console. Execute as root /home/crawler/install/install.sh then /home/crawler/install/configure.sh
+ Add repository osallou.genouest.org/apt
  
-** Install from a LiveCD
-
- Boot from the liveCD ISO file. Once logged (crawler/craw!pwd), go in "System->Administration->INSTALL Release" and select "Install" to install the content of the ISO on the hard disk (can be a vmware image). 
+ Run:
  
-*** Steps
-
- Before activating the network, the following may need to be set/modified for your network (if not in dhcp):
-
- * domain name: /etc/network/interfaces
-
- * gateway: /etc/network/interfaces
-
- * ip address: /etc/network/interfaces, /etc/hosts
-
- * hostname (if required): /etc/hosts , /etc/hostname
-
- * name server (dns): /etc/resolv.conf
-
- []
+ apt-get update
+ apt-get install seqcrawler
  
- To activate ssh, generate ssh keys:
+ Dependencies (mongo, gbrowse) will be automatically installed.
  
-+--
-sudo /usr/bin/ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key -N 
-sudo /usr/bin/ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N
-+--
-
- Do not put passphrase at key generation.
-
- The server is not configured for LDAP support. Only one user is created: seqcrawler. “sudo” is required for root commands.
- 
- <<WARNING: PASSWORDS OF DEFAULT ACCOUNTS MUST BE MODIFIED AFTER INSTALL>>.
- 
- Accounts access are:
-
-+-- 
- System login: crawler, Password: craw!pwd
- Mysql DB login: root, Password: dbcrawler
- Sun Grid Engine login: sgeadmin, Password: Sgeadm!n
-+--
-
- The following can be set up later on:
-
- * /etc/gbrowse2/GBrowse.conf: webmaster support
-
- * /opt/solr/apache-solr-1.4.1/seqcrawler/solr/conf
-
- * If Riak is used: /etc/riak/vm.args and app.config (IP interface)
- 
- * conf files in /etc/gbrowse2/[gbrowse.conf]/*.conf , update STORAGEURL to current hostname
- 
- * /var/lib/tomcat6/webapps/solr/index.html , update solrUrl, gburl and storageurl
- 
- []
+ Package install all config files in /etc/seqcrawler (both for GBrowse and Seqcrawler itself).
  
  
  Web servers are available at:
  
   http://myhostname:8080/solr/ 
   
-  http://myhostname:8098/riak/ 
+  http://myhostname/mongo/ 
   
   http://myhostname/gb2/gbrowse
 
- If Riak is used, a network configuration operation is required:
 
-+--
-#riak stop
-update riak ip and innodb store in app.config and vm.config
-#riak-admin repi riak@192.168.1.238 riak@newip
-#rm /var/lib/riak/*
-join to ring if necessary (multiple hosts)
-#riak start
-+--
+ Indexes: /var/lib/seqcrawler/index
 
-* Architecture
-
-** Image
-
- The server image is a KVM image with an Ubuntu Server distribution 10.04.
- 
-** Directories
-
- The software is installed in the following directories:
-
- * Mysql 5.1: /usr/bin/mysql
-
- * Apache 2: /etc/apache2
-
- * Tomcat 6: /var/lib/tomcat6
-
- * BioPerl: /usr/local/share/perl/5.10.0
-
- * Solr: /opt/solr/apache-solr-1.4.1/
- 
- * Solr-Seqcrawler config: /opt/solr/apache-solr-1.4.1/seqcrawler
-
- * Riak configuration: /etc/riak
- 
- []
-
- Web documents for gbrowse (images, css..): /var/www/gbrowse2
-
- Cgi-bin for gbrowse: /usr/lib/cgi-bin/gb2
-
- Gbrowse plugins location: /etc/gbrowse2/gbrowse.conf/plugins
-
- Indexes: /index/data
-
- Data: /index/riak (if using Riak backend)
-
- Grid engine: /var/lib/gridengine and /var/spool/gridengine
- 
- ** Users
- 
- Apache: www-data
-
- Tomcat: tomcat6
-
- Mysql: root
-
- Sun Grid Engine: sgeadmin
-
- Riak: riak
 
 ** Security
 
- Access to admin section (/admin) is restricted to crawleradmin role, defined in tomcat user configuration.
+ Access to admin section (/admin) should be restricted to a specific role, defined in tomcat user configuration.
 
- Image is configured with SSH access only, Telnet and FTP are disabled.
-
- Access to port 8080 and 8098 (respectivelly Tomcat and Riak) should not be allowed to unauthenticated users, as HTTP PUT and DELETE operations can be used to operate on index and raw data backend. Users should access via the port 80 with a web proxy defined in Apache configuration towards those ports.
- 
-** Grid engine
- 
- The image implements Sun Grid Engine as a DRM manager and exec host. Default crawler user is admin of grid engine.
-
- The installation can be used to submit multiple jobs to the current image to parallelize some treatments. Once image is installed on server, if SGE is to be used, the configuration should be modified to take into account new host names in Admin Host, SubmitHost and ExecutionHost sections in Host configuration section.
- Update also file: /var/lib/gridengine/default/common/act-qmaster with new hostname. For further info, refer to the Sun Grid Engine documentation. 
- 
+ Access to port 8080 and 8098 (respectivelly Tomcat and Riak, if used) should not be allowed to unauthenticated users, as HTTP PUT and DELETE operations can be used to operate on index and raw data backend. Users should access via the port 80 with a web proxy defined in Apache configuration towards those ports.
+  
 * Software
 
- By default, a default index is available with the Yeast genome. The data comes from Genbank.
- Some scripts are available to add new data but new scripts may be required depending on the format of the input data.
- Two cases are possible:
- 
- * index and query only
- 
- * index and query + display with gbrowse
- 
- []
+ A default index is available with the Yeast genome in seqcrawl-example package. The data comes from Genbank.
  
 ** Index
 
@@ -252,7 +131,7 @@ join to ring if necessary (multiple hosts)
  To use the Genbank converter, data must be in gzip format (.gz):
 
 +--
-cd /opt/solr/apache-solr-1.4.1/seqcrawler/solr/bin/
+cd /usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/
 perl genbank2gff3.pl  -d mydirectorywithGenbankfiles -o mygffoutputdir
 +--
 
@@ -260,7 +139,7 @@ perl genbank2gff3.pl  -d mydirectorywithGenbankfiles -o mygffoutputdir
 
  It is possible to have a single configuration file for all banks, or one per bank.
 
- A sample configuration file is available at /etc/gbrowse2/gbrowse.conf/sample_banks.conf.
+ A sample configuration file is available at /etc/gbrowse2/seqcrawler.conf.
 
  Customization concerns:
  
@@ -268,7 +147,7 @@ perl genbank2gff3.pl  -d mydirectorywithGenbankfiles -o mygffoutputdir
  
     -FORMAT     gff
     
-    -STORAGEURL http://myexternalhostname/riak
+    -STORAGEURL -STORAGEURL http://localhost/cgi-bin/mongo/mongo.pl?id=
     
  #    -BANK       GenBank
 
@@ -309,7 +188,7 @@ perl genbank2gff3.pl  -d mydirectorywithGenbankfiles -o mygffoutputdir
 +--
 [mybank]
 description = my test bank
-path = /etc/gbrowse2/gbrowse.conf/mybank.conf
+path = /etc/gbrowse/gbrowse.conf/mybank.conf
 +--
 
 *** Specific configuration file
@@ -342,7 +221,7 @@ Glyph and gbcolor can be updated to change the color and way of display. Refer t
 
  To index some files a schema configuration file is used..
 
- Configuration files are located in /opt/solr/apache-solr-1.4.1/seqcrawler/conf
+ Configuration files are located in /etc/seqcrawler/solr
 
  The global property file is solrconfig.xml. It holds configuration for the indexation platform such as index root directory. Many properties are available, one gonna describe only major configuration data required for directories or server cusotmization. For other properties (may impact performances), please refer to solr documentation.
  
@@ -361,41 +240,7 @@ Glyph and gbcolor can be updated to change the color and way of display. Refer t
      </lst>^M
   </requestHandler>
 
-<!-- Following request handlers can define shard indexes if multiple indexes are used. Those provide a web interface for the index and will connect to  the standard requestHandler for  each shard. -->
-<requestHandler name="/itas" class="solr.SearchHandler">
-	…
-      	<str name="stHost">seqcrawler.genouest.org</str>
-       	<str name="stPort">8098</str>
-       	<str name="gbHost">seqcrawler.genouest.org</str>
-          	<str name="gbPort">80</str>
-          	<str name="gbBank">all</str>
- 	<!-- <str name="shards">shardserver1/solr/,shardserver2/solr/,...</str> -->
-      	 <str name="facet">on</str>
-      	 <str name="facet.method">enum</str>
-       	<str name="facet.field">organism</str>
-     	  <str name="facet.mincount">1</str>
-      	 <str name="facet.limit">10</str>
-       	<str name="facet.field">bank</str>
 
-</requestHandler>
-<requestHandler name="/mobile" class="solr.SearchHandler">
-      	<str name="stHost">seqcrawler.genouest.org</str>
-       	<str name="stPort">8098</str>
-       	<str name="gbHost">seqcrawler.genouest.org</str>
-          	<str name="gbPort">80</str>
-          	<str name="gbBank">all</str>
- 	<!-- <str name="shards">shardserver1/solr/,shardserver2/solr/,...</str> -->
-	…
-</requestHandler>
-<requestHandler name="/mobiledetails" class="solr.SearchHandler">
-      	<str name="stHost">seqcrawler.genouest.org</str>
-       	<str name="stPort">8098</str>
-       	<str name="gbHost">seqcrawler.genouest.org</str>
-          	<str name="gbPort">80</str>
-          	<str name="gbBank">all</str>
- 	<!-- <str name="shards">shardserver1/solr/,shardserver2/solr/,...</str> -->
-	…
-</requestHandler>
 +--
 
  In specified request handlers, uncomment the shards field is index shards is required. Specify the hostname or ip address of the servers handling the shards separated by a comma.
@@ -476,7 +321,7 @@ Glyph and gbcolor can be updated to change the color and way of display. Refer t
  It is possible to search an index with a query without the web interface. To do so, the java class org.irisa.genouest.seqcrawler.query.Query is available. See usage: 
 
 +--
-java -classpath $INDEXHOME/CrawlerIndex-0.1-jar-with-dependencies.jar  org.irisa.genouest.seqcrawler.query.Query -h
+java -classpath $INDEXHOME/CrawlerIndex-X.Y-jar-with-dependencies.jar  org.irisa.genouest.seqcrawler.query.Query -h
 +--
 
  This very simple query interface will log to console the first results of query.
