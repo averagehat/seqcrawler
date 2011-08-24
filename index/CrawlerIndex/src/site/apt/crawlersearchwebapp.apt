@@ -10,6 +10,7 @@ CrawlerSearchWebApp
 
  This is a simple servlet, packaged in a war file, used as a wrapper above CrawlerSearch. It maps to the export url.
  It contains the main web interface to query the index.
+ Install the war file in a servlet container.
  
  Interface is accessible at: http://localhost:8080/seqcrawler
  
