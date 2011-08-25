@@ -775,7 +775,7 @@
        <str name="facet.method">enum</str>
        <str name="facet.mincount">1</str>
        <str name="facet.limit">10</str>
-      <str name="shards">192.168.1.6/solr/,192.168.1.7/solr/</str>
+     <!-- <str name="shards">192.168.1.6/solr/,192.168.1.7/solr/</str> -->
      </lst>
   </requestHandler>
 
