@@ -1,0 +1,6 @@
+Revision history for Perl extension Bio::DB::GFF::Adaptor::solr.
+
+0.01  Tue Jun 15 16:55:37 2010
+	- original version; created by h2xs 1.23 with options
+		-b 5.8.8 -AX -n Bio::DB::GFF::Adaptor::solr
+
