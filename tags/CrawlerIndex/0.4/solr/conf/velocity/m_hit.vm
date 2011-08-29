@@ -1,0 +1,15 @@
+<div class="result-document">
+  #foreach($fieldname in $doc.fieldNames)
+     #if($fieldname=="chr" || $fieldname=="id" || $fieldname=="start" || $fieldname=="end" || $fieldname=="feature" )
+     <p>
+       <span class="field-name">$fieldname :</span>
+       <span>
+       #foreach($value in $doc.getFieldValues($fieldname))
+         $value
+       #end
+       </span>
+     </p>
+     #end
+  #end
+  <a href="mobiledetails?q=seqid:$doc.getFieldValues('seqid').get(0)">More details</a>
+</div>
