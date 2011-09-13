@@ -4,7 +4,7 @@
   <groupId>org.irisa.genouest.seqcrawler</groupId>
   <artifactId>CrawlerSearchWebApp</artifactId>
   <packaging>war</packaging>
-  <version>0.2</version>
+  <version>0.3</version>
   <name>CrawlerSearchWebApp Maven Webapp</name>
   <description>Web app for index search and export</description>
   <url>http://maven.apache.org</url>
@@ -37,7 +37,7 @@
     <dependency>
     	<groupId>org.irisa.genouest.seqcrawler</groupId>
     	<artifactId>CrawlerSearch</artifactId>
-    	<version>0.2</version>
+    	<version>0.3</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
