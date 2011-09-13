@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
@@ -282,6 +283,13 @@ public class Export {
 					fw.write("<"+(String) fieldName+">");
 					if(doc.getFieldValue((String)fieldName) instanceof Integer) {
 					fw.write(""+doc.getFieldValue((String)fieldName));
+					}
+					else if(doc.getFieldValue((String)fieldName) instanceof ArrayList) {
+						ArrayList list = (ArrayList)doc.getFieldValue((String)fieldName);
+						fw.write((String)list.get(0));
+						for(int l=1;l<list.size();l++) {
+						fw.write(","+(String)list.get(l));
+						}
 					}
 					else {
 					fw.write((String)doc.getFieldValue((String)fieldName));
