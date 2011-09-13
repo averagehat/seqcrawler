@@ -42,8 +42,8 @@ public class Export {
 
 	private Logger log = LoggerFactory.getLogger(Export.class);
 	
-	public static final String SOLRHOME = "/opt/solr/apache-solr-1.4.1/seqcrawler/solr";
-	public static final String SOLRDATA = "/opt/solr/apache-solr-1.4.1/seqcrawler/solr/data/";
+	public static final String SOLRHOME = "/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr";
+	public static final String SOLRDATA = "/var/lib/seqcrawler/index/solr";
 
 
 	String outputFile=null;
