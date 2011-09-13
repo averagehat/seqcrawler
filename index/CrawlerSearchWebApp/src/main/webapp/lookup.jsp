@@ -86,9 +86,9 @@ break;
 if(match) {
 byte[] buffer = new byte[(int)size];
 int nbbytes = raf.read(buffer);
-response.getOutputStream().write(buffer);
-
-response.getOutputStream().flush();
+OutputStream outs = response.getOutputStream();
+outs.write(buffer);
+outs.flush();
 raf.close();
 }
 else {
