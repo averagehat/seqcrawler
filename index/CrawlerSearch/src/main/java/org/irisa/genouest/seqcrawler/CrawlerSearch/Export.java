@@ -286,7 +286,7 @@ public class Export {
 					}
 					else if(doc.getFieldValue((String)fieldName) instanceof ArrayList) {
 						ArrayList list = (ArrayList)doc.getFieldValue((String)fieldName);
-						fw.write((String)list.get(0));
+						fw.write(""+list.get(0));
 						for(int l=1;l<list.size();l++) {
 						fw.write(","+(String)list.get(l));
 						}
