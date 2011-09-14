@@ -332,13 +332,13 @@ public class EMBLHandler implements SequenceHandler {
 				value.deleteCharAt(value.length()-1);
 			}
 			
-		if(doc.containsKey(key)) {
-			String tmpVal = (String)(doc.removeField(key)).getValue();
-			doc.addField(key,tmpVal+" "+value.toString());
-		}
-		else {
-			doc.addField(key, value.toString());
-		}
+			if(doc.containsKey(key)) {
+				String tmpVal = (String)(doc.removeField(key)).getValue();
+				doc.addField(key,tmpVal+" "+value.toString());
+			}
+			else {
+				doc.addField(key, value.toString());
+			}
 		}
 		value.setLength(0);
 		
