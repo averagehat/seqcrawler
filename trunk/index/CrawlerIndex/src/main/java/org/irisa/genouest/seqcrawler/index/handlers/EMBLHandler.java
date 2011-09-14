@@ -327,6 +327,11 @@ public class EMBLHandler implements SequenceHandler {
     		recodeField(key,value.toString());
     	}
 		else {
+			// If ends with ";", remove char
+			if(value.toString().endsWith(";")) {
+				value.deleteCharAt(value.length()-1);
+			}
+			
 		if(doc.containsKey(key)) {
 			String tmpVal = (String)(doc.removeField(key)).getValue();
 			doc.addField(key,tmpVal+" "+value.toString());
