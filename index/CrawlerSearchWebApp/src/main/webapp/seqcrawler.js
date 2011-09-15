@@ -88,7 +88,7 @@ function testShowGffDoc() {
 				if(doc[key] instanceof Array) {
 					content+='<div class="field">'+key+': ';
 					content+=$.URLDecode(doc[key][0]);
-					for(int arr=1;arr<doc[key].length;arr++) {
+					for(var arr=1;arr<doc[key].length;arr++) {
 					content+=", "+$.URLDecode(doc[key][arr]);
 					}
 					content+='</div>';
