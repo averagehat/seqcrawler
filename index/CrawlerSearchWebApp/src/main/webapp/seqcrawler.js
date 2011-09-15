@@ -85,7 +85,17 @@ function testShowGffDoc() {
 	 content+='<div class="embl_main_fields">';
 	 for(var key in doc) {
 			if(key.indexOf('stream_')==-1 && key.indexOf('seqid')==-1 && key.indexOf('id')==-1 && key.indexOf('file')==-1) {
-			content+='<div class="field">'+key+': '+$.URLDecode(doc[key])+'</div>';		
+				if(doc[key] instanceof Array) {
+					content+='<div class="field">'+key+': ';
+					content+=$.URLDecode(doc[key][0]);
+					for(int arr=1;arr<doc[key].length;arr++) {
+					content+=", "+$.URLDecode(doc[key][arr]);
+					}
+					content+='</div>';
+				}
+				else {
+					content+='<div class="field">'+key+': '+$.URLDecode(doc[key])+'</div>';	
+				}
 			}
 	  }
 	 content+='</div>';
