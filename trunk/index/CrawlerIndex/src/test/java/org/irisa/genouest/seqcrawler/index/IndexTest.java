@@ -381,6 +381,7 @@ public class IndexTest
 		
 			SolrDocumentList docs  = execQuery("bank:UniProt");
 	        assertTrue(docs.size()>=2);
+	        log.debug("AC: "+docs.get(0).getFieldValue("ac").toString());
 	        log.info("Original content 1 : "+docs.get(0).getFieldValue("stream_content_type")+","+docs.get(0).getFieldValue("stream_name")+","+docs.get(0).getFieldValue("file"));
 	        log.info("Original content 2 : "+docs.get(1).getFieldValue("stream_content_type")+","+docs.get(1).getFieldValue("stream_name")+","+docs.get(1).getFieldValue("file"));
 	        assertEquals("0-2368",docs.get(0).getFieldValue("file"));

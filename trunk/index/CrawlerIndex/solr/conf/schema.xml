@@ -471,7 +471,7 @@
 	<!-- description -->
 	<field name="de" type="text" indexed="true" stored="true"/>
 	<!-- accession -->
-	<field name="ac" type="text" indexed="true" stored="true"/>
+	<field name="ac" type="lowercase" indexed="true" stored="true" multiValued="true"/>
 	<!-- species -->
 	<field name="os" type="text" indexed="true" stored="true"/>
 	
