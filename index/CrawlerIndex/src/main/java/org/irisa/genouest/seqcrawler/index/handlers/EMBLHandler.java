@@ -331,13 +331,24 @@ public class EMBLHandler implements SequenceHandler {
 			if(value.toString().endsWith(";")) {
 				value.deleteCharAt(value.length()-1);
 			}
-			
 			if(doc.containsKey(key)) {
 				String tmpVal = (String)(doc.removeField(key)).getValue();
+				log.debug("Add field: "+key+" = "+tmpVal.toString()+" "+value.toString());
 				doc.addField(key,tmpVal+" "+value.toString());
 			}
 			else {
-				doc.addField(key, value.toString());
+				log.debug("Add field: "+key+" = "+value.toString());
+				
+				// Specific AC field, must be managed as an array of AC
+				if(key.equalsIgnoreCase("ac")) {
+				 String[] ac_ids = 	value.toString().split(";");
+				 for(int i=0;i<ac_ids.length;i++) {
+					 doc.addField(key, ac_ids[i].trim());
+				 }
+				}
+				else {
+				 doc.addField(key, value.toString());
+				}
 			}
 		}
 		value.setLength(0);
