@@ -54,6 +54,6 @@ if($data) {
     print $myjson;
 }
 else {
-    print "{ error : \"No match found\"}";
+    print "{ \"error\" : \"No match found\"}";
 }
 }
