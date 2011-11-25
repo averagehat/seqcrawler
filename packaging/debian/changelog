@@ -1,3 +1,9 @@
+seqcrawler (0.5.3-1) unstable; urgency=low
+
+  * Fix several bugs
+
+ -- Olivier Sallou <olivier.sallou@irsa.fr>  Mon, 24 Aug 2011 12:40:24 +0200
+
 seqcrawler (0.5.2-1) unstable; urgency=low
 
   * Move web data to crawlersearchwebapp
