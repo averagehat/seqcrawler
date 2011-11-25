@@ -100,6 +100,7 @@ echo "export INDEXHOME=/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bi
 echo "export INDEXVERSION="$INDEXVERSION >> $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/env.sh
 
 chmod 755 $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/*.sh
+chmod 755 $PKG/usr/share/seqcrawler/solr/apache-solr/seqcrawler/solr/bin/*.pl
 #rm -rf solrbin
 
 #svn export https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/trunk/index/CrawlerIndex/solr/conf solrconf --force
