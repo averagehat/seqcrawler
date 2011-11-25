@@ -1,3 +1,9 @@
+seqcrawler (0.6-1) unstable; urgency=low
+
+  * Fix several bugs
+
+ -- Olivier Sallou <olivier.sallou@irisa.fr>  Fri, 25 Nov 2011 18:15:26 +0100
+
 seqcrawler (0.5.3-1) unstable; urgency=low
 
   * Fix UniProt schema
