@@ -1,0 +1,183 @@
+Usage
+
+* What I should know 
+ 
+ GFF documents are completely indexed/stored with the provided schema. This means that the original document is not required (and can be deleted, or not available from index server).
+ For Genbank sheets, the script {{{genbank2gff.html}genbank2gff3.pl}} can be used to convert a file to GFF3 format (GFF+Fasta) and indexed as such.
+ GFF index integrates the indexed data with GBrowse. Other formats cannot be integrated, only GFF is supported.
+ 
+ For a description of the GFF fields, refer to {{{gff.html}this page}}.
+ 
+ The following fields are added by the indexer CrawlerIndex, and are document dependent.
+ Those are used in web interface and to extract documents (lookup.jsp).
+ 
++-- 
+    <!-- Those fields are not searchable, they are stored only for later analysis -->
+    <field name="stream_name" type="lowercase" indexed="false" stored="true"/>
+    <field name="stream_content_type" type="lowercase" indexed="false" stored="true"/>
++--    
+
+    <stream_name> contains the original file name and path. It will be used by lookup.jsp to download the content from the original document. This means of course that document must be
+     accessible with its original path from the index server.
+    
+    <stream_content_type> contains the content-type of the document. For Biological data it will be <<biosequence/xxx>> (gff, embl,...).
+    Others will be usual content-type (text/plain, text/html...)
+
+ <<Important fields>>:
+    
++--
+
+  <field name="id" type="lowercase" indexed="true" stored="true"/>
+  <field name="file" type="lowercase" indexed="false" stored="true"/>
+  
++--
+
+  * id field is the "key" to access a bio element. It may not be unique depending on input documents. It can be the name of a chromosome, or a protein ...
+  In the storage backend, it refers to the transcript of the element for GFF entries (if available).
+  
+  * file field is added by the indexer to specify the location of the element in the original document. It is used by the lookup.jsp file to get start and end positions in the source file.
+  
+* Web query
+
+ A Web interface is provided to query the index, but it can also be queried directly. Indeed, Solr implements an HTTP interface to query the index.
+ To query all shards, one should use the query type <shard> defined in solrconfig.xml help with the parameter  "qt".
+ 
+ For Solr syntax, look at {{{http://wiki.apache.org/solr/CommonQueryParameters} Solr CommonQueryParameters}} and {{{http://wiki.apache.org/solr/SolJSON} JSON output}} .
+ 
+ Example query for search for <protein> in all indexes with a JSON output format (xml is default):
+
++-- 
+ http://localhost:8080/solr/select/?q=protein&qt=shard&wt=json
++--
+
+ To query only the index shard of the queried host, remove the query type parameter (qt):
+
++-- 
+ http://localhost:8080/solr/select/?q=protein&wt=json
++--
+ 
+
+ The Web GUI is accessible directly at the root url of the application and code is hosted in the webapp directory of the application.
+
+
+ Solr has many language clients to query (perl cpan, java client) and can be used to get programmatic access to the index.
+ The only requirement to query seqcrawler is to set the query type parameter to <<shard>>.
+ 
+ 
+* How to index documents
+
+ To index a document (be it composed of several documents such as multi fasta, or gff), one should use:
+
++--
+
+ For usage: java -jar CrawlerIndex-X.Y-jar-with-dependencies.jar -h
+ 
+ Example:
+ Index with no storage
+ java -jar CrawlerIndex-X.Y-jar-with-dependencies.jar -b uniprot -f /tmp/uniprot.dat -t embl 
+
+ Index with storage, clean index for specified bank before
+ java -jar CrawlerIndex-X.Y-jar-with-dependencies.jar -c -b mypersonalbank -f /tmp/my.gff -t gff -store -stHost http://myhost
+
++--
+
+ It is possible to create a file name seqcrawler.properties to define recoders (see Installation), or to specify which field names should be included/excluded.
+ Property file can be either put in current dir or specified with the "-props myfilepath" command-line option.
+ 
+ To specify that only field with name X should be included add in properties file:
+ 
++--
+ 
+  fields.include = fieldnameA, fieldnameB,...
+ 
++--
+
+ To specify that fields with name X should be excluded add in properties file:
+
++--
+ 
+  fields.exclude = fieldnameA, fieldnameB,...
+ 
++--
+
+ Include and exclude properties are exclusive.
+
+ It is also possible to add "constant" fields (applied to all indexed documents) to the indexed data by adding in the properties file:
+
++--
+
+myfieldname.add = myfieldvalue
+
++--
+
+ It is also possible to define global env properties: (see installation)
+
++--
+
+solr.solr.home =
+solr.data.dir =
+
++--
+
+* Custom result display
+
+ Custom display offer the possibility to rewrite a field value to link the result to an external web sote for example.
+ If custom display is required for a field, the html result can be modified in seqcralwer-conf.js
+ 
++--
+    // Rewrite fields
+   $links = [];
+   $links['test.id'] = '<a href="test.html?id=#VAR#>#VAR#</a>';
+   $links['all.test'] = "Sample test for #VAR#";
+ 
++--
+
+ The links array should contain an entry for the required field.
+ Either $links['MYBANK.MYFIELD'] or $links['all.MYFIELD']. The first entry is specific to a bank, the second one
+ will apply for all banks. The #VAR# pattern will be replaced by the content of the field (accession number for example).
+
+* Custom indexation
+
+ It is possible to write its own file analyser to index a document. To do so, javascript scripting capability has been added.
+ To use custom indexation, 2 things need to be done:
+ 
+ * create a javascript file with ".js" extension in solrhome/plugin directory.
+ 
+ * as for any indexation, define if required the new tags to be indexed in conf/schema.xml (see installation page)
+
+ In the script file (an example is provided, named test.js), 2 objects are available:
+
+ * filePath:  Path to the input file
+ 
+ * doc: object used in the script to index some data
+ 
+ [] 
+
+ To use the script <<mycustomscript>>, one should use the format option:  <<-t mycustomscript>>
+
++--
+
+% The method addField add a new tag with string key "key3" and string value "test3"
+% the method can be called as many times as required
+doc.addField("key3","test3");
+
+% The method addDoc sends the document to the indexer
+% addDoc(id,start_position, number_of_characters)
+% id: unique id for the document
+% start_position: position of the element in the input file (optional)
+% number_of_characters: number of characters read to get the document in input file (optional)
+% start_position and number_of_characters are used to retrieve the document from the original file
+doc.addDoc("1",0,0);
+
+% Adds a string to the raw data backend (optional).
+% addRaw(id,content)
+
+doc.addRaw("1","acgt");
+
++--
+
+* Posting document
+
+ Help with Solr and Tika, it is possible to post via HTTP a document and to index it automatically.
+ However only readseq conversion is supported here and it will work only if original document is a unique document (no multi fasta for example).
+ To do so, refer to Solr documentation. There is no auto-detect implementation for the moment, so content-type should be specified (biosequence/embl for example).

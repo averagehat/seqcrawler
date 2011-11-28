@@ -1,0 +1,159 @@
+ <html>                                                                  
+ <head>                                                                  
+ <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+ <script type="text/javascript" src="jquery-ui-1.8.2.custom.min.js"></script>    
+  <script type="text/javascript" src="jquery.url.packed.js"></script>  
+ <link rel="stylesheet" type="text/css" href="main.css"/>
+ <link rel="stylesheet" type="text/css" href="jquery-ui-1.8.2.custom.css"/>     
+ <script type="text/javascript">                                         
+   // we will add our javascript code here
+   $(document).ready(function() {
+   
+   $("#metadata").ajaxError(function(event, request, settings){
+   $(this).append("<li>Error requesting page " + settings.url + "</li>");
+   });
+
+   // generate markup
+   $source = jQuery.url.param("source")
+   $id = jQuery.url.param("id")
+   $start = parseInt(jQuery.url.param("start"));
+   $stop = parseInt(jQuery.url.param("stop"));
+   $("#query").append("source = "+$source+", id = "+$id+", start = "+$start+", stop = "+$stop); 
+   $("#transcriptsource").append($id);
+   $("#source").append($source+","+$start+"-"+$stop);
+   $progressSource=0;
+   $progressTranscript=0;
+   $nbSourceShard=1;
+   $nbTranscriptShard=1;
+   $("#progress_source").progressbar({ value: $progressSource  });
+   $("#progress_transcript").progressbar({ value: $progressTranscript });
+   $('.transcript .head').click(function() {
+		$(this).next().toggle();
+		return false;
+	}).next().hide();
+   $('.data .head').click(function() {
+		$(this).next().toggle();
+		return false;
+	}).next().hide();
+  
+   //$("#progress_source").append("Progress source: "+$progressSource+"%");
+   //$("#progress_transcript").append("Progress transcript: "+$progressTranscript+"%");
+   loadSource($source);  
+   if($id!=$source) {
+	   loadData($source+"_"+$id);
+   }
+   });
+   
+   function loadData(id) {
+		$.get("/riak/bank/"+id,
+				   function(data){
+			   
+			          //$("#transcriptContent").append(data.content);
+			          
+			          //var obj = jQuery.parseJSON(data);
+			          var obj = eval('(' + data + ')');
+			          		          
+			          $("#transcriptContent").append(obj.content);
+			          		          
+			          // Has shards?
+			          shards = data.shards;
+				      if(data.shards && shards!="") {				    
+	
+				         size = shards.length;
+				         
+				         $nbTranscriptShard = size +1;
+				         $progressTranscript++; 
+				         //$("#progress_transcript").replaceWith("Progress transcript: "+($progressTranscript/$nbTranscriptShard)*100+"%");
+	                     $("#progress_transcript").progressbar({ value: ($progressTranscript/$nbTranscriptShard)*100 });
+				          for(s=0;s<size;s++) {
+					          //load shard
+							 shard =shards.shift();
+							 loadData(shard);
+				          }			          
+			          }
+				      else {
+					         $progressTranscript++; 
+					         $("#progress_transcript").progressbar({ value: ($progressTranscript/$nbTranscriptShard)*100 });
+
+				      }
+				   },"application/json"
+				 );
+		 }
+
+function loadSource(source) {
+			$.get("/riak/bank/"+source,
+				function(data){
+		          var obj = eval('(' + data + ')');
+		          insert=0;
+                  objStart = parseInt(obj.metadata.start);
+                  objStop = parseInt(obj.metadata.stop);
+                  
+		          if($start && $stop) {
+                  		         
+		          if($start<=objStop && $start >= objStart) {	         
+		          insert=1;
+		          }
+		          // Case stop is between start and stop of shard
+		          if($stop<=objStop && $stop >= objStart) {
+		          insert=1;
+		          }
+		          // Casewhere it overlaps the shard
+		          if($stop>=objStop && $start <= objStart) {
+		              insert=1;
+		          }
+		          }
+		          else {
+			          insert = 1;
+		          }
+		          if(insert==1) {
+			          cutLeft = 0;
+			          cutRight=0;
+			          if($start>objStart) {
+                          cutLeft = ($start -1) - objStart;
+			          }
+			          if($stop<objStop) {
+                          cutRight = objStop - $stop;
+			          }
+		        	  $("#sourceContent").append(obj.content.substring(cutLeft, obj.content.length - cutRight));
+		          }
+		          
+		          $("#metadata").append(obj.metadata);
+		          // Has shards?
+			          shards = data.shards;
+				      if(data.shards && shards!="") {
+	
+				         size = shards.length;
+				         $nbSourceShard = size +1;
+				         $progressSource++; 
+				         //$("#progress_source").replaceWith("Progress source: "+($progressSource/$nbSourceShard)*100+"%");
+                         $("#progress_source").progressbar({ value: ($progressSource/$nbSourceShard)*100 });
+				         
+				          for(s=0;s<size;s++) {
+					          //load shard
+							 shard =shards.shift();
+							 loadData(shard);
+				          }			          
+			          }
+				      else {
+					         $progressSource++; 
+					         //$("#progress_source").replaceWith("Progress source: "+($progressSource/$nbSourceShard)*100+"%");
+					         $("#progress_source").progressbar({ value: ($progressSource/$nbSourceShard)*100 });
+				      }
+				} ,"application/json" 
+					 );
+		
+	}
+
+ </script>
+ <title>SeqCrawler data query page</title>                                                               
+ </head>                                                                 
+ <body>
+   <div id="header" class="query-box">Result data for query: <div id="query"></div></div>                                                                  
+   <div id="metadata"></div>
+   <div>Download progress for transcript<div id="progress_transcript"></div></div>
+   <div>Download progress for source<div id="progress_source"></div></div>
+   <div id="transcript" class="results"><p class="title">Transcript:</p><div id="transcriptsource" style="background-color: lavender"></div><div id="transcriptContent"></div></div>
+   <div id="data" class="results"><p class="title">Source:</p><div id="source" style="background-color: lavender"></div><div id="sourceContent"></div></div>
+   <div id="footer"><hr width="70%"/>Powered by the <a href="http://www.genouest.org">GenOuest BioInformatics Plaform</a></div>                                        
+ </body>                                                                 
+ </html>
