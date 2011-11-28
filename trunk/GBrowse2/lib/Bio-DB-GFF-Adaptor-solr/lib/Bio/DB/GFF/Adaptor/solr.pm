@@ -761,9 +761,9 @@ sub _feature_by_name {
   
   my $luq="";
   $luq .= $self->_luqueryName( $name);
-  $luq .= $self->_luqueryType( $class);
+  $luq .= " AND ".$self->_luqueryType( $class);
   if ($location) {
-    $luq .= $self->_luqueryLocation($location->[0],$location->[2],$location->[2],'overlaps');
+    $luq .= " AND ".$self->_luqueryLocation($location->[0],$location->[2],$location->[2],'overlaps');
     }
     
   my $features= $self->_lusearch( $luq);
@@ -898,7 +898,7 @@ sub range_query {
   my @args= (); #? support this?
   $query .= $self->_luqueryLocation($refseq,$start,$stop,$rangetype);
   
-  $query .= $self->_luqueryType($types) if (defined $types);
+  $query .= " AND ".$self->_luqueryType($types) if (defined $types);
   
   if (DEBUG && defined $attributes) { warn "ATTRIBUTES=$attributes\n" ; } #when is this used?
   
