@@ -113,8 +113,8 @@ sub solrSearch {
   my @result=(); 
   # SEQCRAWLER
   # Expecting something like +chr:AY403533 +feature:gene +(start:[900 TO 1000] end:[900 TO 1000])
-  # my $query = "q=chr:AY403533 AND feature:sequence&rows=10";
-  $self->{query} .= " +bank:".$self->{BANK} if($self->{BANK} ne "all");
+  # my $query = "q=chr:AY403533 feature:sequence&rows=10";
+  $self->{query} .= " AND +bank:\"".$self->{BANK}."\"" if($self->{BANK} ne "all");
   my $over=0;
   my $nbresults=0;
   my $step=0;
@@ -345,9 +345,9 @@ sub _luqueryName {
     
     $val = lc($val) if ($LUBINDEBUG);
     if ($self->{is_gff}) {
-    $luq .= "+(name:$val alias:$val name:$val synonym:$val id:$val) $qsep";
+    $luq .= "+(name:\"$val\" alias:\"$val\" name:\"$val\" synonym:\"$val\" id:\"$val\") $qsep";
     } else {
-    $luq .= "+(gene:$val id:$val) $qsep"; #  db_xref:$val search all? or only gene==name ?
+    $luq .= "+(gene:\"$val\" id:\"$val\") $qsep"; #  db_xref:$val search all? or only gene==name ?
     }
     }
   return $luq;
@@ -364,9 +364,9 @@ sub _luqueryId {
     $val = "\"".$val."\"" if ($val =~ /\s/);
     $val = lc($val) if ($LUBINDEBUG);
     if ($self->{is_gff}) {
-    $luq .= "+(id:$val) $qsep";
+    $luq .= "+(id:\"$val\") $qsep";
     } else {
-    $luq .= "+(id:$val) $qsep"; # search all? or only id==ids ?
+    $luq .= "+(id:\"$val\") $qsep"; # search all? or only id==ids ?
     }
     }
   return $luq;
@@ -416,7 +416,7 @@ sub _luqueryType {
     $typelist = "(".$typelist.")" if ($typelist =~ /\s/);
     
     $typelist= lc($typelist) if ($LUBINDEBUG);
-    $luq .= "+feature:$typelist $qsep";
+    $luq .= "+feature:\"$typelist\" $qsep";
     }
     
   return $luq;
@@ -478,7 +478,7 @@ sub _luqueryLocation {
 
   my $luq="";
   $refseq= lc($refseq) if ($LUBINDEBUG);
-  $luq .= "+chr:$refseq $qsep" if ($refseq);
+  $luq .= "+chr:\"$refseq\" $qsep" if ($refseq);
 
   my $MINLOC = ($LUBINDEBUG) ? _numpad(0) : 0 ;
   my $MAXLOC = ($LUBINDEBUG) ? _numpad(999999999) : 999999999 ;
@@ -521,17 +521,23 @@ sub _lusearch {
   my( $query)= @_;
   
   my $luq="";
+  my $separatorset=0;
+ 
   if (ref($query) =~ /HASH/) {
     foreach my $fld (sort keys %$query) {
-      my $val= $query->{$fld}; 
-      $luq .= "+($fld:$val) " if ($val);
+      my $val= $query->{$fld};
+      $luq .= " AND " if($separatorset);
+      $separatorset=1 if ($val);
+      $luq .= "+($fld:\"$val\") " if ($val);
       }
   } elsif (ref($query) =~ /ARRAY/) {
     my $n= @$query;
-    for( my $i=0; $i<$n; $i += 2) {   
+    for( my $i=0; $i<$n; $i += 2) {  
       my $fld= $query->[$i]; 
-      my $val= $query->[$i+1]; 
-      $luq .= "+($fld:$val) " if ($val);
+      my $val= $query->[$i+1];  
+      $luq .= " AND " if($separatorset);
+      $separatorset=1  if ($val);
+      $luq .= "+($fld:\"$val\") " if ($val);
       }
   
   } else {
@@ -572,6 +578,7 @@ sub _luabscoords {
   my $luq="";
    # name is   name:position  , class is correct , must split name? to write with coor constraint
   $luq .= $self->_luqueryName($name);
+  $luq .= " AND ";
   $luq .= $self->_luqueryType($class);
   return [] unless($luq =~ /\w/);
 
