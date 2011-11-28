@@ -1,0 +1,7 @@
+Format: http://dep.debian.net/deps/dep5
+Upstream-Name: seqcrawler
+
+Files: *
+Copyright: 2011  Olivier Sallou <olivier.sallou@irisa.fr>
+License: CeCILL
+ blabla
