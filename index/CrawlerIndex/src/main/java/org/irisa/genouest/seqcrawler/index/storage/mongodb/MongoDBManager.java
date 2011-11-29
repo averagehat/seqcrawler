@@ -21,11 +21,9 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
-import com.mongodb.WriteResult;
 
 /**
  * MongoDB manager
- * TODO to be tested
  * @author osallou
  *
  */
