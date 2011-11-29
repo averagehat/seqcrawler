@@ -240,8 +240,7 @@ public class GFFHandler implements SequenceHandler {
 			try {
 				storage.store(stObj);
 			} catch (StorageException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e.getMessage());
 			}
 		  
 		  
