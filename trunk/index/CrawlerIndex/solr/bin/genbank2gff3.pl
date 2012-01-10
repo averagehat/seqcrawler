@@ -442,10 +442,14 @@ for my $file ( @files ) {
             if ( $method eq 'gene' || $method eq 'pseudogene' ) {
               @to_print= print_held($out, $gffio, \@to_print);
               $no_extended_gene_name = gene_name($feature);
-              $gene_id = $gene_name= $seq->id.".".$no_extended_gene_name; 
+              $gene_id = $gene_name= $seq->id.".".$no_extended_gene_name;
+              
             } else {
               $no_extended_gene_name = gene_name($feature);
               $gene_name= $seq->id.".".$no_extended_gene_name;
+            }
+            if(!$feature->has_tag("Alias") && $no_extended_gene_name ne "") {
+              $feature->add_tag_value( Alias => $no_extended_gene_name);
             }
         
             #?? should gene_name from /locus_tag,/gene,/product,/transposon=xxx
@@ -485,7 +489,7 @@ for my $file ( @files ) {
             
             # otherwise handle as generic feats with IDHandler labels 
             else {
-                add_generic_id( $feature, $gene_name, "");
+                add_generic_id( $feature, $no_extended_gene_name, "");
                 my $gff= $gffio->gff_string($feature);
                 print $out "$gff\n" if $gff;
             }
