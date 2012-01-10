@@ -4,7 +4,7 @@
 # v1.2 2010/09/08 osallou update for solr integration + minor fixes
 # v1.3 2010/11/17 osallou error in file parameter (wring start end end pos)
 # v1.4 2010/12/06 osallou add json export function for fasta (mongodb import usage)
-
+# v1.5 2011/01/10 osallou rename sub elements of chromosome to chrid.id instead of id to remove issues with non unique/bad format ids
 =pod
 
 =head1 NAME 
@@ -436,11 +436,16 @@ for my $file ( @files ) {
             # current gene name.  The unflattened gene features should be in order so any
             # exons, CDSs, etc that follow will belong to this gene
             my $gene_name;
+            #OSALLOU add seqid to gene name
+            my $no_extended_gene_name;
+            
             if ( $method eq 'gene' || $method eq 'pseudogene' ) {
               @to_print= print_held($out, $gffio, \@to_print);
-              $gene_id = $gene_name= gene_name($feature); 
+              $no_extended_gene_name = gene_name($feature);
+              $gene_id = $gene_name= $seq->id.".".$no_extended_gene_name; 
             } else {
-              $gene_name= gene_name($feature);
+              $no_extended_gene_name = gene_name($feature);
+              $gene_name= $seq->id.".".$no_extended_gene_name;
             }
         
             #?? should gene_name from /locus_tag,/gene,/product,/transposon=xxx
