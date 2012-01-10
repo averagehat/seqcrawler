@@ -448,9 +448,9 @@ for my $file ( @files ) {
               $no_extended_gene_name = gene_name($feature);
               $gene_name= $seq->id.".".$no_extended_gene_name;
             }
-            if(!$feature->has_tag("Alias") && $no_extended_gene_name ne "") {
-              $feature->add_tag_value( Alias => $no_extended_gene_name);
-            }
+            #if(!$feature->has_tag("Alias") && $no_extended_gene_name ne "") {
+            #  $feature->add_tag_value( Alias => $no_extended_gene_name);
+            #}
         
             #?? should gene_name from /locus_tag,/gene,/product,/transposon=xxx
             # be converted to or added as  Name=xxx (if not ID= or as well)
