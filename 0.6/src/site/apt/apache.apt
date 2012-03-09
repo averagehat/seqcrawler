@@ -1,0 +1,78 @@
+Architecture of the solution for high availability
+
+  Here is a view of the possible architecture. Though not presented here, the Apache front-end could also be secured with 2 servers and a shared IP, but this out of the scope of the product. 
+
+[images/webarchitecture.png] Web Architecture
+
+  Apache is configured to forward solr request to solr masters handling request handlers with shards and graphical interface (solritas or other). Request handler than manage request to query each shard defined in its configuration and cgroup the results to finally send back the results to the end user.
+
+  Each master/shard is replicated. If using NAS, index can be in a mounted directory and read by all servers. Else, index need to be manually replicated. though Solr supports replication, it is advised to manually create the index, then copy it as banks such as Genbank are really large to handle. this version does not suppoirt automatic failover, e.g. if a shard server is down, the master will not swith to an other replicated shard. High availability is supported by master only for the moment. Future version of Solr will allow complete failover mechanisms.
+
+  For NOSQL backends hosting raw sequence data, backend act as a ring with no point of failure. Apache can safely load-balance the requests among the nodes. Data is automatically replicated. Thus, if a backend node fails, an other can answer. 
+  
+  Possible configuration to load balance to solr and riak clusters and hide the ports.
+
++--
+
+#For proxy, specify a virtualhost with proxy to correct hosts/ports:
+
+<VirtualHost *:80>
+    # Restrict update operations to authenticated users, could also use ip or domain restrictions.
+	<Proxy *>
+	         AuthName "only for registered users"
+	         AuthType Basic
+	         AuthUserFile "/etc/apache2/passwd.httpd"
+	<Limit PUT POST DELETE CONNECT OPTIONS>
+	Require valid-user
+	# Or for domain restriction
+	# Order deny,allow
+    # Deny from all
+    # Allow from 192.168.1.*
+	</Limit>
+	</Proxy>
+
+    ProxyPass           /solr  http://192.168.1.237:8080/solr
+    ProxyPassReverse /solr  http://192.168.1.237:8080/solr
+
+    ProxyPass           /seqcrawler  http://192.168.1.237:8080/seqcrawler
+    ProxyPassReverse /seqcrawler  http://192.168.1.237:8080/seqcrawler
+
+	# IF riak is used
+    ProxyPass           /riak  http://192.168.1.237:8098/riak
+    ProxyPassReverse /riak  http://192.168.1.237:8098/riak
+
+
+</VirtualHost>
+
+#For load balancing:
+<Proxy balancer://mysolrcluster>
+BalancerMember http://192.168.1.50:8080
+BalancerMember http://192.168.1.51:8080
+</Proxy>
+ProxyPass /solr balancer://mysolrcluster 
+
+#For Riak
+<Proxy balancer://myriakcluster>
+BalancerMember http://192.168.1.50:8098
+BalancerMember http://192.168.1.51:8098
+</Proxy>
+ProxyPass /riak balancer://myriakcluster 
+
+#For MongoDB
+<Proxy balancer://mongocluster>
+BalancerMember http://192.168.1.50
+BalancerMember http://192.168.1.51
+</Proxy>
+ProxyPass /mongo balancer://mongocluster
+ProxyPass /cgi-bin/mongo balancer://mongocluster 
+
+
+Optionally to manage the cluster
+ <Location /balancer-manager>
+               SetHandler balancer-manager
+               Order Deny,Allow
+               Deny from all
+               Allow from aHostNameToAllowManager
+ </Location>
+
++--
