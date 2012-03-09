@@ -1,0 +1,21 @@
+Source: seqcrawler
+Section: science
+Priority: extra
+Maintainer: Olivier Sallou <olivier.sallou@irisa.fr>
+Build-Depends: debhelper (>= 7.0.50~),perl,gbrowse (>= 2.38),libio-all-lwp-perl,liburi-perl
+Standards-Version: 3.9.1
+Homepage: http://seqcrawler.sourceforge.net
+
+Package: seqcrawler
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},tomcat6,openjdk-6-jdk,gbrowse, mongodb,libmongodb-perl,libio-all-lwp-perl,liburi-perl,libnet-twitter-perl
+Description: index, browse and retrieve biological data
+ The software index biological data banks, and provides a
+ web interface to query the index, query genomic sequences
+ and retreive raw data.
+
+Package: seqcrawler-example
+Architecture: any
+Depends: seqcrawler
+Description: Yeast example
+ Loads yeast data in index and mongodb
