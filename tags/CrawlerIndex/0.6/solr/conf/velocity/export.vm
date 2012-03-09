@@ -1,0 +1,13 @@
+<div id="export_form">
+    <form name="export" action="">
+      <fieldset>
+        <input type="hidden" name="query" id="query" size="30" value="$!params.get('q')" class="text-input" />
+        <label for="ranges" id="ranges_label">Ranges</label>
+        <input type="text" name="ranges" id="ranges" size="30" value="" class="text-input" />
+       <label class="error" for="ranges" id="ranges_error">This field is required.</label>
+       <br />
+       <input type="submit" name="submit" class="button" id="submit_btn" value="Export" />
+     </fieldset>
+   </form>
+</div>
+<div id="message"></div>
