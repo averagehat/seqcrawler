@@ -1,0 +1,13 @@
+More to come
+Debian/Ubuntu deb package can be installed to get fully configured/installed seqcrawler software. Package depends on GBrowse package. At this moment, it is only available in "testing" distribution of Debian. If not available, it is possible to install it manually and force the package installation. 
+
+Libraries/executables for manual installation are available at: 
+CrawlerIndex jar file: http://maven.irisa.fr/artifactory/genouest-public-release/org/irisa/genouest/seqcrawler/CrawlerIndex/0.5/ 
+CrawlerSearchWebApp: http://maven.irisa.fr/artifactory/genouest-public-release/org/irisa/genouest/seqcrawler/CrawlerSearchWebApp/0.4/ 
+Readseq: http://maven.irisa.fr/artifactory/genouest-public-release/org/irisa/genouest/tools/readseq/2.1.11/ 
+GBrowse2 Solr perl module: svn co https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/tags/GBrowse2/0.2 
+CrawlerIndex: svn co https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/tags/CrawlerIndex/0.5 
+CrawlerSearchWebApp source: svn co https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/tags/CrawlerSearchWebApp/0.4 
+svn co https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/tags/CrawlerSearch/0.4 
+
+Debian stuff svn co https://seqcrawler.svn.sourceforge.net/svnroot/seqcrawler/tags/DebianPackaging/0.6 

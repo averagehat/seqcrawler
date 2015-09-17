@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<docs>
+<doc id="002R_IIV3">
+<stream_content_type>biosequence/embl</stream_content_type>
+<stream_name>/Users/osallou/Development/eclipse/workspace/CrawlerIndex/target/checkout/CrawlerIndex/./solr/dataset/datatest/uniprot.dat</stream_name>
+<bank>UniProt</bank>
+<id>002R_IIV3</id>
+<ac>Q197F8;</ac>
+<de>RecName: Full=Uncharacterized protein 002R;</de>
+<gn>ORFNames=IIV3-002R;</gn>
+<os>Invertebrate iridescent virus 3 (IIV-3) (Mosquito iridescent virus).</os>
+<file>0-2368</file>
+<seqid>7d8c36d9-7059-4be9-b504-e1973a686f01</seqid>
+</doc>
+<doc id="002R_IIV4">
+<stream_content_type>biosequence/embl</stream_content_type>
+<stream_name>/Users/osallou/Development/eclipse/workspace/CrawlerIndex/target/checkout/CrawlerIndex/./solr/dataset/datatest/uniprot.dat</stream_name>
+<bank>UniProt</bank>
+<id>002R_IIV4</id>
+<ac>Q197F8;</ac>
+<de>RecName: Full=Uncharacterized protein 002R;</de>
+<gn>ORFNames=IIV4-002R;</gn>
+<os>Invertebrate iridescent virus 3 (IIV-3) (Mosquito iridescent virus).</os>
+<file>2368-2368</file>
+<seqid>396ffde9-3777-4eb0-9b3f-0116f5af80db</seqid>
+</doc>
+</docs>
